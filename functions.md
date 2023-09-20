@@ -40,19 +40,41 @@ replaced with a new process, with newly initialized stack, heap, and (initialize
 
 ## dup
 
-tba
+`int dup(int oldfd);`
+
+The dup() system call allocates a new file descriptor.
+
+The single most important thing about dup() is it returns the smallest integer available for a new file descriptor. That's the basis of redirection:
+
+`int fd_redirect_to = open("file", O_CREAT);`
+`close(1); /* stdout */`
+`int fd_to_redirect = dup(fd_redirect_to); /* magically returns 1: stdout */`
+`close(fd_redirect_to); /* we don't need this */`
+
+After this anything written to file descriptor 1 (stdout), magically goes into "file".
+
 
 ## dup2
 
-tba
+`int dup2(int oldfd, int newfd);`
+
+The dup2() system call allocates a new file descriptor as an alias of oldfd.
 
 ## pipe
 
-tba
+`int pipe(int pipefd[2]);``
+
+pipe() creates a pipe, a unidirectional data channel that can be used for interprocess communication.  
+
+The array pipefd is used to return two file descriptors referring to the ends of the pipe. pipefd[0] refers to the read end of the pipe.  pipefd[1] refers to the write end of the pipe.  Data written to the write end of the pipe is buffered by the kernel until it is read from the read end of the pipe.
+
+Return value: On success, zero is returned.  On error, -1 is returned, errno is set to indicate the error, and pipefd is left unchanged.
 
 ## issaty
 
-tba
+The isatty() function tests whether fd is an open file descriptor referring to a terminal.
+
+Return value: returns 1 if fd is an open file descriptor referring to a terminal; otherwise 0 is returned, and errno is set to indicate the error.
 
 ## ttyname
 
