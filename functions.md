@@ -69,7 +69,7 @@ The dup2() system call allocates a new file descriptor as an alias of oldfd.
 
 ## pipe
 
-`int pipe(int pipefd[2]);``
+`int pipe(int pipefd[2]);`
 
 pipe() creates a pipe, a unidirectional data channel that can be used for interprocess communication.  
 
