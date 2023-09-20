@@ -10,18 +10,22 @@ The child process and the parent process run in separate memory spaces.  At the 
 
 The child inherits copies of the parent's set of open file descriptors.  Each file descriptor in the child refers to the same open file description as the corresponding file descriptor in the parent.  This means that the two file descriptors share open file status flags, file offset, and signal-driven I/O attributes
 
+
 **Return value:**
 On success, parent -> PID of the child, child -> 0
 On failure, -1 is returned in the parent, no child process is created, and errno is set to indicate the error
+
 
 ## wait
 
 The wait() system call suspends execution of the calling thread until one of its children terminates.
 
+
 ## waitpid
 
 The waitpid() system call suspends execution of the calling thread until a child specified by pid argument has changed state.
 By default, waitpid() waits only for terminated children, but his behavior is modifiable via the options argument
+
 
 ## kill
 
@@ -29,12 +33,14 @@ By default, waitpid() waits only for terminated children, but his behavior is mo
 
 The kill() system call can be used to send any signal to any process group or process.
 
+
 ## exevec
 
 `int execve(const char *pathname, char *const _Nullable argv[], char *const _Nullable envp[]);`
 
 execve() executes the process referred to by pathname.  This causes the process that is currently being run to be
 replaced with a new process, with newly initialized stack, heap, and (initialized and uninitialized) data segments.
+
 
 # Functions related to file descriptors
 
@@ -60,6 +66,7 @@ After this anything written to file descriptor 1 (stdout), magically goes into "
 
 The dup2() system call allocates a new file descriptor as an alias of oldfd.
 
+
 ## pipe
 
 `int pipe(int pipefd[2]);``
@@ -70,25 +77,32 @@ The array pipefd is used to return two file descriptors referring to the ends of
 
 Return value: On success, zero is returned.  On error, -1 is returned, errno is set to indicate the error, and pipefd is left unchanged.
 
+
 ## issaty
 
 The isatty() function tests whether fd is an open file descriptor referring to a terminal.
 
 Return value: returns 1 if fd is an open file descriptor referring to a terminal; otherwise 0 is returned, and errno is set to indicate the error.
 
+
 ## ttyname
 
-tba
+`char *ttyname(int fd);`
+
+ttyname() returns a pointer to the pathname of the terminal device that is open on the file descriptor fd, or NULL on error if fd is not connected to a terminal.
+
 
 ## ttyslot
 
 tba
+
 
 # Functions related to files
 
 ## access
 
 tba
+
 
 ## open
 
@@ -98,6 +112,7 @@ tba
 
 tba
 
+
 ## close
 
 tba
@@ -105,6 +120,7 @@ tba
 ## unlink
 
 tba
+
 
 # Functions related to directories
 
@@ -116,6 +132,7 @@ tba
 
 tba
 
+
 ## opendir
 
 tba
@@ -124,9 +141,11 @@ tba
 
 tba
 
+
 ## closedir
 
 tba
+
 
 # Functions related to files and directories
 
@@ -134,24 +153,15 @@ tba
 
 tba
 
+
 ## lstat
 
 tba
 
+
 ## fstat
 
 tba
-
-# Functions related to signals
-
-## signal
-
-tba
-
-## sigaction
-
-tba
-
 
 
 # Functions related to inputs in the command line
@@ -163,9 +173,11 @@ tba
 readline will read a line from the terminal and return it, using prompt as a message to the user and waiting until the user inputs a line.
 If prompt is NULL or the empty string, no prompt is issued.  
 
+
 **!!!! The line returned is allocated with malloc(3); the caller must free it when finished.**
 
 The line returned has the final newline removed, so only the text of the line remains.
+
 
 ## rl_clear_history
 
@@ -173,18 +185,34 @@ The line returned has the final newline removed, so only the text of the line re
 
 It frees private data Readline saves in the history list.
 
+
 ## rl_on_new_line
 
 Tell the update functions that we have moved onto a new (empty) line, usually after ouputting a newline.
+
 
 ## rl_replace_line
 
 tba
 
+
 ## rl_redisplay
 
 tba
 
+
 ## add_history
+
+tba
+
+
+# Functions related to signals
+
+## signal
+
+tba
+
+
+## sigaction
 
 tba
