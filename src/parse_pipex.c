@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:20:10 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/03 19:20:38 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:50:43 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ char	*find_correct_path(char **paths, char *cmd)
         cmd_path = ft_strjoin(paths[i], cmd);
         if (access(cmd_path, F_OK & X_OK) == 0)
         {
-            printf("aquí %s\n",cmd_path);
+            printf("[%s]\n",cmd_path);
             return (cmd_path);
         }
-        printf("%s\n",cmd_path);
+        printf(">>%s<<\n",cmd_path);
         free(cmd_path);
         i++;
     }

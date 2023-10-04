@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/03 19:22:21 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/04 19:01:22 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # define ENV_PATH "PATH="
+# define READ_END 0
+# define WRITE_END 1
 
 # include <unistd.h>
 # include <stdlib.h>
