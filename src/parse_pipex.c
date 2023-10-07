@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:20:10 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/04 14:50:43 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/07 15:49:35 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,10 @@ char	**get_all_paths(char *path)
     while(i < ft_array_len(paths))
     {
         result[i] = ft_strjoin(paths[i], "/");
-        printf(">>> %zu %s\n", ft_strlen(result[i]), result[i]);
-        printf("path: %zu %s\n", ft_strlen(paths[i]), paths[i]);
-        if (i > 0)
-        {
-            printf("path anterior: %zu %s\n", ft_strlen(paths[i - 1]), paths[i-1]);
-            printf("anterior: %zu %s\n", ft_strlen(result[i - 1]), result[i - 1]);
-        }
         i++;
     }
+    free(path);
+    ft_free_array(paths);
     return (result);
 }
 
@@ -75,11 +70,7 @@ char	*find_correct_path(char **paths, char *cmd)
     {
         cmd_path = ft_strjoin(paths[i], cmd);
         if (access(cmd_path, F_OK & X_OK) == 0)
-        {
-            printf("[%s]\n",cmd_path);
             return (cmd_path);
-        }
-        printf(">>%s<<\n",cmd_path);
         free(cmd_path);
         i++;
     }

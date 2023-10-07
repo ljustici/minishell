@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/04 19:01:22 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/07 15:50:20 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_cmd
 	char	**cmd_args;
 	char	**cmd_path;
 	char	*env_path;
+	int		n_cmd;
 } 			t_cmd;
 
 char	*find_path_in_envp(char **envp);
