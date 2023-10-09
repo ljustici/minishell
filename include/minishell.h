@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/09 17:40:21 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:44:41 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_cmd
 	t_error	error;
 	int		num_args;
 	char	**args;
-	int		n_cmd;
 } 			t_cmd;
 
 typedef struct s_listcmd
