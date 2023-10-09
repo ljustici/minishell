@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 17:24:00 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/07 17:54:56 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:18:08 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,16 @@ void exec_command(int i, t_cmd *cmd, char **envp)
     if (i == 0)
     {
         printf("cmd: %s\n", cmd->cmd_path[i]);
-        // redirect stdout to the write end of pipe1:
-        dup2(0, cmd->fd[0]);
-        dup2(1, cmd->fd[1]);
-        close(cmd->fd[1]); //send EOF
         close(cmd->fd[READ_END]);
+        // redirect stdout to the write end of pipe1:
+        dup2(cmd->fd[1], STDOUT_FILENO);
+        close(cmd->fd[1]); //send EOF
     }
     else
     {
-        dup2(cmd->fd[0], 1);
-        dup2(1, cmd->fd[1]);
-        close(cmd->fd[1]);
+        dup2(cmd->fd[0], STDIN_FILENO);
+        //dup2(1, cmd->fd[1]);
+        //close(cmd->fd[1]);
         close(cmd->fd[0]);
     }
     res = execve(args[0], args, envp);
@@ -75,16 +74,21 @@ void exec_father(pid_t pid, int *ends, int num_pipes)
 {
     int status;
     pid_t end_id;
+    (void)num_pipes;
+    (void)ends;
     int i;
     
     i = 0;
-    //cerrar todas las pipes
+    /*
     while(i <= num_pipes)
     {
         printf("num pipe: %i\n", i);
         close(ends[i]);
         i++;
-    }
+    }*/
+    //close(ends[0]); <-- si se cierra no funciona el pipe
+    if (num_pipes == 2)
+        close(ends[1]);
     end_id = waitpid(pid, &status, 0);
     handle_end_id(end_id, pid, status);
 }
@@ -99,7 +103,11 @@ int create_forks(t_cmd *cmd, char **envp)
     {
         if (cmd->cmd_path[i])
         {
-            pid = fork();
+            if (i == 0 || pid > 0)
+            {
+                printf("Está creando fork el pid %d\n", pid);
+                pid = fork();
+            }
             //printf("pid: %i\n", pid);
             if (pid == -1)
             {
