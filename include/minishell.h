@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/09 17:40:21 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:58:51 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,47 @@ typedef enum e_error
 	ERROR_SPLIT_EXTRACTING_CMD = 20, // be free!
 }	t_error;
 
+enum	metachar
+{
+	NEWLINE = '\n',
+	TAB = '\t',
+	SPACE = ' ',
+	PIPE = '|',
+	SEMI = ';',
+};
+
+typedef struct s_token
+{
+	char	*name;
+	char	ch;
+}			t_token;
+
 typedef struct s_cmd
 {
 	t_error	error;
+	char	*path;
 	int		num_args;
 	char	**args;
-	int		n_cmd;
 } 			t_cmd;
 
-typedef struct s_listcmd
+typedef struct s_list_cmd
 {
 	t_error	error;
 	int		num_cmds;
-	char	**cmds;
+	t_cmd	**cmds;
 	char	*outfile;
 	char	*infile;
 	int		num_pipes;
 	int		*pipes;
-}			t_listcmd;
+}			t_list_cmd;
 
-char	*find_path_in_envp(char **envp);
-int		ft_array_len (char **array);
-char	**get_all_paths(char *path);
-char	*find_correct_path(char **paths, char *cmd);
+char **split_line(char *line);
+char **split_by_metachar (char const *s);
+int should_split(char c);
+
+void span_until_quote(const char *s, unsigned long *i, char quote);
+int should_split(char c);
+int is_metacharacter(char c);
+int is_spnltab(char c);
 
 #endif
