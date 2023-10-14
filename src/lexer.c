@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/14 16:23:20 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/14 18:46:37 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,20 @@ int check_open_quote(char *line, char *first, int *i)
     int is_opening;
     
     is_opening = 0;
-    while(line[(*i)++])
+    if (*i == -1 || line[*i])
+        (*i)++;
+    else
+        return (is_opening);
+    while(line[*i])
     {
+        printf("char: %c i: %i\n", line[*i], *i);
         if ((line[*i] == '\'' || line[*i] == '\"') && *first == -1)
         {
             is_opening = 1;
             *first = line[*i];
             break;
         }
+        (*i)++;
     }
     printf("first: %c i: %i\n", *first, *i);
     return(is_opening);
@@ -38,6 +44,8 @@ int check_closing_quote(char *line, char *first, int *i)
     int is_closing;
 
     is_closing = 0;
+    if (!line[*i])
+        return (is_closing);
     while(line[(*i)++])
     {
         if (line[*i] == *first)
@@ -57,18 +65,23 @@ int check_quotes(char *line)
     int pair;
     int i;
 
-    i = 0;
+    i = -1;
     first = -1;
+    pair = 0;
     printf("line: [%s], strlen: %zu\n", line, ft_strlen(line));
-    while(line[i])
+    while(i == -1 || line[i])
     {
+        printf("pair: %i\n", pair);
         pair = check_open_quote(line, &first, &i);
-        if (pair)
-            pair += check_closing_quote(line, &first, &i);
+        if (pair == 1 || pair % 2 != 0)
+            pair = pair + check_closing_quote(line, &first, &i);
+        printf("end loop pair: %i\n", pair);
         first = -1;
     }
     printf("check quotes return: %i\n", pair);
-    return(pair % 2);
+    if (pair % 2 == 0)
+        return(0);
+    return(1);
 }
 
 char **split_line(char *line)
@@ -81,10 +94,9 @@ char **split_line(char *line)
     return(tokens);
 }
 
-
 int main()
 {
-    char line[] ="ls foo -la dfs fds a\"dfaa\"";
+    char line[] ="ls > a.txt \"dfsdf\" dfdsfa \"dfsdf\0";
     char **result;
     int i = 0;
 

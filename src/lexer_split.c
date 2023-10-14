@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/14 16:22:53 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/14 16:46:40 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	count_tokens(const char *str)
 		if (is_metacharacter(str[j]) == 1)
 		{	
 			i++;
+			is_first_letter = 0;
 			if (is_metacharacter(str[j + 1]) == 1)
 				j++;
 		}
