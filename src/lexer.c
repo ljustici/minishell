@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/14 18:46:37 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/14 19:15:49 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ char **split_line(char *line)
     if (check_quotes(line) != 0)
         return(NULL); //error
     tokens = split_by_metachar(line);
-    //perform expansions
     return(tokens);
 }
 
