@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/13 20:02:41 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/14 16:22:53 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void handle_count_quote(const char *str, unsigned long *j, int *i)
 {
-	if (str[*j] == '\'' || str[*j] == '\"')
+	if ((str[*j] == '\'' || str[*j] == '\"') && is_spnltab(str[*j - 1]))
 	{
 		*i = * i + 1;
 		span_until_quote(str, j, str[*j]);
@@ -49,6 +49,7 @@ int	count_tokens(const char *str)
 			is_first_letter = 0;
 		j++;
 	}
+	//printf("i:%i\n", i);
 	return (i);
 }
 
@@ -68,14 +69,14 @@ int assign_token(char **result, const char *s, size_t *i, int *j, int f_letter_p
 		result[*j] = ft_substr(s, f_letter_pos, *i - f_letter_pos);
 	if (!result[*j])
 		return (0);
-	printf("[j: %i --> %s]\n", *j, result[*j]);
+	//printf("[j: %i --> %s]\n", *j, result[*j]);
 	*j = *j + 1;
 	return (1);
 }
 
-int assign_quoted_token (char **result, const char *s, size_t *i, int *j, int f_letter_pos)
+int assign_quoted_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos)
 {
-	if (s[*i] == '\'' || s[*i] == '\"')
+	if ((s[*i] == '\'' || s[*i] == '\"') && is_spnltab(s[*i - 1]))
 	{
 		f_letter_pos = *i;
 		span_until_quote(s, i, s[*i]);
@@ -116,7 +117,7 @@ int	fill_tokens(char **result, const char *s)
 	return (1);
 }
 
-char **split_by_metachar (char const *s)
+char **split_by_metachar(char const *s)
 {
     int		n_of_w;
 	int		correct;

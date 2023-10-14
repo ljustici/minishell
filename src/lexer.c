@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/13 19:55:26 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/14 16:23:20 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,65 @@
 //Process quotes
 //split line in tokens
 
+int check_open_quote(char *line, char *first, int *i)
+{
+    int is_opening;
+    
+    is_opening = 0;
+    while(line[(*i)++])
+    {
+        if ((line[*i] == '\'' || line[*i] == '\"') && *first == -1)
+        {
+            is_opening = 1;
+            *first = line[*i];
+            break;
+        }
+    }
+    printf("first: %c i: %i\n", *first, *i);
+    return(is_opening);
+}
+
+int check_closing_quote(char *line, char *first, int *i)
+{
+    int is_closing;
+
+    is_closing = 0;
+    while(line[(*i)++])
+    {
+        if (line[*i] == *first)
+        {
+            printf("Closing encontrada\n");
+            is_closing = 1;
+            break;
+        }
+    }
+    printf("closing i: %i\n", *i);
+    return (is_closing);
+}
+
 int check_quotes(char *line)
 {
+    char first;
+    int pair;
     int i;
-    int quot_s;
-    int quot_d;
 
     i = 0;
-    quot_s = 0;
-    quot_d = 0;
+    first = -1;
+    printf("line: [%s], strlen: %zu\n", line, ft_strlen(line));
     while(line[i])
     {
-        if (line[i] == '\'')
-            quot_s++;
-        else if (line[i] == '\"')
-            quot_d++;
-        i++;
+        pair = check_open_quote(line, &first, &i);
+        if (pair)
+            pair += check_closing_quote(line, &first, &i);
+        first = -1;
     }
-    if (quot_s % 2 == 0 && quot_d % 2 == 0)
-        return (0);
-    return(1);
+    printf("check quotes return: %i\n", pair);
+    return(pair % 2);
 }
 
 char **split_line(char *line)
 {
-    char **tokens;
+    char **tokens = NULL;
     if (check_quotes(line) != 0)
         return(NULL); //error
     tokens = split_by_metachar(line);
@@ -50,11 +84,16 @@ char **split_line(char *line)
 
 int main()
 {
-    char line[] ="ls foo '-la | dfsdf' < $var";
+    char line[] ="ls foo -la dfs fds a\"dfaa\"";
     char **result;
     int i = 0;
 
     result = split_line(line);
+    if (!result)
+    {
+        printf("aqui");
+        return(-1);
+    }
     while(result[i])
     {
         printf("%s\n", result[i]);
