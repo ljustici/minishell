@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/14 16:46:40 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/15 16:25:43 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ int assign_token(char **result, const char *s, size_t *i, int *j, int f_letter_p
 			result[*j] = ft_substr(s, f_letter_pos, 1);
 	}
 	else
-		result[*j] = ft_substr(s, f_letter_pos, *i - f_letter_pos);
+		result[*j] = ft_substr(s, f_letter_pos, (*i - f_letter_pos) + 1);
 	if (!result[*j])
 		return (0);
-	//printf("[j: %i --> %s]\n", *j, result[*j]);
+	printf("[j: %i --> %s]\n", *j, result[*j]);
 	*j = *j + 1;
 	return (1);
 }
@@ -106,8 +106,9 @@ int	fill_tokens(char **result, const char *s)
 			return (0); //malloc error
 		if ( (should_split(s[i]) != 1 && f_letter_pos == -1) || is_metacharacter(s[i]) == 1)
 			f_letter_pos = i;
-		if ((should_split(s[i]) == 1 || i == ft_strlen(s)) && f_letter_pos >= 0)
+		if ((should_split(s[i]) == 1 || i == ft_strlen(s) || should_split(s[i + 1])) && f_letter_pos >= 0)
 		{
+			printf("c to split: %c\n", s[i]);
 			if (assign_token(result, s, &i, &j, f_letter_pos) == 0)
 				return (0); //malloc error
 			f_letter_pos = -1;
