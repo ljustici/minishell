@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/15 16:25:43 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:08:41 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,19 @@
 
 void handle_count_quote(const char *str, unsigned long *j, int *i)
 {
+	int is_double_quot;
+
+	is_double_quot = 0;
 	if ((str[*j] == '\'' || str[*j] == '\"') && is_spnltab(str[*j - 1]))
 	{
 		*i = * i + 1;
 		span_until_quote(str, j, str[*j]);
 		*j = *j + 1;
+		if (str[*j] == '\"')
+			is_double_quot = 1;
 	}
+	if(is_double_quot == 1 && str[*j] == '$')
+		*i = * i + 1;
 }
 
 int	count_tokens(const char *str)

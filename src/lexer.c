@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/15 16:22:45 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:10:25 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char **split_line(char *line)
 
 int main()
 {
-    char line[] ="       lsasd > a.txt |||ab\'dfsdf\'aa|  dfdsfa\0";
+    char line[] ="       lsasd > a.txt |||ab\'dfsdf\'aa|  \"hola $dfdsfa\"\0";
     char **result;
     int i = 0;
 
