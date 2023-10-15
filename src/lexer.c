@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/15 17:10:25 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/21 20:03:25 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int check_open_quote(char *line, char *first, int *i)
         return (is_opening);
     while(line[*i])
     {
-        printf("char: %c i: %i\n", line[*i], *i);
         if ((line[*i] == '\'' || line[*i] == '\"') && *first == -1)
         {
             is_opening = 1;
@@ -95,7 +94,7 @@ char **split_line(char *line)
 
 int main()
 {
-    char line[] ="       lsasd > a.txt |||ab\'dfsdf\'aa|  \"hola $dfdsfa\"\0";
+    char line[] ="vst \"hola $$a y hola $b\" \"eyes\"||| sdff 'hola $c o $d'\0";
     char **result;
     int i = 0;
 

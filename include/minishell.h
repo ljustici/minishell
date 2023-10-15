@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/13 18:58:51 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/21 19:55:42 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,8 @@ void span_until_quote(const char *s, unsigned long *i, char quote);
 int should_split(char c);
 int is_metacharacter(char c);
 int is_spnltab(char c);
+
+int assign_doubleqt_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos);
+int assign_quoted_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos);
 
 #endif

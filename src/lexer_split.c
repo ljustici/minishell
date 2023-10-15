@@ -6,27 +6,39 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/15 17:08:41 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/21 19:41:03 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void handle_count_quote(const char *str, unsigned long *j, int *i)
+int handle_count_quote(const char *str, unsigned long *j, int *i)
 {
-	int is_double_quot;
-
-	is_double_quot = 0;
+	//printf("init num %i\n", *i);
 	if ((str[*j] == '\'' || str[*j] == '\"') && is_spnltab(str[*j - 1]))
 	{
-		*i = * i + 1;
-		span_until_quote(str, j, str[*j]);
-		*j = *j + 1;
+		
+		*i = *i + 1;
 		if (str[*j] == '\"')
-			is_double_quot = 1;
+		{
+			while(str[++(*j)] != '\"')
+			{
+				//buscar separaciones
+				if (str[*j] == '$')
+					*i = *i + 1;
+				//printf("while num %i\n", *i);
+			}
+		}
+		if (str[*j] == '\'')
+		{
+			span_until_quote(str, j, str[*j]);
+			//*j = *j + 1;
+		}
+		//printf("fin num %i\n", *i);
 	}
-	if(is_double_quot == 1 && str[*j] == '$')
-		*i = * i + 1;
+	else
+		return(1);
+	return(0);
 }
 
 int	count_tokens(const char *str)
@@ -40,8 +52,9 @@ int	count_tokens(const char *str)
 	is_first_letter = 0;
 	while (str[j])
 	{
-		handle_count_quote(str, &j, &i);
-		if (is_metacharacter(str[j]) == 1)
+		if (handle_count_quote(str, &j, &i) == 0)
+			i++;
+		else if (is_metacharacter(str[j]) == 1)
 		{	
 			i++;
 			is_first_letter = 0;
@@ -82,22 +95,6 @@ int assign_token(char **result, const char *s, size_t *i, int *j, int f_letter_p
 	return (1);
 }
 
-int assign_quoted_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos)
-{
-	if ((s[*i] == '\'' || s[*i] == '\"') && is_spnltab(s[*i - 1]))
-	{
-		f_letter_pos = *i;
-		span_until_quote(s, i, s[*i]);
-		result[*j] = ft_substr(s, f_letter_pos, (*i - f_letter_pos) + 1);
-		printf("[j: %i --> %s]\n", *j, result[*j]);
-		if(!result[*j])
-			return(0);
-		*j = *j + 1;
-		*i = *i + 1;
-	}
-	return(1);
-}
-
 int	fill_tokens(char **result, const char *s)
 {
 	int		j;
@@ -109,13 +106,14 @@ int	fill_tokens(char **result, const char *s)
 	i = 0;
 	while (i <= ft_strlen(s))
 	{
-		if (assign_quoted_token(result, s, &i, &j, f_letter_pos) == 0)
+		if (assign_quoted_token(result, s, &i, &j, f_letter_pos) == 0
+				|| assign_doubleqt_token(result, s, &i, &j, f_letter_pos) == 0)
 			return (0); //malloc error
 		if ( (should_split(s[i]) != 1 && f_letter_pos == -1) || is_metacharacter(s[i]) == 1)
 			f_letter_pos = i;
 		if ((should_split(s[i]) == 1 || i == ft_strlen(s) || should_split(s[i + 1])) && f_letter_pos >= 0)
 		{
-			printf("c to split: %c\n", s[i]);
+			printf("c to split: %c en pos %zu\n", s[i], i);
 			if (assign_token(result, s, &i, &j, f_letter_pos) == 0)
 				return (0); //malloc error
 			f_letter_pos = -1;
