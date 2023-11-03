@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:35:48 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/17 12:40:14 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/10/27 19:07:43 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int is_spnltab(char c)
 {
+    if (!c)
+        return(1);
     if (c == ' ' || c == '\t' || c == '\n')
         return(1);
     return(0);
@@ -36,7 +38,13 @@ int should_split(char c)
 void span_until_quote(const char *s, unsigned long *i, char quote)
 {
     *i = *i + 1;
-    while(s[*i] != quote)
+    while(s[*i] && s[*i] != quote)
         *i = *i + 1;
 }
 
+int is_valid_char_in_var(char c)
+{
+    if (ft_isalnum(c) == 0 && c != '_' && c != '?')
+        return(0);
+    return(1);
+}

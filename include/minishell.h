@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/10/21 19:55:42 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:56:37 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,13 @@ int is_spnltab(char c);
 
 int assign_doubleqt_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos);
 int assign_quoted_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos);
+
+int is_var_in_dqt(const char *s, unsigned long pos);
+
+int handle_count_quote(const char *str, unsigned long *j, int *i);
+void span_tail_str(const char *str, unsigned long *j);
+void add_token(const char *s, char **result, int f_letter_pos, size_t i, int *j);
+void span_var_in_dqt(const char *s, size_t *i, size_t end_qt);
+int get_char_pos(const char *s, size_t start, char c);
 
 #endif
