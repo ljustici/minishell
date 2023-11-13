@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/03 18:52:36 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:07:33 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,13 @@ void span_tail_str(const char *str, unsigned long *j)
 	}
 }
 
+/**
+ * Checks if the character is a quote. 
+ * If it's a simple quote it counts a token, spans
+ * until the next quote, and spans the characters next to that last quote.
+ * If it's a double quote, it counts the number of tokens inside and
+ * spans the characters next to the closing quote.
+*/
 int handle_count_quote(const char *str, unsigned long *j, int *i)
 {	
 	//printf("init c %c y j %lu\n", str[*j], *j);
@@ -121,6 +128,7 @@ int handle_count_quote(const char *str, unsigned long *j, int *i)
 		}
 		if (str[*j] == '\'')
 		{
+			(*i)++;
 			span_until_quote(str, j, str[*j]);
 			span_tail_str(str, j);
 			printf("' Llega hasta %lu\n", *j);

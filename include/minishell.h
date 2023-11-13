@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/03 17:56:37 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:09:01 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,11 @@ enum	metachar
 
 typedef struct s_token
 {
-	char	*name;
-	char	ch;
-}			t_token;
+	char	**tokens;
+	const char *s;
+}			t_lexer;
 
-typedef struct s_cmd
-{
-	t_error	error;
-	char	*path;
-	int		num_args;
-	char	**args;
-} 			t_cmd;
 
-typedef struct s_list_cmd
-{
-	t_error	error;
-	int		num_cmds;
-	t_cmd	**cmds;
-	char	*outfile;
-	char	*infile;
-	int		num_pipes;
-	int		*pipes;
-}			t_list_cmd;
 
 char **split_line(char *line);
 char **split_by_metachar (char const *s);
@@ -80,14 +63,14 @@ int should_split(char c);
 int is_metacharacter(char c);
 int is_spnltab(char c);
 
-int assign_doubleqt_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos);
-int assign_quoted_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos);
+int assign_doubleqt_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
+int assign_quoted_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
 
 int is_var_in_dqt(const char *s, unsigned long pos);
 
 int handle_count_quote(const char *str, unsigned long *j, int *i);
 void span_tail_str(const char *str, unsigned long *j);
-void add_token(const char *s, char **result, int f_letter_pos, size_t i, int *j);
+int add_token(t_lexer lex, int f_letter_pos, size_t i, int *j);
 void span_var_in_dqt(const char *s, size_t *i, size_t end_qt);
 int get_char_pos(const char *s, size_t start, char c);
 

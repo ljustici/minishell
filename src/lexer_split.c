@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/03 18:38:44 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:28:50 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ int	count_tokens(const char *str)
 		{	
 			i++;
 			is_first_letter = 0;
+			printf(">>>is meta letter: %c\n", str[j]);
 			if (is_metacharacter(str[j + 1]) == 1)
 				j++;
 		}
 		else if (should_split(str[j]) != 1 && is_first_letter == 0)
 		{
+			printf(">>>letter: %c\n", str[j]);
 			is_first_letter = 1;
 			i++;
 		}
@@ -43,13 +45,17 @@ int	count_tokens(const char *str)
 	return (i);
 }
 
-int assign_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos)
+int assign_token(t_lexer lex, size_t *i, int *j, int f_letter_pos)
 {
 	printf("[Llega a assign_token]\n");
-	if (is_metacharacter(s[*i]) && is_metacharacter(s[*i + 1]))
+	if (is_metacharacter(lex.s[*i]) && is_metacharacter(lex.s[*i + 1]))
 		*i = *i + 1;
 	*i = *i + 1;
-	add_token(s, result, f_letter_pos, *i, j);
+	if (add_token(lex, f_letter_pos, *i, j) == 0)
+		return(0);
+	if (*i > 0)
+		*i = *i - 1;
+	printf("token: %s letter:%i num: %i\n", lex.tokens[*j - 1], f_letter_pos, *j - 1);
 	return (1);
 }
 
@@ -75,40 +81,49 @@ int assign_token(char **result, const char *s, size_t *i, int *j, int f_letter_p
 	return (1);
 }*/
 
+int check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
+{
+	if (assign_quoted_token(lex, i, j, *f_letter_pos) == 0
+			|| assign_doubleqt_token(lex, i, j, *f_letter_pos) == 0)
+		return (0); //malloc error
+	if ((should_split(lex.s[*i]) != 1 && *f_letter_pos == -1)
+		|| is_metacharacter(lex.s[*i]) == 1)
+		*f_letter_pos = *i;
+	if (lex.s[*i] && (should_split(lex.s[*i]) == 1 || should_split(lex.s[*i + 1]))
+		&& *f_letter_pos >= 0)
+	{
+		if (assign_token(lex, i, j, *f_letter_pos) == 0)
+			return (0); //malloc error
+		*f_letter_pos = -1;
+	}
+	else if (*i == ft_strlen(lex.s) && *f_letter_pos >= 0 && *f_letter_pos
+		< (int)*i - 1)
+	{
+		if (assign_token(lex, i, j, *f_letter_pos) == 0)
+			return (0); //malloc error
+		*f_letter_pos = -1;
+	}
+	return(1);
+}
+
 int	fill_tokens(char **result, const char *s)
 {
 	int		j;
 	int		f_letter_pos;
 	size_t	i;
+	t_lexer	lex;
 
+	lex.tokens = result;
+	lex.s = s;
 	f_letter_pos = -1;
 	j = 0;
 	i = 0;
 	while (i <= ft_strlen(s))
 	{
-		printf("f_letter_pos: %i para i: %zu\n", f_letter_pos, i);
-		if (assign_quoted_token(result, s, &i, &j, f_letter_pos) == 0
-				|| assign_doubleqt_token(result, s, &i, &j, f_letter_pos) == 0)
-			return (0); //malloc error
-		if ((should_split(s[i]) != 1 && f_letter_pos == -1) || is_metacharacter(s[i]) == 1)
-			f_letter_pos = i;
-		if (s[i] && (should_split(s[i]) == 1 || should_split(s[i + 1])) && f_letter_pos >= 0)
-		{
-			printf("c to split: %c en pos %zu y f_let: %i\n", s[i], i, f_letter_pos);
-			if (assign_token(result, s, &i, &j, f_letter_pos) == 0)
-				return (0); //malloc error
-			f_letter_pos = -1;
-		}
-		else if (i == ft_strlen(s) && f_letter_pos >= 0 && f_letter_pos < (int)i - 1)
-		{
-			printf("c to split: %c en pos %zu y f_let: %i\n", s[i], i, f_letter_pos);
-			if (assign_token(result, s, &i, &j, f_letter_pos) == 0)
-				return (0); //malloc error
-			f_letter_pos = -1;
-		}
+		check_and_fill(lex, &i, &j, &f_letter_pos);
 		i++;
 	}
-	result[j] = 0;
+	lex.tokens[j] = 0;
 	return (1);
 }
 

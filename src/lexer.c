@@ -6,14 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/03 18:51:05 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:40:54 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-//Process quotes
-//split line in tokens
 
 int check_open_quote(char *line, char *first, int *i)
 {
@@ -99,8 +96,8 @@ void ft_leaks()
 
 int main()
 {
-    char line[] ="vst \"hola $$a y hola $b \" \"eyes $$$$$a\"||| sdff 'hola $c o $d'\0";
-    //char line[] ="  echo  foo  bar  baz  foo  bar  baz\0";
+    //char line[] ="vst \"hola b$$ y hola $\"eeeee \"eyes $$$$$a\"|||| sdff 'hola $c o $d'\0";
+    char line[] ="\"\"\'\'\"\" e \'\' c \"\" h\'\'o\'\'\"\"\'\';\0";
     char **result;
     int i = 0;
 
