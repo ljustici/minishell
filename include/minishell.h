@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/13 16:09:01 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/11/15 19:01:20 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 # include <stdio.h>
 # include "../libft/libft.h"
 
+#define WORD = 1;
+#define FLAG = 2;
+#define PIPE = 3;
+#define REDIR = 4;
+
 typedef enum e_error
 {
 	NO_ERROR,
@@ -35,16 +40,18 @@ typedef enum e_error
 	ERROR_CMD_1_NOT_EXISTS,
 	ERROR_CMD_2_NOT_EXISTS,
 	ERROR_SPLIT_EXTRACTING_CMD = 20, // be free!
+
+	ERROR_SYNTAX_UNEXPECTED_TOKEN,
 }	t_error;
 
-enum	metachar
+/*enum	metachar
 {
 	NEWLINE = '\n',
 	TAB = '\t',
 	SPACE = ' ',
 	PIPE = '|',
 	SEMI = ';',
-};
+};*/
 
 typedef struct s_token
 {
@@ -52,7 +59,19 @@ typedef struct s_token
 	const char *s;
 }			t_lexer;
 
+typedef struct	s_cmd_lst
+{
+	int					type;        // 0 = cmd; 1 = redirecmto
+	char				**c_args;	 // cmd[0] + argmts & flags of the command
+	char				*c_abs_path; // absolute direction & command
+	char				*c_env_path; // path (from $PATH) & command
+	int					pid;
+	struct s_msh		*orgn;       // redirección a la struct ppal
+	struct s_cmd_lst	*next;
+}			t_cmd_lst;
 
+
+//Lexer
 
 char **split_line(char *line);
 char **split_by_metachar (char const *s);
@@ -73,5 +92,19 @@ void span_tail_str(const char *str, unsigned long *j);
 int add_token(t_lexer lex, int f_letter_pos, size_t i, int *j);
 void span_var_in_dqt(const char *s, size_t *i, size_t end_qt);
 int get_char_pos(const char *s, size_t start, char c);
+
+//Parser
+
+int is_word(char *token);
+int is_flag(char *token);
+int is_redir(char *token);
+int is_pipe(char *token);
+int set_token_type(char *token);
+char *clean_quotes(char *s, char q);
+int is_special_cmd_chars(char *token);
+int set_token_list(char **tokens);
+int has_qts(char *token, char q);
+void	error_syntax_token(char *token, int error);
+int	ft_array_len(char **str);
 
 #endif
