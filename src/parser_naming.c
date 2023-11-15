@@ -1,0 +1,101 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_naming.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/15 13:30:06 by ljustici          #+#    #+#             */
+/*   Updated: 2023/11/15 19:00:59 by ljustici         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
+
+/**
+ * A token is a word (command or arg) if its characters are:
+ * - not any other type of token
+ * - printable characters
+*/
+int is_word(char *token)
+{
+    size_t i;
+
+    i = 0;
+    while(token[i])
+    {
+        if (!ft_isprint(token[i]))
+            return(0);
+        i++;
+    }
+    return(1);
+}
+
+/**
+ * A token is a flag if it starts with - and its next character is
+ * alphabetic
+*/
+int is_flag(char *token)
+{
+    if (token[0] == '-' && ft_isalpha(token[1]))
+        return(2);
+    return(0);
+}
+
+/**
+ * A token is a redirection if:
+ * - it starts with > and ends or follows with another >
+ * - it starts with < and ends or follows with another <
+*/
+int is_redir(char *token)
+{
+    if (token[0] == '<')
+    {
+        if (!token[1])
+            return(4);
+        else if (token[1] && token[1] == '<' && !token[2])
+            return (4);
+        else
+            error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
+    }
+    else if (token[0] == '>')
+    {
+        if (!token[1])
+            return(4);
+        else if (token[1] && token[1] == '>' && !token[2])
+            return (4);
+        else
+            error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
+    }
+    return (0);
+}
+
+/**
+ * A token is a pipe if it starts with | and ends.
+*/
+int is_pipe(char *token)
+{
+    if (token[0] == '|' && !token[1])
+        return(3);
+    else if (token[0] == '|' && token[1] == '|')
+        error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
+    return(0);
+}
+
+/**
+ * Checks if a token is a flag, then a pipe, then a redirection
+ * and lastly a word. Sets whichever is true.
+*/
+int set_token_type(char *token)
+{
+    if (is_flag(token))
+        return(2);
+    else if (is_pipe(token))
+        return(3);
+    else if (is_redir(token))
+        return(4);
+    else if (is_word(token))
+        return(1);
+    else
+        return(0);
+}
