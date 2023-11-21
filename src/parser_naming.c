@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:30:06 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/15 19:00:59 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:27:05 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,18 @@ int is_redir(char *token)
     if (token[0] == '<')
     {
         if (!token[1])
-            return(4);
+            return(1);
         else if (token[1] && token[1] == '<' && !token[2])
-            return (4);
+            return (1);
         else
             error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
     }
     else if (token[0] == '>')
     {
         if (!token[1])
-            return(4);
+            return(1);
         else if (token[1] && token[1] == '>' && !token[2])
-            return (4);
+            return (1);
         else
             error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
     }
@@ -76,7 +76,7 @@ int is_redir(char *token)
 int is_pipe(char *token)
 {
     if (token[0] == '|' && !token[1])
-        return(3);
+        return(1);
     else if (token[0] == '|' && token[1] == '|')
         error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
     return(0);
@@ -90,8 +90,6 @@ int set_token_type(char *token)
 {
     if (is_flag(token))
         return(2);
-    else if (is_pipe(token))
-        return(3);
     else if (is_redir(token))
         return(4);
     else if (is_word(token))
