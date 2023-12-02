@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/20 20:04:55 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:52:07 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,6 @@ int	ft_array_len(char **str);
 int is_var(char *token);
 void	create_list(t_cmd **list, char **tokens, int n);
 void ft_parse(char **tokens);
+int check_token_syntax(char **tokens);
 
 #endif

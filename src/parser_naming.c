@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:30:06 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/21 18:27:05 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/02 17:11:26 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,10 @@ int is_flag(char *token)
 */
 int is_redir(char *token)
 {
-    if (token[0] == '<')
-    {
-        if (!token[1])
-            return(1);
-        else if (token[1] && token[1] == '<' && !token[2])
-            return (1);
-        else
-            error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
-    }
-    else if (token[0] == '>')
-    {
-        if (!token[1])
-            return(1);
-        else if (token[1] && token[1] == '>' && !token[2])
-            return (1);
-        else
-            error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
-    }
+    if (ft_strcmp(token, "<") == 0 || ft_strcmp(token, "<<") == 0)
+        return(1);
+    else if (ft_strcmp(token, ">") == 0 || ft_strcmp(token, ">>") == 0)
+        return(1);
     return (0);
 }
 
