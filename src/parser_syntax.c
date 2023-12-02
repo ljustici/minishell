@@ -6,12 +6,15 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/02 17:10:53 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/02 17:33:54 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+/**
+ * Returns true if there are two consecutive redirections
+*/
 int is_double_redir(char **args, char **wrong_tk)
 {
     int i;
@@ -19,16 +22,11 @@ int is_double_redir(char **args, char **wrong_tk)
 
     i = 0;
     n = ft_array_len(args);
-    while(i < n)
+    while(i < n && n > 1)
     {
         if (is_redir(args[i]))
         {
-            if (n == 1)
-            {
-                *wrong_tk = args[i];
-                return(1);
-            }
-            else if (is_redir(args[i + 1]))
+            if (args[i + 1] && is_redir(args[i + 1]))
             {
                 *wrong_tk = args[i + 1];
                 return(1);
@@ -39,12 +37,15 @@ int is_double_redir(char **args, char **wrong_tk)
     return(0);
 }
 
-int is_last_redir(char **args)
+/**
+ * Returns true if there is any orphan redirection:
+ * - the last argument is a redirection
+ * - the only argument is a redirection
+*/
+int is_orphan_redir(char **args)
 {
-    int i;
     int n;
 
-    i = 0;
     n = ft_array_len(args);
     if (is_redir(args[n - 1]))
         return(1);
@@ -57,6 +58,7 @@ int is_last_redir(char **args)
  * ||||
  * <<<<<
  * |a
+ * a|
  * change order of commands when needed
 */
 int check_token_syntax(char **tokens)
@@ -68,11 +70,11 @@ int check_token_syntax(char **tokens)
     wrong_tk = NULL;
     is_wrong = 1;
     n = ft_array_len(tokens);
-    if (ft_strcmp(tokens[0], "|") == 0)
+    if (ft_strcmp(tokens[0], "|") == 0 || ft_strcmp(tokens[n - 1], "|") == 0)
         error_syntax_token(tokens[0], ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else if (is_double_redir(tokens, &wrong_tk))
         error_syntax_token(wrong_tk, ERROR_SYNTAX_UNEXPECTED_TOKEN);
-    else if (is_last_redir(tokens))
+    else if (is_orphan_redir(tokens))
         error_syntax_token(tokens[n - 1], ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else{
         printf("No %s\n",tokens[n - 1]);
