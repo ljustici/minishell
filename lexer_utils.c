@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:35:48 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 12:57:03 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:21:09 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int is_spnltab(char c)
 {

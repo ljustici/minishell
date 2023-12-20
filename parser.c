@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 16:35:56 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:20:40 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int contains_var(char *token)
 {

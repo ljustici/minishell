@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 12:57:46 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:20:35 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int expand_pid(char *token)
 {

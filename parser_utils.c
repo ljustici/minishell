@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 12:58:20 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:21:40 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 char	*ft_join_free(char *s1, char *s2)
 {

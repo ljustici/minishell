@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/19 14:34:16 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:21:36 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /**
  * Returns true if there are two consecutive redirections

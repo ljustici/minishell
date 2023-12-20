@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 16:28:23 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:20:51 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int assign_token(t_lexer lex, size_t *i, int *j, int f_letter_pos)
 {

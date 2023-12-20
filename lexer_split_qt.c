@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 14:39:05 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/19 14:32:39 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:20:54 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int assign_quoted_token(t_lexer lex, size_t *i, int *j, int f_letter_pos)
 {

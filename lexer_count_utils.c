@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 12:57:26 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:20:21 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /**
  * Spans the characters found after and end quote, as they should be part of the same token.

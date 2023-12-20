@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:06:20 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 16:15:03 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:20:27 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	error_syntax_token(t_msh *data, char *token, int error)
 {

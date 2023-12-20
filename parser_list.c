@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:29:49 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 16:32:56 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:21:28 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 t_cmd	*create_node(char **tokens, int end)
 {

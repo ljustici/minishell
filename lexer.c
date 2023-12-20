@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 16:26:06 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:20:46 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int check_open_quote(char *line, char *first, int *i)
 {

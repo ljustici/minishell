@@ -6,11 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:30:06 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 13:13:41 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:21:33 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /**
  * A token is a word (command or arg) if its characters are:
