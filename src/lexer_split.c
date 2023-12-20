@@ -6,48 +6,14 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/13 19:28:50 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:32:45 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	count_tokens(const char *str)
-{
-	int	i;
-	int	is_first_letter;
-	unsigned long	j;
-
-	j = 0;
-	i = 0;
-	is_first_letter = 0;
-	while (str[j])
-	{
-		handle_count_quote(str, &j, &i);
-		if (is_metacharacter(str[j]) == 1)
-		{	
-			i++;
-			is_first_letter = 0;
-			printf(">>>is meta letter: %c\n", str[j]);
-			if (is_metacharacter(str[j + 1]) == 1)
-				j++;
-		}
-		else if (should_split(str[j]) != 1 && is_first_letter == 0)
-		{
-			printf(">>>letter: %c\n", str[j]);
-			is_first_letter = 1;
-			i++;
-		}
-		else if (should_split(str[j]) == 1 && is_first_letter == 1)
-			is_first_letter = 0;
-		j++;
-	}
-	return (i);
-}
-
 int assign_token(t_lexer lex, size_t *i, int *j, int f_letter_pos)
 {
-	printf("[Llega a assign_token]\n");
 	if (is_metacharacter(lex.s[*i]) && is_metacharacter(lex.s[*i + 1]))
 		*i = *i + 1;
 	*i = *i + 1;
@@ -55,37 +21,29 @@ int assign_token(t_lexer lex, size_t *i, int *j, int f_letter_pos)
 		return(0);
 	if (*i > 0)
 		*i = *i - 1;
-	printf("token: %s letter:%i num: %i\n", lex.tokens[*j - 1], f_letter_pos, *j - 1);
+	//printf("token: %s letter:%i num: %i\n", lex.tokens[*j - 1], f_letter_pos, *j - 1);
 	return (1);
 }
 
-
-/*int assign_token(char **result, const char *s, size_t *i, int *j, int f_letter_pos)
-{
-	if (is_metacharacter(s[*i]))
-	{
-		if (is_metacharacter(s[*i + 1]))
-		{
-			result[*j] = ft_substr(s, f_letter_pos, 2);
-			*i = *i + 1;
-		}
-		else
-			result[*j] = ft_substr(s, f_letter_pos, 1);
-	}
-	else
-		result[*j] = ft_substr(s, f_letter_pos, (*i - f_letter_pos) + 1);
-	if (!result[*j])
-		return (0);
-	printf("[j: %i --> %s]\n", *j, result[*j]);
-	*j = *j + 1;
-	return (1);
-}*/
-
+/**
+ * Checks if a character is a separator:
+ * - Opening double quotes or simple quotes. Any characters enclosed or following quotes
+ *   are part of the same token, therefore they're spanned.
+ * - Spaces, tabs, new lines, pipes, redirections.
+ * - A first character that is not any of the above.
+ * It then saves the position of the character and spans until the next character
+ * of any of those types.
+ * A token is saved from the saved position to the next position found.
+*/
 int check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
-{
-	if (assign_quoted_token(lex, i, j, *f_letter_pos) == 0
-			|| assign_doubleqt_token(lex, i, j, *f_letter_pos) == 0)
-		return (0); //malloc error
+{	
+	if (is_first_quote(lex.s, *i, lex.s[*i]))
+	{
+		if (*f_letter_pos == -1)
+			*f_letter_pos = *i;
+		span_until_quote(lex.s, i, lex.s[*i]);
+		span_tail_str(lex.s, i);
+	}
 	if ((should_split(lex.s[*i]) != 1 && *f_letter_pos == -1)
 		|| is_metacharacter(lex.s[*i]) == 1)
 		*f_letter_pos = *i;
@@ -134,7 +92,7 @@ char **split_by_metachar(char const *s)
 	char	**result;
 
 	n_of_w = count_tokens(s);
-	printf("n of w: %i\n", n_of_w);
+	//printf("n of w: %i\n", n_of_w);
 	result = (char **)ft_calloc(n_of_w + 1, sizeof(char *));
 	if (!result)
 		return (0);
@@ -147,3 +105,53 @@ char **split_by_metachar(char const *s)
 	}
 	return (result);
 }
+
+
+/*
+int	count_tokens(const char *str)
+{
+	int	i;
+	int	is_first_letter;
+	unsigned long	j;
+	unsigned long	v;
+
+	j = 0;
+	i = 0;
+	is_first_letter = 0;
+	while (str[j])
+	{
+		if (is_first_quote(str, j, str[j]))
+			handle_count_quote(str, &j, &i);
+		else if (str[j] == '$')
+		{
+			v = j;
+			span_var_in_dqt(str, &v, ft_strlen(str));
+			if (v > j)
+			{
+				j = v;
+				i++;
+			}
+			if (is_equal_after_var(str, j))
+				i++;
+		}
+		else if (is_metacharacter(str[j]) == 1)
+		{	
+			i++;
+			is_first_letter = 0;
+			printf(">>>is meta letter: %c\n", str[j]);
+			if (is_metacharacter(str[j + 1]) == 1)
+				j++;
+		}
+		else if (should_split(str[j]) != 1 && is_first_letter == 0)
+		{
+			printf(">>>letter: %c\n", str[j]);
+			is_first_letter = 1;
+			i++;
+		}
+		else if (should_split(str[j]) == 1 && is_first_letter == 1)
+			is_first_letter = 0;
+		j++;
+	}
+	return (i);
+}
+*/

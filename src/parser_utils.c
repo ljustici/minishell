@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/20 19:29:57 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/18 16:35:55 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*ft_join_free(char *s1, char *s2)
 /**
  * Function that spans a token, splits it when it finds quotes and then
  * joins the resulting pieces together in a new token, without said quotes.
+ * The quotes that must be trimmed are opening and closing quotes.
+ * A quote is opening or closing if it belongs to a pair of quotes.
 */
 char *clean_quotes(char *s, char q)
 {
@@ -61,7 +63,6 @@ char *clean_quotes(char *s, char q)
         i++;
     }
     ft_free_array(clean);
-    printf(">>>%s\n", noqts);
     return(noqts);
 }
 
@@ -85,20 +86,41 @@ int has_qts(char *token, char q)
 }
 
 /**
- * A token is a variable if it doesn't have quotes and only contains allowed
- * characters
+ * A token is a variable if it only contains allowed
+ * characters and is at least 2 characters long.
+ * The variable might be contained inside double quotes,
+ * or there might be quoted characters next to the variable,
+ * but it can't be contained inside simple quotes.
 */
 int is_var(char *token)
 {
 	size_t len;
 	size_t i;
+    size_t j;
 
+    //printf("Entra en is_var %s\n", token);
 	i = 0;
 	len = ft_strlen(token);
-	if (token[0] == '$' && len > 1 && !has_qts(token, '\"') && !has_qts(token, '\''))
+    //printf("%zu %c\n",len, token[i]);
+	if (token[0] == '$' && len > 1)
 		span_var_in_dqt(token, &i, len);
-	if (i == len)
-		return(1);
+    else
+        return(0);
+    if (token[i - 2] == '$' && (token[i - 1] == '$' || ft_isdigit(token[i - 1])
+        || token[i - 1] == '?'))
+        return(1);
+    if (i == len || token[i] == '\"' || should_split(token[i])
+        || (!ft_isalnum(token[i]) && token[i] != '\'')
+        || (token[i] == '\'' && is_first_quote(token, i, token[i])))
+    {
+            j = i;
+            span_tail_str(token, &j);
+            span_until_quote(token, &i, '\'');
+            if (token[i] != '\'')
+                return(1);
+            else if (i > j && is_first_quote(token, i, '\''))
+                return(1);
+    }	
 	return (0);
 }
 

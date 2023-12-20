@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/02 15:52:07 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:39:40 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "../libft/libft.h"
 
 #define WORD = 1;
@@ -46,14 +48,18 @@ typedef struct s_token
 {
 	char	**tokens;
 	const char *s;
+	int			q;
 }			t_lexer;
 
 typedef struct s_rd
 {
 	int type;
 	char *file;
+	char *heredoc;
+	char *endkey;
 	struct s_rd *next;
 }			t_rd;
+
 
 typedef struct	s_cmd
 {
@@ -68,15 +74,22 @@ typedef struct	s_cmd
 	struct s_cmd	*next;
 }			t_cmd;
 
+typedef	struct s_env_lst
+{
+	char				*nm;
+	char				*val;
+	int					equal;
+	struct s_env_lst	*nx;
+}			t_env_lst;
 
 //Lexer
 
+int	count_tokens(const char *str);
 char **split_line(char *line);
 char **split_by_metachar (char const *s);
 int should_split(char c);
 
 void span_until_quote(const char *s, unsigned long *i, char quote);
-int should_split(char c);
 int is_metacharacter(char c);
 int is_spnltab(char c);
 
@@ -90,6 +103,15 @@ void span_tail_str(const char *str, unsigned long *j);
 int add_token(t_lexer lex, int f_letter_pos, size_t i, int *j);
 void span_var_in_dqt(const char *s, size_t *i, size_t end_qt);
 int get_char_pos(const char *s, size_t start, char c);
+
+int assign_var_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
+
+int is_equal_after_var(const char *s, unsigned long pos);
+
+int is_first_quote(const char *s, unsigned long pos, char c);
+
+char	*ft_join_free(char *s1, char *s2);
+
 
 //Parser
 
@@ -106,7 +128,14 @@ void	error_syntax_token(char *token, int error);
 int	ft_array_len(char **str);
 int is_var(char *token);
 void	create_list(t_cmd **list, char **tokens, int n);
-void ft_parse(char **tokens);
+void ft_parse(char **tokens, t_env_lst *envp);
 int check_token_syntax(char **tokens);
+char **expanding_loop(char **tokens, t_env_lst *envp);
+
+int contains_var(char *token);
+size_t get_end_of_var(char *token);
+char *format_expansion_token(char *token, char *expanded, size_t end, int start);
+
+int set_redir_type(char *token);
 
 #endif

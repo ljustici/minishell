@@ -6,17 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:29:49 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/21 20:38:31 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:12:04 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-void add_redir_to_node(t_cmd *node, char *filename)
-{
-	node->rds = (t_rd*)malloc(sizeof(t_rd));
-	node->rds->file = ft_strdup(filename);
-}
 
 t_cmd	*create_node(char **tokens, int end)
 {
@@ -29,13 +23,14 @@ t_cmd	*create_node(char **tokens, int end)
 	if (!node)
 		return (0);
 	node->type = set_token_type(tokens[0]);
-    while(i < end)
+    while(i < end && !is_redir(tokens[i]))
 	{
 		node->c_args[i] = ft_strdup(tokens[i]);
-		printf("nodo: %s  i: %i\n", node->c_args[i], i);
+		//printf("c_arg: %s  i: %i\n", node->c_args[i], i);
 		i++;
 	}
 	node->c_args[i] = 0;
+	node->rds = 0;
 	node->next = 0;
 	return (node);
 }
@@ -53,22 +48,67 @@ void	node_add_back(t_cmd **head, t_cmd *node)
 			go_to_last = go_to_last->next;
 		go_to_last->next = node;
 	}
+	
+	//node->next = 0;
+}
+
+void	node_add_back_rd(t_rd **head, t_rd *node)
+{
+	t_rd	*go_to_last;
+
+	if (!*head)
+		*head = node;
+	else
+	{
+		go_to_last = *head;
+		while (go_to_last->next)
+			go_to_last = go_to_last->next;
+		go_to_last->next = node;
+	}
+	
+	//node->next = 0;
+}
+
+void add_redir_to_node(t_rd **list, char *info, char *token)
+{
+	t_rd *node;
+	t_rd **span;
+	
+	span = list;
+	node = (t_rd*)malloc(sizeof(t_rd));
+	node->type = set_redir_type(token);
+	//printf("Aqui info %s\n", info);
+	if (node->type == 1 || node->type == 3 || node->type == 4)
+	{
+		node->file = ft_strdup(info);
+		node->endkey = NULL;
+	}
+	else if (node->type == 2)
+	{
+		node->endkey = ft_strdup(info);
+		node->file = NULL;
+	}
+	node->heredoc = NULL;
 	node->next = 0;
+	node_add_back_rd(span, node);
 }
 
 /**
  * A token segment is composed by the first word and its flags and/or arguments
  * Token segments are separated by pipes. 
- * Redirections must not be included in the arguments of a token.
+ * Redirections must not be included in the arguments of a token, unless they are
+ * the last argument or the only argument.
 */
 int get_end_of_segment(char **tokens)
 {
 	int i;
+	int n;
 
+	n = ft_array_len(tokens) - 1;
 	i = 0;
 	while(tokens[i] && tokens[i + 1])
 	{
-		if (is_pipe(tokens[i + 1]) || is_redir(tokens[i + 1]))
+		if ((is_pipe(tokens[i + 1]) || is_redir(tokens[i + 1])))
 		{
 			i++;
 			return(i);
@@ -98,13 +138,23 @@ void	create_list(t_cmd **list, char **tokens, int n)
 
 	i = 0;
 	end = 1;
+	node = NULL;
+	printf("Create list\n");
 	while (i < n)
 	{	
-		if (is_pipe(tokens[i]) && n > 1)
+		if (is_pipe(tokens[i]) && n > 1 && i != 0 && i < n - 1)
 			i++;
-		if (is_redir(tokens[i]))
+		if (is_redir(tokens[i]) && i < n - 1)
 		{
-			add_redir_to_node(node, tokens[i + 1]);
+			//printf("is redir\n");
+			if (!node)
+			{
+				node = create_node(&tokens[i], end);
+				node_add_back(list, node);
+			}
+			//printf("node type: %i\n", node->type);
+			add_redir_to_node(&(node->rds), tokens[i + 1], tokens[i]);
+			//printf("node redir: %i\n", node->rds->type);
 			i = i + 2;
 		}
 		else
@@ -115,6 +165,5 @@ void	create_list(t_cmd **list, char **tokens, int n)
 			i = i + end;
 		}
 	}
-	ft_free_array(tokens);
+	//ft_free_array(tokens);
 }
-

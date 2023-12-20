@@ -6,21 +6,118 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/13 19:07:33 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:32:26 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 /**
- * Checks if a quote is the first character or if there is a 
- * separator character preceeding it.
+ * Spans the characters found after and end quote, as they should be part of the same token.
+ * Stops when a separator character is found.
 */
-int is_start_of_quote(const char *s, unsigned long pos)
+void span_tail_str(const char *str, unsigned long *j)
 {
-	if ((s[pos] == '\'' || s[pos] == '\"') && (is_spnltab(s[pos - 1]) || pos == 0))
-		return (1);
+	
+	if (should_split(str[*j]) == 0)
+	{
+		while(str[*j] && should_split(str[*j]) == 0)
+			(*j)++;
+	}
+	//printf("tail: %c\n", str[*j]);
+}
+
+/**
+ * Spans a token delimited by quotes, including the characters right after the
+ * last quotes, except if it's a separating character.
+*/
+int handle_count_quote(const char *str, unsigned long *j, int *i)
+{	
+	(void)*i;
+	if (str[*j] == '\"' || str[*j] == '\'')
+	{
+		span_until_quote(str, j, str[*j]);
+		span_tail_str(str, j);
+		//printf("' Llega hasta %lu\n", *j);
+	}
 	return(0);
+}
+
+/**
+ * Checks if the character is a starting quote by counting the number of
+ * quotes before and after.
+*/
+int is_first_quote(const char *s, unsigned long pos, char c)
+{
+	size_t i;
+	int count;
+
+	
+	//write(1, "Llega\n", 6);
+	if (!s)
+		return(0);
+	count = 0;
+	if (c != '\'' && c != '\"')
+		return(0); 
+	if (pos == 0)
+		return(1);
+	i = pos;
+	while(s[i] && i < ft_strlen(s))
+	{
+		if (s[i] == c)
+			count++;
+		i--;
+	}
+	if (count == 0 || count % 2 != 0)
+	{
+		i = pos + 1;
+		while(i < ft_strlen(s))
+		{
+			if (s[i] == c)
+				return(1);
+			i++;
+		}
+	}
+	return(0);
+}
+
+/**
+ * Counts the number of token in a string by delimiting character:
+ * - First letter
+ * - Quotes
+ * - Separating character
+ * It doesn't count variables inside double quotes.
+*/
+int	count_tokens(const char *str)
+{
+	int	i;
+	int	is_first_letter;
+	unsigned long	j;
+
+	j = 0;
+	i = 0;
+	is_first_letter = 0;
+	while (str[j])
+	{
+		if (should_split(str[j]) != 1 && is_first_letter == 0)
+		{
+			is_first_letter = 1;
+			i++;
+		}
+		if (is_first_quote(str, j, str[j]))
+			handle_count_quote(str, &j, &i);
+		if (is_metacharacter(str[j]) == 1)
+		{	
+			i++;
+			is_first_letter = 0;
+			if (is_metacharacter(str[j + 1]) == 1)
+				j++;
+		}
+		if (should_split(str[j]) == 1 && is_first_letter == 1)
+			is_first_letter = 0;
+		j++;
+	}
+	return (i);
 }
 
 /**
@@ -28,14 +125,29 @@ int is_start_of_quote(const char *s, unsigned long pos)
 */
 int is_var_in_dqt(const char *s, unsigned long pos)
 {
-	if (s[pos] == '$')
+	if (s[pos] == '$' && s[pos + 1])
 	{
-		if (s[pos + 1] && (ft_isalnum(s[pos + 1]) || s[pos + 1] == '_'))
+		if (ft_isalnum(s[pos + 1]) || s[pos + 1] == '_')
 			return (1);
-		else if (s[pos + 1] == '$' || s[pos + 1] == '?')
+		else if (s[pos + 1] == '$' || s[pos + 1] == '?' || s[pos + 1] == '#')
 			return (1);
 	}
 	return(0);	
+}
+
+int is_equal_after_var(const char *s, unsigned long pos)
+{
+	size_t prev;
+	
+	prev = pos - 1;
+	if (s[pos] == '=')
+	{
+		while(!should_split(s[prev]) && s[prev] != '$')
+			prev--;
+		if (s[prev] == '$')
+			return (1);
+	}
+	return (0);
 }
 
 /**
@@ -73,40 +185,8 @@ void count_dqt_tokens(const char *str, unsigned long *j, int *i)
 	}
 }
 
-/*void count_dqt_tokens(const char *str, unsigned long *j, int *i)
-{
-	int is_plain;
-	
-	is_plain = 1;
-	while(str[*j] && str[++(*j)] != '\"')
-	{
-		if (is_var_in_dqt(str, *j))
-		{
-			is_plain = 0;
-			*i = *i + 1;
-			printf("letra en var: %c numero: %zu token numero: %i\n", str[*j], *j, *i);
-		}
-		else if (!is_var_in_dqt(str, *j) && is_plain == 0)
-		{
-			is_plain = 1;
-			*i = *i + 1;
-			printf("letra: %c token numero: %i\n", str[*j], *i);
-		}
-	}
-}*/
 
-/**
- * Spans the characters found after and end quote, as they should be part of the same token.
- * Stops when a separator character is found.
-*/
-void span_tail_str(const char *str, unsigned long *j)
-{
-	if (should_split(str[*j]) == 0)
-	{
-		while(str[*j] && should_split(str[*j]) == 0 && !is_var_in_dqt(str, *j))
-			(*j)++;
-	}
-}
+
 
 /**
  * Checks if the character is a quote. 
@@ -114,10 +194,10 @@ void span_tail_str(const char *str, unsigned long *j)
  * until the next quote, and spans the characters next to that last quote.
  * If it's a double quote, it counts the number of tokens inside and
  * spans the characters next to the closing quote.
-*/
+
 int handle_count_quote(const char *str, unsigned long *j, int *i)
 {	
-	//printf("init c %c y j %lu\n", str[*j], *j);
+	printf("init c %c y j %lu\n", str[*j], *j);
 	if (is_start_of_quote(str, *j))
 	{
 		if (str[*j] == '\"')
@@ -129,13 +209,13 @@ int handle_count_quote(const char *str, unsigned long *j, int *i)
 		if (str[*j] == '\'')
 		{
 			(*i)++;
+			(*j)++;
 			span_until_quote(str, j, str[*j]);
 			span_tail_str(str, j);
 			printf("' Llega hasta %lu\n", *j);
-			//*j = *j + 1;
 		}
 	}
 	else
 		return(1);
 	return(0);
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:30:06 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/02 17:11:26 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:21:19 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,17 @@ int set_token_type(char *token)
         return(1);
     else
         return(0);
+}
+
+int set_redir_type(char *token)
+{
+    if (ft_strcmp(token, "<") == 0)
+        return(1);
+    else if (ft_strcmp(token, "<<") == 0)
+        return(2);
+    else if (ft_strcmp(token, ">") == 0)
+        return(3);
+    else if (ft_strcmp(token, ">>") == 0)
+        return(4);
+    return(0);
 }

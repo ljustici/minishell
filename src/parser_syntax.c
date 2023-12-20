@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/02 17:33:54 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:34:16 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int check_token_syntax(char **tokens)
     else if (is_orphan_redir(tokens))
         error_syntax_token(tokens[n - 1], ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else{
-        printf("No %s\n",tokens[n - 1]);
+        //printf("No %s\n",tokens[n - 1]);
         is_wrong = 0;
     }
     return(is_wrong);
