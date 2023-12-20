@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/19 14:32:45 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:28:23 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
 	return(1);
 }
 
-int	fill_tokens(char **result, const char *s)
+int	fill_tokens(char **result, const char *s, t_msh *data)
 {
 	int		j;
 	int		f_letter_pos;
@@ -78,14 +78,15 @@ int	fill_tokens(char **result, const char *s)
 	i = 0;
 	while (i <= ft_strlen(s))
 	{
-		check_and_fill(lex, &i, &j, &f_letter_pos);
+		if (check_and_fill(lex, &i, &j, &f_letter_pos) == 0)
+			error_syntax_token(data, "", ERROR_MALLOC_ERROR);
 		i++;
 	}
 	lex.tokens[j] = 0;
 	return (1);
 }
 
-char **split_by_metachar(char const *s)
+char **split_by_metachar(char const *s, t_msh *data)
 {
     int		n_of_w;
 	int		correct;
@@ -95,8 +96,11 @@ char **split_by_metachar(char const *s)
 	//printf("n of w: %i\n", n_of_w);
 	result = (char **)ft_calloc(n_of_w + 1, sizeof(char *));
 	if (!result)
+	{
+		error_syntax_token(data, "", ERROR_MALLOC_ERROR);
 		return (0);
-	correct = fill_tokens(result, s);
+	}
+	correct = fill_tokens(result, s, data);
 	if (!correct)
 	{
 		printf("nop\n");
@@ -105,53 +109,3 @@ char **split_by_metachar(char const *s)
 	}
 	return (result);
 }
-
-
-/*
-int	count_tokens(const char *str)
-{
-	int	i;
-	int	is_first_letter;
-	unsigned long	j;
-	unsigned long	v;
-
-	j = 0;
-	i = 0;
-	is_first_letter = 0;
-	while (str[j])
-	{
-		if (is_first_quote(str, j, str[j]))
-			handle_count_quote(str, &j, &i);
-		else if (str[j] == '$')
-		{
-			v = j;
-			span_var_in_dqt(str, &v, ft_strlen(str));
-			if (v > j)
-			{
-				j = v;
-				i++;
-			}
-			if (is_equal_after_var(str, j))
-				i++;
-		}
-		else if (is_metacharacter(str[j]) == 1)
-		{	
-			i++;
-			is_first_letter = 0;
-			printf(">>>is meta letter: %c\n", str[j]);
-			if (is_metacharacter(str[j + 1]) == 1)
-				j++;
-		}
-		else if (should_split(str[j]) != 1 && is_first_letter == 0)
-		{
-			printf(">>>letter: %c\n", str[j]);
-			is_first_letter = 1;
-			i++;
-		}
-		else if (should_split(str[j]) == 1 && is_first_letter == 1)
-			is_first_letter = 0;
-		j++;
-	}
-	return (i);
-}
-*/

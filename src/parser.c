@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/19 15:12:41 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:35:56 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	free_rds_list(t_rd *list)
 
 	while (list)
 	{
-		next = list->next;
+		next = list->nx;
 		free(list->file);
 		free(list);
 		list = next;
@@ -140,7 +140,7 @@ void free_cmd_list(t_cmd *test)
 		ft_free_array(test->c_args);
 		free_rds_list(test->rds);
 		free(test);
-		test = test->next;
+		test = test->nx;
 	}
 }
 
@@ -155,8 +155,6 @@ void print_command_test(t_cmd *list)
 	while(list)
 	{
 		i = 0;
-		printf("- Nodo, type:%i\n", list->type);
-		
 		while(list->c_args[i])
 		{
 			printf("-- %i content: %s\n", i, list->c_args[i]);
@@ -168,13 +166,13 @@ void print_command_test(t_cmd *list)
 			printf("----- Nodo redir\n");
 			printf("-- redir: file %s\n",print->file);
 			printf("-- redir: endkey %s\n",print->endkey);
-			print = print->next;
+			print = print->nx;
 		}
-		list = list->next;
+		list = list->nx;
 	}
 }
 
-void ft_parse(char **tokens, t_env_lst *envp)
+void ft_parse(char **tokens, t_msh *data)
 {
 	char **expanded;
 	char **parsed;
@@ -183,7 +181,7 @@ void ft_parse(char **tokens, t_env_lst *envp)
 	
 	list = NULL;
 	//printf("ft_parse\n");
-	expanded = expanding_loop(tokens, envp);
+	expanded = expanding_loop(tokens, data->env_lst);
 	int i=0;
 	while(expanded[i])
     {
@@ -208,6 +206,6 @@ void ft_parse(char **tokens, t_env_lst *envp)
 	
 	create_list(&list, parsed, len);
 	ft_free_array(parsed);
-	print_command_test(list);
-	free_cmd_list(list);
+	//print_command_test(list);
+	//free_cmd_list(list);
 }

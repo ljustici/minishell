@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/19 14:33:38 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:26:06 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,70 +80,27 @@ int check_quotes(char *line)
     return(1);
 }
 
-char **split_line(char *line)
+char **split_line(char *line, t_msh *data)
 {
     char **tokens = NULL;
     if (check_quotes(line) != 0)
     {
-        //free(line);
-        return(NULL); //error
+        error_syntax_token(data->error, "", ERROR_QUOTE);
+        return(NULL);
     }
-    tokens = split_by_metachar(line);
+    tokens = split_by_metachar(line, data);
     return(tokens);
 }
 
-/*void ft_leaks()
+void ft_lexer(t_msh *data)
 {
-	system("leaks -q --fullContent   minishell");
-}*/
-
-
-int main(int argc, char **argv)
-{
-    //char line[] ="vst \"hola $$a y hola $b \" \"eyes $$$$$a\" ||||| sdff 'hola $c o $d'\0";
-    //char line[]="      foo a\"42-$USER-hey\"b y b'42-$USER-hola'a   \0"; 
-    //char line[15]="l\"s a$U\"SER-\"a\0";
-    //char line[]="      foo ''42   \0";
-    //char line[] ="export \"a$USER-hola\"\0"; //< e w -- if e exists w is a parameter with info
     char **result;
-    char *line;
-    t_env_lst *envp;
-    (void)argv;
-    (void)argc;
     
-    int i = 0;
-    envp = (t_env_lst *)(sizeof(t_env_lst));
-    line = readline("prompt ");
-    //atexit(ft_leaks);
-    result = split_line(line);
+    result = split_line(data->pipeline, data);
     if (!result)
     {
-        printf("\naqui\n");
-        return(-1);
+        error_syntax_token(data, "", ERROR_MALLOC_ERROR);
+        return ;
     }
-    while(result[i])
-    {
-        //printf("%s\n", result[i]);
-        i++;
-    }
-    ft_parse(result, envp);
-    
+    ft_parse(result, data->env_lst);
 }
-
-//"asds ' ' ' assad" --> correcto
-
-/*
-getopts
-
-getopts processes the positional parameters of the parent command. In bash, this is stored in the shell variable "$@". 
-So, if you run this command:
-
-mycmd -a argument1 -b argument2
-
-During the time that mycmd is running, the variable $@ contains the string "-a argument1 -b argument2". 
-You can use getopts to parse this string for options and arguments.
-
-Every time you run getopts, it looks for one of the options defined in optstring. If it finds one, it places 
-the option letter in a variable named optname. If the option does not match those defined in optstring, getopts 
-sets variable optname to a question mark ("?").
-*/

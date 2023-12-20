@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/19 14:33:50 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:57:46 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ int expand_pid(char *token)
     return(0);
 }
 
-
 /**
  * TODO: reconocer variables especiales
 */
-
 char	*find_var_in_envp(char *var, t_env_lst *envp)
 {
 	char	*result;

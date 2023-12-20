@@ -6,14 +6,15 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:06:20 by ljustici          #+#    #+#             */
-/*   Updated: 2023/11/15 14:11:32 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:15:03 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	error_syntax_token(char *token, int error)
+void	error_syntax_token(t_msh *data, char *token, int error)
 {
+	data->error = error;
 	if (error == ERROR_SYNTAX_UNEXPECTED_TOKEN)
 	{
 		ft_putstr_fd("msh: ", 2);
@@ -22,4 +23,12 @@ void	error_syntax_token(char *token, int error)
         ft_putstr_fd("'\n", 2);
 		exit(258);
 	}
+	if (error == ERROR_MALLOC_ERROR)
+	{
+		ft_putstr_fd("Malloc error\n", 2);
+	if (error == ERROR_QUOTE)
+		ft_putstr_fd("Número incorrecto de comillas\n",2);
+
 }
+
+

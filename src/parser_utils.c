@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/18 16:35:55 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:58:20 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*ft_join_free(char *s1, char *s2)
 		s[i++] = s2[j];
 	return (s);
 }
-
 
 /**
  * Function that spans a token, splits it when it finds quotes and then

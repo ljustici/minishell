@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:29:49 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/19 15:12:04 by ljustici         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:32:56 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	node_add_back_rd(t_rd **head, t_rd *node)
 	else
 	{
 		go_to_last = *head;
-		while (go_to_last->next)
-			go_to_last = go_to_last->next;
-		go_to_last->next = node;
+		while (go_to_last->nx)
+			go_to_last = go_to_last->nx;
+		go_to_last->nx = node;
 	}
 	
 	//node->next = 0;
@@ -89,7 +89,7 @@ void add_redir_to_node(t_rd **list, char *info, char *token)
 		node->file = NULL;
 	}
 	node->heredoc = NULL;
-	node->next = 0;
+	node->nx = 0;
 	node_add_back_rd(span, node);
 }
 
