@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 08:42:18 by ljustici          #+#    #+#             */
-/*   Updated: 2023/06/25 16:57:55 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:08:15 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ void	ft_free_array(char **str)
 	while (str[i])
 	{
 		free(str[i]);
+		str[i] = NULL;
 		i++;
 	}
 	free(str);
+	str = NULL;
 }
 
 char	**ft_split(char const *s, char c)

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:29:49 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 16:45:15 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:29:31 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_cmd	*create_node(char **tokens, int end)
 		i++;
 	}
 	node->c_args[i] = 0;
+	node->c_env_path = 0;
 	node->rds = 0;
 	node->nx = 0;
 	return (node);
