@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:30:06 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:21:33 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:44:18 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int is_pipe(char *token)
 {
     if (token[0] == '|' && !token[1])
         return(1);
-    else if (token[0] == '|' && token[1] == '|')
-        error_syntax_token(token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
+    //else if (token[0] == '|' && token[1] == '|')
+    //    error_syntax_token(data, token, ERROR_SYNTAX_UNEXPECTED_TOKEN);
     return(0);
 }
 

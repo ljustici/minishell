@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:06:20 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:20:27 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:26:10 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	error_syntax_token(t_msh *data, char *token, int error)
 		exit(258);
 	}
 	if (error == ERROR_MALLOC_ERROR)
-	{
 		ft_putstr_fd("Malloc error\n", 2);
 	if (error == ERROR_QUOTE)
 		ft_putstr_fd("Número incorrecto de comillas\n",2);

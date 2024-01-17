@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:29:49 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:21:28 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:45:15 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_cmd	*create_node(char **tokens, int end)
 	node->c_args = (char **)ft_calloc(end + 1, sizeof(char *));
 	if (!node)
 		return (0);
-	node->type = set_token_type(tokens[0]);
+	//node->type = set_token_type(tokens[0]);
     while(i < end && !is_redir(tokens[i]))
 	{
 		node->c_args[i] = ft_strdup(tokens[i]);
@@ -31,7 +31,7 @@ t_cmd	*create_node(char **tokens, int end)
 	}
 	node->c_args[i] = 0;
 	node->rds = 0;
-	node->next = 0;
+	node->nx = 0;
 	return (node);
 }
 
@@ -44,9 +44,9 @@ void	node_add_back(t_cmd **head, t_cmd *node)
 	else
 	{
 		go_to_last = *head;
-		while (go_to_last->next)
-			go_to_last = go_to_last->next;
-		go_to_last->next = node;
+		while (go_to_last->nx)
+			go_to_last = go_to_last->nx;
+		go_to_last->nx = node;
 	}
 	
 	//node->next = 0;

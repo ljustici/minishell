@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:21:36 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:40:25 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int is_orphan_redir(char **args)
  * a|
  * change order of commands when needed
 */
-int check_token_syntax(char **tokens)
+int check_token_syntax(char **tokens, t_msh* data)
 {
     int n;
     int is_wrong;
@@ -71,11 +71,11 @@ int check_token_syntax(char **tokens)
     is_wrong = 1;
     n = ft_array_len(tokens);
     if (ft_strcmp(tokens[0], "|") == 0 || ft_strcmp(tokens[n - 1], "|") == 0)
-        error_syntax_token(tokens[0], ERROR_SYNTAX_UNEXPECTED_TOKEN);
+        error_syntax_token(data, tokens[0], ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else if (is_double_redir(tokens, &wrong_tk))
-        error_syntax_token(wrong_tk, ERROR_SYNTAX_UNEXPECTED_TOKEN);
+        error_syntax_token(data, wrong_tk, ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else if (is_orphan_redir(tokens))
-        error_syntax_token(tokens[n - 1], ERROR_SYNTAX_UNEXPECTED_TOKEN);
+        error_syntax_token(data, tokens[n - 1], ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else{
         //printf("No %s\n",tokens[n - 1]);
         is_wrong = 0;

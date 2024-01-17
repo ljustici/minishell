@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 16:14:59 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:44:26 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ int	ft_array_len(char **str);
 int is_var(char *token);
 void	create_list(t_cmd **list, char **tokens, int n);
 void ft_parse(char **tokens, t_msh *data);
-int check_token_syntax(char **tokens);
+int check_token_syntax(char **tokens, t_msh *data);
 char **expanding_loop(char **tokens, t_env_lst *envp);
 
 int contains_var(char *token);

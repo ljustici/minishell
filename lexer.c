@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:20:46 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:25:11 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char **split_line(char *line, t_msh *data)
     char **tokens = NULL;
     if (check_quotes(line) != 0)
     {
-        error_syntax_token(data->error, "", ERROR_QUOTE);
+        error_syntax_token(data, "", ERROR_QUOTE);
         return(NULL);
     }
     tokens = split_by_metachar(line, data);
@@ -102,5 +102,5 @@ void ft_lexer(t_msh *data)
         error_syntax_token(data, "", ERROR_MALLOC_ERROR);
         return ;
     }
-    ft_parse(result, data->env_lst);
+    ft_parse(result, data);
 }
