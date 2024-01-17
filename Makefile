@@ -3,23 +3,29 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+         #
+#    By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/18 13:12:22 by roruiz-v          #+#    #+#              #
-#    Updated: 2024/01/17 16:55:02 by roruiz-v         ###   ########.fr        #
+#    Updated: 2024/01/17 18:23:02 by ljustici         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 
 # LIB para 42_rosana:
-LIB = -L /Users/roruiz-v/.brew/opt/readline/lib -lreadline
+#LIB = -L /Users/roruiz-v/.brew/opt/readline/lib -lreadline
+
+# LIB para 42_ada
+LIB = -L /Users/ljustici/.brew/opt/readline/lib -lreadline
 
 # LIB para casa_rosana:
 #LIB = -L/usr/local/opt/readline/lib -lreadline
 
+# INCLUDE para 42_ada
+INCLUDE = -I /System/Volumes/Data/sgoinfre/goinfre/Perso/ljustici/homebrew/opt/readline/include
+
 # INCLUDE para 42_rosana:
-INCLUDE = -I /System/Volumes/Data/sgoinfre/goinfre/Perso/roruiz-v/homebrew/opt/readline/include
+#INCLUDE = -I /System/Volumes/Data/sgoinfre/goinfre/Perso/roruiz-v/homebrew/opt/readline/include
 
 # INCLUDE para casa_rosana:
 #INCLUDE = -I/usr/local/opt/readline/include
