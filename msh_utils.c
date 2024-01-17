@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:17:09 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/11/09 23:15:59 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/17 12:56:36 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ char	**ft_2rows_split(char *str, char c)
 	return (matrix);
 }
 
-char	*ft_join_free(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*s;
 	int		i;

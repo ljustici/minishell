@@ -3,29 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 16:35:14 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 13:03:52 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define ENV_PATH "PATH="
-# define READ_END 0
-# define WRITE_END 1
 
+# include "../libft/libft.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "../libft/libft.h"
 
-#define WORD = 1;
-#define FLAG = 2;
+# include <fcntl.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/ioctl.h>
+# include <sys/ttydefaults.h>
+
+# define ENV_PATH "PATH="
+# define READ_END 0
+# define WRITE_END 1
+
+# define WORD = 1;
+# define FLAG = 2;
+
+/*  DISPLAY FORMATS:  */
+# define RESET			"\e[0m"
+# define RED			"\e[31m"
+# define GREEN			"\e[32m"
+# define YELLOW			"\e[33m"
+# define BLUE			"\e[34m"
+# define VIOLET			"\e[35m"
+# define BACK_RED		"\e[41m"
+# define BACK_GREEN		"\e[42m"
+# define BACK_YELLOW	"\e[43m"
+# define BACK_BLUE		"\e[44m"
+# define BACK_VIOLET	"\e[45m"
+# define BOLD			"\e[1m"
+# define UNDERLINE		"\e[4m"
+# define BLINK			"\e[5m"
+# define INVERT			"\e[7m"
+# define HIDE			"\e[8m"
+# define STRIKE			"\e[9m"
+
+/*  UNIQUE GLOBAL VAR (for signals treatment):  */
+extern int	g_listen;
 
 typedef enum e_error
 {
@@ -59,6 +89,34 @@ typedef enum e_error
 	END = 99,
 }	t_error;
 
+/**
+ # RD 0	    -> pipe read extreme
+ # WR 1	    -> pipe write extreme
+ */
+typedef enum e_pipe
+{
+	RD,
+	WR,
+}	t_pipe;
+
+/**
+ * 	NONE 0	-> redir struct 'type' = NONE (no redirs)
+ #  SIR 1	-> redir struct 'type' = Simple Input Redir (<)
+ #  DIR 2	-> redir struct 'type' = Double Input Redir (<<)
+ #  SOR 3	-> redir struct 'type' = Simple Output Redir (>)
+ #  DOR 4	-> redir struct 'type' = Double Output Redir (>>)
+ #  CODED 5	-> redir struct 'type' = redir already defined by code (TO ELIMINATE !!!)
+ * */
+typedef enum e_type
+{
+	NONE,
+	SIR,
+	DIR,
+	SOR,
+	DOR,
+	CODED,
+}	t_type;
+
 typedef struct s_token
 {
 	char	**tokens;
@@ -66,6 +124,12 @@ typedef struct s_token
 	int			q;
 }			t_lexer;
 
+/**
+ * @brief  We need to determinate what kind of redir is (SIR, DIR, SOR, DOR)
+ * 		   and, if it's the case, the infile or outfile to be open
+ *  ->	In case of '<<', file = NULL;
+ * 	->	In case of '<' or '>' or '>>', end_key && heredoc = NULL;
+ */
 typedef struct s_rd
 {
 	int type;
@@ -75,18 +139,32 @@ typedef struct s_rd
 	struct s_rd *nx;
 }			t_rd;
 
-
+/**
+ * @brief   Each node can be a command or a redirection node,
+ * 	the difference between both types is the data contained within.
+ *  
+ *  BEWARE OF THIS !!! parser only fills 'type', 'c_args' & 'c_abs_path'
+ * 
+ * 	> c_args[0]   -> contains the cmd as the usu writes
+ *                     (WITH or WITHOUT absolute path)
+ * 	> c_args[...] -> contains the arguments and flags of the command
+ *  > c_abs_path  -> contains a copy of c_args[0] (WITH or WITHOUT abs_path) ELIMINATE!!!
+ *  > c_env_path  -> contains a copy of c_args[0] if it has an abs_path,
+ *        OR a correct access path from $PATH when c_args[0] don't have abs_path
+ *	> pid         -> used by ft_builtin || ft_exec_external_cmd
+ *	> pipe_val    -> exclusive used by ft_heredoc (usa pipe)
+ *	> fd[2]       -> used for all processes and redirs
+ *  > orgn        -> pointer to main data struct
+ */
 typedef struct	s_cmd_lst
 {
 	t_rd				*rds;
 	char				**c_args;
-	char				*c_abs_path;
+//	char				*c_abs_path;
 	char				*c_env_path;
-	int					pid;		// used by ft_builtin || ft_exec_external_cmd
-	int					pipe_val;	// exclusive used by ft_heredoc (usa pipe)
-	int					fd[2];		// used for all processes and redirs
-//	int					fd_in;		// exclusive used by ft_redirs (if exists, close fd[0])
-//	int					fd_out;		// exclusive used by ft_redirs (if exists, close fd[1])
+	int					pid;
+	int					pipe_val;
+	int					fd[2];
 	struct s_msh		*orgn;
 	struct s_cmd_lst	*nx;
 }						t_cmd;
@@ -97,12 +175,12 @@ typedef	struct s_env_lst
 	char				*val;
 	int					equal;
 	struct s_env_lst	*nx;
-}			t_env_lst;
+}						t_env_lst;
 
 typedef struct	s_msh
 {
 	struct sigaction	sig;
-	char				*var_; // para el '$_' que falta implementar
+	char				*var_; // para el '$_' que falta IMPLEMENTAR !!! (o no)
 	t_error				error;
 	t_env_lst			*env_lst;
 	t_cmd				*cmd_lst;
@@ -110,12 +188,15 @@ typedef struct	s_msh
 	int					m_pid;		// used by ft_execute_many_cmds
 	int					m_pipe_val;	// used by ft_execute_many_cmds
 	int					fd;			// now it's used by many parts of msh, REVISAR !!!!!
-	int					org_stdin;	// to keep the original STDIN
-	int					org_stdout; // to keep the original STDOUT
+	int					org_stdin;
+	int					org_stdout;
 	int					exit_code;
 }						t_msh;
 
 //Lexer
+/* ***************************************************************** */
+/* ******************      LEXER  FUNCTIONS        ***************** */
+/* ***************************************************************** */
 
 int	count_tokens(const char *str);
 char **split_line(char *line, t_msh *data);
@@ -148,6 +229,9 @@ char	*ft_join_free(char *s1, char *s2);
 void ft_lexer(t_msh *data);
 
 //Parser
+/* ***************************************************************** */
+/* ******************      PARSER  FUNCTIONS       ***************** */
+/* ***************************************************************** */
 
 int is_word(char *token);
 int is_flag(char *token);
@@ -182,7 +266,7 @@ void	ft_ctrl_d(t_msh *data);
 
 /* ***************************************************************** */
 /* *****************     ENVIRONMENT  FUNCTIONS    ***************** */
-/* ********     will be used by [env], [export], [unset]    ******** */
+/* ********   ( will be used by [env], [export], [unset] )  ******** */
 /* ***************************************************************** */
 
 void		ft_duplic_envp(t_msh *data, char **envp);
@@ -209,10 +293,10 @@ int			ft_env_lst_count_nds(t_env_lst *env_lst);
 /* *********     false LEXER & PARSER  FUNCTIONS      ************** */
 /* ***************************************************************** */
 
-void	ft_init_msh_struct(t_msh *data);
-void	ft_simple_lexer(t_msh *data);
-void	ft_simple_parser(t_msh *data);
-int		ft_env_forbidden_chars(char *name);
+//void	ft_init_msh_struct(t_msh *data);
+//void	ft_simple_lexer(t_msh *data);
+//void	ft_simple_parser(t_msh *data);
+//int		ft_env_forbidden_chars(char *name);
 
 /* ***************************************************************** */
 /* ******************     CMD LIST  FUNCTIONS      ***************** */

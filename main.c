@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:20:28 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/18 19:29:26 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/17 13:04:33 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	ft_init_msh_struct(t_msh *data)
  */
 void	ft_main_boucle(t_msh *data)
 {
-	data->pipeline = readline(BACK_RED GREEN BOLD ">>> msh_3.0$ " RESET);
+	data->pipeline = readline(BACK_RED GREEN BOLD ">>> msh_4.0$ " RESET);
 	ft_ctrl_d(data);
 	if (data->pipeline[0] != '\0')
 	{
@@ -92,8 +92,7 @@ void	ft_main_boucle(t_msh *data)
 			ft_free_null_void_return(&data->var_);
 			add_history(data->pipeline);
 			data->var_ = ft_strdup(data->pipeline);
-			ft_simple_lexer(data);
-			ft_simple_parser(data);
+			ft_lexer(data);
 			if (data->error == NO_ERROR)
 				ft_executor(data);
 		}
@@ -101,10 +100,8 @@ void	ft_main_boucle(t_msh *data)
 	g_listen = 0;
 	ft_free_null_void_return(&data->pipeline);
 	ft_cmdclear(data);
-	dup2(data->org_stdin, STDIN_FILENO);  	// restaura el STDIN
-//	close(data->org_stdin);  // no, que se cierra la minishell
-	dup2(data->org_stdout, STDOUT_FILENO); 	// restaura el STDOUT
-//	close(data->org_stdout);  // no, que se cierra la minishell
+	dup2(data->org_stdin, STDIN_FILENO);
+	dup2(data->org_stdout, STDOUT_FILENO);
 	data->error = NO_ERROR;
 }
 /**
