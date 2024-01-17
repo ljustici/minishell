@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_env_lst_utils_del_nds.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 20:35:44 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/11/10 20:35:35 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:29:14 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ void	ft_free_envlst_node(t_env_lst *del_node)
  */
 static int	ft_env_forbidden_name(char *del_nd)
 {
-	if (del_nd && ft_env_forbidden_chars(del_nd))
+	if (del_nd && ft_detect_forbidden_chars(del_nd))
 	{
-		ft_printf("msh: unset: `%s': not a valid identifier\n", del_nd);
+	//	ft_printf("msh: unset: `%s': not a valid identifier\n", del_nd);
+		ft_putstr("msh: unset: ", 2);
+		ft_putstr(del_nd, 2);
+		ft_putstr(": not a valid identifier\n", 2);
 		return (1);
 	}
 	return (0);

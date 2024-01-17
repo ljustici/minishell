@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 20:06:59 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/20 12:57:37 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:25:48 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	ft_free_rds_node(t_rd *rd_del)
 {
-	ft_free_null_void_return(&rd_del->end_key);
+	ft_free_null_void_return(&rd_del->endkey);
 	ft_free_null_void_return(&rd_del->heredoc);
 	ft_free_null_void_return(&rd_del->file);
 	free(rd_del);

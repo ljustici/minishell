@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:17:09 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/17 12:56:36 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:32:00 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,3 +197,24 @@ int	ft_detect_forbidden_chars(char *name)
 	}
 	return (0);
 }
+
+char	**ft_freedom(char **matrix)
+{	
+	size_t	i;
+
+	i = 0;
+	if (matrix/*  != NULL */)
+	{
+		while (matrix[i])
+		{
+			ft_bzero(matrix[i], ft_strlen(matrix[i]));
+			free(matrix[i]);
+			matrix[i] = NULL;
+			i++;
+		}
+		free(matrix);
+		matrix = NULL;
+	}
+	return (matrix);
+}
+

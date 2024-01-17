@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 16:44:26 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:29:14 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,7 @@ int			ft_env_lst_count_nds(t_env_lst *env_lst);
 //void	ft_init_msh_struct(t_msh *data);
 //void	ft_simple_lexer(t_msh *data);
 //void	ft_simple_parser(t_msh *data);
-//int		ft_env_forbidden_chars(char *name);
+int		ft_detect_forbidden_chars(char *name);
 
 /* ***************************************************************** */
 /* ******************     CMD LIST  FUNCTIONS      ***************** */
@@ -362,5 +362,6 @@ int		ft_str_equal(char *s1, char *s2);
 char	**ft_2rows_split(char *str, char c);
 int		ft_matrix_len(char **str);
 int		ft_is_str_digits(char *str);
+char	**ft_freedom(char **matrix);
 
 #endif
