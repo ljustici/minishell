@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_signals.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 14:00:34 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/17 15:32:53 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:10:17 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,14 @@ void	ft_handler(int sig, siginfo_t *info, void *context)
 		rl_redisplay();
 	//	rl_replace_line("   ", 0);
 		ft_putstr_fd("   ", 1);
-		ioctl(STDIN_FILENO, TIOCSTI, "\n"); // 0 es STDIN_FILENO
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_on_new_line();
 	//	rl_redisplay();
 	}
-//	else if (SIGSTOP == sig)
+/* 	else if (SIGQUIT == sig)
+	{
+
+	} */
 }
 
 /**
