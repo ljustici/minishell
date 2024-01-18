@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:20:21 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:52:39 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void span_tail_str(const char *str, unsigned long *j)
 	
 	if (should_split(str[*j]) == 0)
 	{
-		while(str[*j] && should_split(str[*j]) == 0)
+		//while(str[*j] && should_split(str[*j]) == 0)
+		while((*j) < ft_strlen(str) && should_split(str[*j]) == 0)
 			(*j)++;
 	}
 	//printf("tail: %c\n", str[*j]);
@@ -62,7 +63,7 @@ int is_first_quote(const char *s, unsigned long pos, char c)
 	if (pos == 0)
 		return(1);
 	i = pos;
-	while(s[i] && i < ft_strlen(s))
+	while(i < ft_strlen(s) && s[i])
 	{
 		if (s[i] == c)
 			count++;
@@ -97,7 +98,7 @@ int	count_tokens(const char *str)
 	j = 0;
 	i = 0;
 	is_first_letter = 0;
-	while (str[j])
+	while (j < ft_strlen(str))
 	{
 		if (should_split(str[j]) != 1 && is_first_letter == 0)
 		{

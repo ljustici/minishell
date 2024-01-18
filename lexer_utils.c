@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:35:48 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:21:09 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:50:29 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int is_spnltab(char c)
 
 int is_metacharacter(char c)
 {
+    if (!c)
+        return(0);
     if (c == '|' || c == '<' || c == '>')
         return(1);
     return(0);
@@ -38,7 +40,8 @@ int should_split(char c)
 void span_until_quote(const char *s, unsigned long *i, char quote)
 {
     *i = *i + 1;
-    while(s[*i] && s[*i] != quote)
+    //while(s[*i] && s[*i] != quote)
+    while((*i) < ft_strlen(s) && s[*i] != quote)
         *i = *i + 1;
 }
 

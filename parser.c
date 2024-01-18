@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 18:52:03 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:52:34 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char *format_expansion_token(char *token, char *expanded, size_t end, int start)
 	else
 		result = ft_substr(token, 0, start);
 	
-	if (end < ft_strlen(token))
+	if (end < ft_strlen(token)) //if (end < ft_strlen(token) + ft_strlen(expanded))
 	{
 		tail = ft_substr(token, end, ft_strlen(token));
 		result = ft_join_free(result, tail);
@@ -83,10 +83,10 @@ char **parse_token_array(char **tokens)
 	i = 0;
 	j = 0;
 	len = ft_array_len(tokens);
-	//printf("len: %d\n", len);
 	parsed = (char **)ft_calloc(len + 1, sizeof(char *));
 	while(i < len)
 	{
+		printf("token que llega a clean_quotes %s\n", tokens[i]);
        	if (has_qts(tokens[i], '\''))
             parsed[j] = clean_quotes(tokens[i], '\'');
 		if (has_qts(tokens[i], '\"') > 1)
@@ -94,14 +94,17 @@ char **parse_token_array(char **tokens)
 		else if (!has_qts(tokens[i], '\'') && has_qts(tokens[i], '\"') == 1)
             parsed[j] = clean_quotes(tokens[i], '\"');
 		else
-			parsed[j] = ft_strdup(tokens[i]);
-		//if (parsed[j])
-		//	printf("parsed: %s  i:%d\n", parsed[j], j);
+		{
+			parsed[j] = ft_strdup(tokens[i]); //el contenido es nulo pero el pointer no es nulo
+			printf("? %s\n", parsed[j]);
+		}
+		printf("parsed j %s\n", parsed[j]);
+		//if (!parsed[j])
+		//	parsed[j] = NULL;
 		i++;
 		if (parsed[j])
 			j++;
-		else
-			free(parsed[j]);
+	
 	}
 	parsed[j] = 0;
 	ft_free_array(tokens);

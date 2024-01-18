@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:20:35 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:55:15 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ char	*find_var_in_envp(char *var, t_env_lst *envp)
 	result = NULL;
     while(envp)
     {
-        if (ft_strcmp(var, envp->nm))
+		printf("- envp name: %s y var: %s\n", envp->nm, var);
+        if (ft_strcmp(var, envp->nm) == 0)
 		{
 			result = ft_strdup(envp->val);
-			//printf("result: %s\n", result);
+			printf("result: %s y name: %s\n", result, envp->nm);
 			free(var);
 			break;
 		}
@@ -62,10 +63,10 @@ char *var_expansion(char *token, t_env_lst *envp, size_t *i)
 	end = get_end_of_var(&token[start]);
 	
 	expanded = ft_substr(token, start + 1, end - 1);
-	//printf("Expanded: [%s]\n", expanded);
+	printf("Expanded: [%s]\n", expanded);
 	expanded = find_var_in_envp(expanded, envp);
-	end = end + start;
-	//printf("La variable es %s y start es: %i y end: %zu\n", expanded, start, end);
+	end = end + start; //TODO: end changes after expansion acording to the expanded word's length
+	printf("La variable es %s y start es: %i y end: %zu\n", expanded, start, end);
 	formatted = format_expansion_token(token, expanded, end, start);
 	*i = end;
 
@@ -83,13 +84,20 @@ void set_expanded_token(char **expanded, char *token, t_env_lst *envp)
 
 	len = ft_strlen(token);
 	i = 0;
+	*expanded = ft_strdup(token);
 	while(i < len)
 	{
+		printf("expanded i %s: %zu\n", *expanded, i);
 		if (is_var(&token[i]))
-			*expanded = var_expansion(token, envp, &i);
+		{
+			*expanded = var_expansion(*expanded, envp, &i);
+			printf("Es var %zu\n",i);
+		}
+		else
+			printf("No es var\n");
 		i++;
 	}
-	if (!(*expanded))
+	if (!(*expanded)) //if(*expanded == 0)
 		*expanded = ft_strdup(token);
 }
 
@@ -107,17 +115,17 @@ char **expanding_loop(char **tokens, t_env_lst *envp)
 	j = 0;
 	len = ft_array_len(tokens);
 	expanded = (char **)ft_calloc(len + 1, sizeof(char *));
-	while(i < len)
+	while(i < len) //TODO: len changes after each loop when it finds a var and expands
 	{
 		set_expanded_token(&expanded[j], tokens[i], envp);
 		i++;
 		if (expanded[j])
 			j++;
-		else
+		/*else
 		{
 			free(expanded[j]);
 			expanded[j] = NULL;
-		}
+		}*/
 	}
 	expanded[j] = 0;
 	ft_free_array(tokens);

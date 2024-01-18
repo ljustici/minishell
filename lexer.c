@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 16:25:11 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/18 13:15:05 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void ft_lexer(t_msh *data)
 {
     char **result;
     
-    result = split_line(data->pipeline, data);
+    result = split_line(data->pipeline, data); 
     if (!result)
     {
         error_syntax_token(data, "", ERROR_MALLOC_ERROR);
