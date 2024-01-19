@@ -62,10 +62,9 @@ void	ft_init_msh_struct(t_msh *data)
 	data->fd = 1;
 	data->org_stdin = dup(STDIN_FILENO);
 	data->org_stdout = dup(STDOUT_FILENO);
-//	data->sig.sa_flags = SA_RESTART;
 	data->sig.sa_sigaction = ft_handler;
 	sigemptyset(&data->sig.sa_mask);
-	data->sig.sa_flags = SA_NODEFER; // a qué inicializarlo ?
+	data->sig.sa_flags = SA_NODEFER;
 	if (sigaction(SIGINT, &data->sig, NULL) == -1)
 		ft_error_signal(ERROR_SIGACTION_FAILURE);
 	signal(SIGQUIT, SIG_IGN);
@@ -105,6 +104,7 @@ void	ft_main_boucle(t_msh *data)
 	dup2(data->org_stdout, STDOUT_FILENO);
 	data->error = NO_ERROR;
 }
+
 /**
  * @brief 		****	MINISHELL    ****
  * 

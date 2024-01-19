@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:40:41 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/17 17:25:17 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:23:42 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,17 +78,16 @@ void	ft_redir_heredoc(t_msh *data, t_cmd *cmd_nd, t_rd *rd_nd)
 	dup2(data->org_stdin, STDIN_FILENO);
 	extern_stdout = dup(STDOUT_FILENO);
 	dup2(data->org_stdout, STDOUT_FILENO);
-	input = readline("> ");
-	if (g_listen == 1)
-		return ;
-	while (input != NULL && ft_strcmp(input, rd_nd->endkey) != 0)
+	while (1)
 	{
+		input = readline("> ");
+		if (!input || ft_strcmp(input, rd_nd->endkey) == 0)
+			break ;
+		if (g_listen == 1)
+			return ;
 		rd_nd->heredoc = ft_join_free(rd_nd->heredoc, input);
 		rd_nd->heredoc = ft_join_free(rd_nd->heredoc, "\n");
 		ft_free_null_void_return(&input);
-		input = readline("> ");
-		if (g_listen == 1)
-			return ;
 	}
 	ft_free_null_void_return(&input);
 	ft_redic_heredoc_to_pipe(data, cmd_nd, rd_nd->heredoc);
