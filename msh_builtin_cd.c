@@ -6,15 +6,13 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 18:26:32 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/19 16:23:10 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:18:50 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief   * Searchs a environment var by its name & returns its value *
- *  
+/*
  *  BEWARE OF THAt: chmod -> rwx
  *      With x in 1 state, we can cd into de dir (not if it's 0) 
  *   0: ningún permiso (ni lectura, ni escritura ni ejecución)
@@ -49,8 +47,12 @@
  * permisos de acceso son los últimos 9 bits del campo `st_mode`,
  * y `0777` en octal es una máscara de bits que tiene los últimos 9 bits
  * establecidos en 1 y el resto en 0. Al hacer `st_mode & 0777`,
- * se obtienen solo los bits que representan los permisos de acceso.
- * 
+ * se obtienen solo los bits que representan los permisos de acceso. *
+ */
+
+/**
+ * @brief   * Searchs a environment var by its name & returns its value *
+ *  
  * 
  * @param data 
  * @param env_nm 
