@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:20:28 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/18 18:10:43 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:06:00 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,11 @@ void	ft_init_msh_struct(t_msh *data)
 	data->org_stdout = dup(STDOUT_FILENO);
 //	data->sig.sa_flags = SA_RESTART;
 	data->sig.sa_sigaction = ft_handler;
-	data->sig.sa_handler = SIG_IGN;
 	sigemptyset(&data->sig.sa_mask);
 	data->sig.sa_flags = SA_NODEFER; // a qué inicializarlo ?
 	if (sigaction(SIGINT, &data->sig, NULL) == -1)
 		ft_error_signal(ERROR_SIGACTION_FAILURE);
-	if (sigaction(SIGQUIT, &data->sig, NULL) == -1)
-		perror("errorsito\n");
+	signal(SIGQUIT, SIG_IGN);
 }
 
 /**
