@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   msh_builtin_executor.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:21:55 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/20 13:37:25 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/23 23:44:08 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief  BEWARE OF THIS !!!
- * 		Estoy cambiando para pasar el nodo del redireccionamiento
- * 		Comprobar que no me esté cargando lo que ya funcionaba (heredoc, infile)
+ * @brief  BEWARE OF THIS !!! DO YOU HAVE THE CONVENIENT PERMISSIONS
+ * 			TO EXECUTE THE COMMAND ???
  * 
  * RAZONAMTO: cada comando tiene una lista de redirs:
  * 	- cada nodo de redir va cambiando el STDIN/STDOUT del comando
@@ -44,25 +43,49 @@ static void	ft_redir_checker(t_msh *data, t_cmd *cmd_nd)
 		rd_nd = rd_nd->nx;
 	}
 }
-/*	OLD IMPLEMENTATION (BEFORE PIPES): */
-/* static void	ft_redir_checker(t_msh *data, t_cmd *cmd_nd)
-{
-	t_rd	*rd_nd;
 
-	rd_nd = cmd_nd->rds;
-	while (rd_nd != NULL)
+/* BEWARE OF THIS !!!
+	comprobar qué funciones de la librería <sys/stat.h> podemos usar
+*/
+static int	ft_check_permissions(t_msh *data, char *dir)
+{
+	struct stat	st;
+
+	if (stat(dir, &st) == 0) // está comprobando si existe el archivo
 	{
-		if (data->cmd_lst->rds != NULL && rd_nd->type == DIR)
-			ft_redir_heredoc(data, cmd_nd, rd_nd);
-		else if (data->cmd_lst->rds != NULL && rd_nd->type == SIR)
-			ft_redir_infile(data, cmd_nd, rd_nd);
-		else if (data->cmd_lst->rds != NULL && rd_nd->type == SOR)
-			ft_redir_outfile(data, cmd_nd, rd_nd);
-		else if (data->cmd_lst->rds != NULL && rd_nd->type == DOR)
-			ft_redir_outfile(data, cmd_nd, rd_nd);
-		rd_nd = rd_nd->nx;
+		if (st.st_mode & S_IXUSR) // está comprobando si tiene permisos de ejecución
+			return (0);
+		else
+		{
+			ft_error(data, dir, "Permission denied");
+			return (1);
+		}
 	}
-} */
+	return (0);
+}
+
+static void	ft_cmd_analyzer(t_msh *data, char *cmd, t_cmd *cmd_nd)
+{
+	if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "ENV") == 0)
+		ft_builtin_env(data, cmd_nd);
+	else if (ft_strcmp(cmd, "export") == 0)
+		ft_builtin_export(data, cmd_nd);
+	else if (ft_strcmp(cmd, "unset") == 0)
+		ft_builtin_unset(data, cmd_nd);
+	else if (ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "PWD") == 0)
+		ft_builtin_pwd(data);
+	else if (ft_strcmp(cmd, "cd") == 0)
+		ft_builtin_cd(data, cmd_nd);
+	else if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "ECHO") == 0)
+		ft_builtin_echo(data);
+	else if (ft_strcmp(cmd, "exit") == 0)
+		ft_builtin_exit(data, cmd_nd);
+	else
+	{
+		ft_find_cmd_path(cmd_nd, ft_find_env_paths(data));
+		data->exit_code = ft_exec_external_cmd(data, cmd_nd);
+	}
+}
 
 /**
  * @brief ** Checks if the cmd is a builtin or an external command **
@@ -95,23 +118,6 @@ void	ft_builtin_executor(t_msh *data, char *cmd, t_cmd *cmd_nd)
 	}
 	if (!cmd)
 		return ;
-	if (ft_strcmp(cmd, "env") == 0 || ft_strcmp(cmd, "ENV") == 0)
-		ft_builtin_env(data, cmd_nd);
-	else if (ft_strcmp(cmd, "export") == 0)
-		ft_builtin_export(data, cmd_nd);
-	else if (ft_strcmp(cmd, "unset") == 0)
-		ft_builtin_unset(data, cmd_nd);
-	else if (ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "PWD") == 0)
-		ft_builtin_pwd(data);
-	else if (ft_strcmp(cmd, "cd") == 0)
-		ft_builtin_cd(data, cmd_nd);
-	else if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "ECHO") == 0)
-		ft_builtin_echo(data);
-	else if (ft_strcmp(cmd, "exit") == 0)
-		ft_builtin_exit(data, cmd_nd);
-	else
-	{
-		ft_find_cmd_path(cmd_nd, ft_find_env_paths(data));
-		data->exit_code = ft_exec_external_cmd(data, cmd_nd);
-	}
+	if (ft_check_permisions(data, cmd_nd->c_args[0]) == 0)
+		ft_cmd_analyzer(data, cmd, cmd_nd);
 }

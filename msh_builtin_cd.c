@@ -3,18 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   msh_builtin_cd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 18:26:32 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/19 19:18:50 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:14:37 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
- *  BEWARE OF THAt: chmod -> rwx
- *      With x in 1 state, we can cd into de dir (not if it's 0) 
+ *  BEWARE OF THIS: chmod -> rwx
+ * 	With r in 1 state, we can list the files in the dir
+ *  With r in 0 state, we can't list the files in the dir
+ *  With w in 1 state, we can create, delete or rename files in the dir
+ *  With w in 0 state, we can't create, delete or rename files in the dir
+ *  With x in 1 state, we can cd into de dir (not if it's 0)
+ *  With x in 0 state, we can't cd into de dir (not if it's 1)
+ * 
  *   0: ningún permiso (ni lectura, ni escritura ni ejecución)
  *   1: (001) permiso de ejecución
  *   2: (010) permiso de escritura
@@ -29,26 +35,6 @@
  *  With "st.st_mode & 0777" we can extract the permissions of the dir
  *  from "st.st_mode". The permissions can be printed in octal format.
  * 
- * La función `stat` en C se utiliza para obtener información sobre
- * un archivo o directorio. Esta información se almacena en una
- * estructura de tipo `struct stat`.
- *
- * Para obtener los permisos de un directorio, se utiliza el campo
- * `st_mode` de la estructura `struct stat`. Este campo contiene
- * información sobre el tipo de archivo y los permisos de acceso.
- * 
- * Los permisos de acceso se representan como un número en formato octal,
- * donde cada dígito representa los permisos de un tipo de usuario:
- * el propietario del archivo, el grupo del archivo y otros usuarios.
- * Cada dígito puede ser un número de 0 a 7.
- * 
- * Para extraer los permisos del campo `st_mode`, se utiliza el operador
- * bitwise AND (`&`) con el número octal `0777`. Esto se hace porque los
- * permisos de acceso son los últimos 9 bits del campo `st_mode`,
- * y `0777` en octal es una máscara de bits que tiene los últimos 9 bits
- * establecidos en 1 y el resto en 0. Al hacer `st_mode & 0777`,
- * se obtienen solo los bits que representan los permisos de acceso. *
- */
 
 /**
  * @brief   * Searchs a environment var by its name & returns its value *
@@ -106,7 +92,7 @@ void	ft_env_change_val(t_msh *data, char *nm_dst, char *new_val)
 }
 
 /**
- * @brief       *** POSSIBLY FINISHED ***
+ * @brief       *** TO_DO: PERMISIONS MANAGEMENT ***
  * 
  *    >> cd .      --> do NOTHING
  *    >> cd ..     --> chdir to ONE_LEVEL_UP

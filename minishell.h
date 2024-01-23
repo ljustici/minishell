@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 17:29:14 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:01:24 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/ioctl.h>
+# include <sys/stat.h>
 # include <sys/ttydefaults.h>
 
 # define ENV_PATH "PATH="
@@ -148,7 +149,6 @@ typedef struct s_rd
  * 	> c_args[0]   -> contains the cmd as the usu writes
  *                     (WITH or WITHOUT absolute path)
  * 	> c_args[...] -> contains the arguments and flags of the command
- *  > c_abs_path  -> contains a copy of c_args[0] (WITH or WITHOUT abs_path) ELIMINATE!!!
  *  > c_env_path  -> contains a copy of c_args[0] if it has an abs_path,
  *        OR a correct access path from $PATH when c_args[0] don't have abs_path
  *	> pid         -> used by ft_builtin || ft_exec_external_cmd
@@ -160,7 +160,6 @@ typedef struct	s_cmd_lst
 {
 	t_rd				*rds;
 	char				**c_args;
-//	char				*c_abs_path;
 	char				*c_env_path;
 	int					pid;
 	int					pipe_val;
@@ -191,6 +190,8 @@ typedef struct	s_msh
 	int					org_stdin;
 	int					org_stdout;
 	int					exit_code;
+//	struct stat			stat;		// used to get file permissions
+//	int					permisions;	// used to keep file permissions
 }						t_msh;
 
 //Lexer

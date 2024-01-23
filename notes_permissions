@@ -1,0 +1,136 @@
+Los permisos en un directorio en un sistema Unix-like se dividen en
+permisos de lectura (r), escritura (w) y ejecución (x). 
+Aquí está lo que cada permiso permite y prohíbe:
+
+* Lectura (r):
+
+Permitido: listar los archivos en el directorio.
+Prohibido: si el permiso de lectura está desactivado,
+	no puedes listar los archivos en el directorio.
+
+* Escritura (w):
+
+Permitido: crear, eliminar o renombrar archivos en el directorio.
+Prohibido: si el permiso de escritura está desactivado,
+	no puedes crear, eliminar o renombrar archivos en el directorio.
+
+* Ejecución (x):
+
+Permitido: cambiar al directorio (cd en el directorio).
+Prohibido: si el permiso de ejecución está desactivado,
+	no puedes cambiar al directorio.
+
+Estos permisos pueden ser establecidos para el propietario del archivo,
+el grupo del archivo y todos los demás usuarios (comando 'chmod').
+Se pueden establecer en formato octal (0777)
+
+ *   0: ningún permiso (ni lectura, ni escritura ni ejecución)
+ *   1: (001) permiso de ejecución
+ *   2: (010) permiso de escritura
+ *   4: (100) permiso de lectura
+ *   3: (011) permiso de escritura y ejecución
+ *   6: (110) permiso de lectura y escritura (no de ejecución)
+ *   5: (101) permiso de lectura y de ejecución
+ *   7: (111) todos los permisos
+
+ *  Function "stat", from <sys/stat.h> library, obtains info about an
+ *  especified file or directory and puts the info into de "st" struct.
+ *  With "st.st_mode & 0777" we can extract the permissions of the dir
+ *  from "st.st_mode". The permissions can be printed in octal format.
+ * 
+ * La función `stat` en C se utiliza para obtener información sobre
+ * un archivo o directorio. Esta información se almacena en una
+ * estructura de tipo `struct stat`.
+ *
+ * Para obtener los permisos de un directorio, se utiliza el campo
+ * `st_mode` de la estructura `struct stat`. Este campo contiene
+ * información sobre el tipo de archivo y los permisos de acceso.
+ * 
+ * Los permisos de acceso se representan como un número en formato octal,
+ * donde cada dígito representa los permisos de un tipo de usuario:
+ * el propietario del archivo, el grupo del archivo y otros usuarios.
+ * Cada dígito puede ser un número de 0 a 7.
+ * 
+ * Para extraer los permisos del campo `st_mode`, se utiliza el operador
+ * bitwise AND (`&`) con el número octal `0777`. Esto se hace porque los
+ * permisos de acceso son los últimos 9 bits del campo `st_mode`,
+ * y `0777` en octal es una máscara de bits que tiene los últimos 9 bits
+ * establecidos en 1 y el resto en 0. Al hacer `st_mode & 0777`,
+ * se obtienen solo los bits que representan los permisos de acceso.
+
+ Se puede comparar el valor octal que devuelve stat con un entero. La función stat en C devuelve una estructura que contiene información sobre el archivo, incluyendo los permisos del archivo. Estos permisos se almacenan en el campo st_mode de la estructura, que es un entero.
+
+Para comparar los permisos con un valor específico, puedes usar la operación bitwise AND (&) con la constante correspondiente al permiso que quieres comprobar. Por ejemplo, para comprobar si un archivo tiene permiso de lectura para el propietario, puedes hacer algo como esto:
+
+	#include <sys/stat.h>
+
+	struct stat fileStat;
+	if(stat("/path/to/your/file",&fileStat) < 0)    
+	    return 1;
+
+	if((fileStat.st_mode & S_IRUSR) != 0) // Comprobar permiso de lectura para el propietario
+	{
+	    // El archivo tiene permiso de lectura para el propietario
+	}
+	else
+	{
+	    // El archivo no tiene permiso de lectura para el propietario
+	}
+
+En este código, S_IRUSR es una constante que representa el permiso de lectura para el propietario del archivo. Las constantes para los diferentes permisos están definidas en <sys/stat.h>.
+
+Las constantes de permisos definidas en <sys/stat.h> en un sistema Unix-like son las siguientes:
+
+* S_IRUSR: Permiso de lectura para el propietario del archivo.
+* S_IWUSR: Permiso de escritura para el propietario del archivo.
+* S_IXUSR: Permiso de ejecución para el propietario del archivo.
+* 
+* S_IRGRP: Permiso de lectura para el grupo del archivo.
+* S_IWGRP: Permiso de escritura para el grupo del archivo.
+* S_IXGRP: Permiso de ejecución para el grupo del archivo.
+
+* S_IROTH: Permiso de lectura para otros (todos los demás).
+* S_IWOTH: Permiso de escritura para otros.
+* S_IXOTH: Permiso de ejecución para otros.
+
+Además, hay algunas constantes que combinan varios permisos:
+
+* S_IRWXU: Todos los permisos (lectura, escritura, ejecución) para el propietario del archivo.
+* S_IRWXG: Todos los permisos para el grupo del archivo.
+* S_IRWXO: Todos los permisos para otros.
+
+Estas constantes se pueden usar con la operación bitwise AND (&) para comprobar si un archivo tiene un permiso específico.
+
+________________________
+Para ejecutar el comando cd (cambiar de directorio) en un sistema Unix-like, necesitas tener permiso de ejecución (x) en el directorio al que quieres cambiar.
+
+El permiso de ejecución en un directorio permite "entrar" en el directorio, es decir, hacerlo tu directorio de trabajo actual con el comando cd. Si no tienes este permiso, no podrás cambiar a ese directorio.
+
+Además, si quieres listar los archivos en el directorio después de cambiar a él, también necesitarás el permiso de lectura (r) en ese directorio. Sin embargo, este permiso no es necesario para el comando cd en sí.
+
+__________________________
+Desde dicho directorio específico, puedes ejecutar cualquier comando que esté disponible en tu sistema, siempre y cuando tengas los permisos adecuados para hacerlo.
+
+En el proyecto minishell, se están ejecutando comandos internos como env, export, unset, pwd, cd, echo, y exit. Si el comando no es uno de estos, entonces se busca en las rutas del sistema y se ejecuta como un comando externo.
+
+Por lo tanto, siempre que el comando esté en una de las rutas del sistema (o sea un comando interno), y tengas los permisos necesarios para ejecutarlo, deberías poder hacerlo desde cualquier directorio.
+
+Hay que comprobar los permisos uno mismo para manejar los errores de manera precisa.
+
+Para ejecutar un comando (es decir, un archivo ejecutable), necesitas tener permiso de ejecución (x) en el archivo. Si el comando es un script, también necesitarás permiso de lectura (r) en el archivo.
+
+Además, para acceder al archivo en primer lugar, necesitarás permiso de ejecución en todos los directorios que llevan al archivo. Esto incluye el directorio que contiene el archivo, así como todos sus directorios padre hasta la raíz del sistema de archivos.
+
+Por lo tanto, si estás comprobando los permisos manualmente, deberías comprobar lo siguiente:
+
+1. Tienes permiso de ejecución en todos los directorios que llevan al archivo.
+2. Tienes permiso de ejecución (y lectura, si es un script) en el archivo mismo.
+
+En un sistema Unix-like, no hay una forma directa de comprobar los permisos de todos los directorios que llevan a un archivo con un solo comando. Tendrías que comprobar cada directorio uno por uno.
+
+Cuando intentas acceder a un archivo, el sistema operativo (aka minishell) comprueba automáticamente los permisos. Si no tienes permiso para acceder a uno de los directorios, recibirás un error de "Permiso denegado".
+
+Si estás escribiendo un programa que necesita comprobar los permisos, puedes capturar este error y manejarlo de la manera que prefieras. Por ejemplo, podrías mostrar un mensaje de error personalizado al usuario.
+
+Si realmente necesitas comprobar los permisos de todos los directorios manualmente, podrías hacerlo con un script que divide la ruta del archivo en directorios y comprueba los permisos de cada uno. Sin embargo, esto sería bastante complicado y probablemente no sea necesario en la mayoría de los casos.
+

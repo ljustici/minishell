@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_redir_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:40:41 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/19 13:23:42 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:22:55 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,21 @@ static void	ft_redic_heredoc_to_pipe(t_msh *data, t_cmd *cmd_nd, char *hd_inputs
 }
 
 /**
- * @brief   *** BEWARE OF THIS !!! ****
- *  A STDIN heredoc is always the keyboard, so we must restore the original stdin
- * 		to avoid the heredoc to read from the pipe and exit the pipeline.
- *  A STDOUT heredoc is always the screen, so we must restore the original stdout
- * 		to avoid the heredoc to write to the pipe and exit the pipeline.
- *  	So, we must save the original stdin and stdout before calling ft_redir_heredoc
- * 		and restore it after calling ft_redir_heredoc_to_pipe.
+ * @brief 
+ *  A heredoc is a redirection from a file descriptor to a pipe.
+ *  It's principal characteristic is that restarts the stdin to keyboard,
+ *   ignoring the pipe between the commands.
  * 
- * PROBLEMA: si hay varios heredoc seguidos, 
- *          la salida del último heredoc no llega al pipe del segundo comando
- *          (aunque entre ellos sí se pasan bien la información, restaurando
- *           el stdin original porque le da igual lo que viniera de antes, y
- *           volcando el resultado en el siguiente heredoc):
- * PERO:  Si meto tres heredocs seguidos (desde código, no desde terminal), 
- *           ejecuta 1-3-2 en lugar de 1-2-3
- *        Se meto 4 heredocs, ejecuta 1-3-4-2 en lugar de 1-2-3-4
+ *  A STDIN heredoc is always the keyboard, so we must restore the original
+ *   stdin to avoid the heredoc to read from any other fd.
+ *  A STDOUT heredoc is always the screen, so we must restore the original
+ *   stdout to avoid the heredoc to write to any pipe and exit the pipeline.
+ *   So, we must save the original stdin and stdout before calling 
+ *   ft_redir_heredoc and restore (only the stdout) inmediately after.
  * 
  * @param data 
- * @param cmd 
+ * @param cmd_nd 
+ * @param rd_nd 
  */
 void	ft_redir_heredoc(t_msh *data, t_cmd *cmd_nd, t_rd *rd_nd)
 {
