@@ -3,20 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   msh_builtin_executor.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:21:55 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/23 23:44:08 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:26:36 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief  BEWARE OF THIS !!! DO YOU HAVE THE CONVENIENT PERMISSIONS
+/*  BEWARE OF THIS !!! DO YOU HAVE THE CONVENIENT PERMISSIONS
  * 			TO EXECUTE THE COMMAND ???
+ *
+ *  **** chmod -> rwx
  * 
- * RAZONAMTO: cada comando tiene una lista de redirs:
+ * 	With r in 1 state, we can list the files in the dir
+ *  With r in 0 state, we can't list the files in the dir
+ *  With w in 1 state, we can create, delete or rename files in the dir
+ *  With w in 0 state, we can't create, delete or rename files in the dir
+ *  With x in 1 state, we can cd into de dir (not if it's 0)
+ *  With x in 0 state, we can't cd into de dir (not if it's 1)
+ * 
+ *   0: ningún permiso (ni lectura, ni escritura ni ejecución)
+ *   1: (001) permiso de ejecución
+ *   2: (010) permiso de escritura
+ *   4: (100) permiso de lectura
+ *   3: (011) permiso de escritura y ejecución
+ *   6: (110) permiso de lectura y escritura (no de ejecución)
+ *   5: (101) permiso de lectura y de ejecución
+ *   7: (111) todos los permisos
+ * 
+ *  Function "stat", from <sys/stat.h> library, obtains info about an
+ *  especified file or directory and puts the info into de "st" struct.
+ *  With "st.st_mode & 0777" we can extract the permissions of the dir
+ *  from "st.st_mode". The permissions can be printed in octal format.
+ * 
+*/
+
+/**
+ * @brief 
+ * 
+ * Cada comando tiene una lista de redirs:
  * 	- cada nodo de redir va cambiando el STDIN/STDOUT del comando
  *  - el efecto conseguido es que sólo el último redir de cada natu
  * 		(entrada/salida) define en última instancia cuál será la
@@ -45,19 +72,28 @@ static void	ft_redir_checker(t_msh *data, t_cmd *cmd_nd)
 }
 
 /* BEWARE OF THIS !!!
-	comprobar qué funciones de la librería <sys/stat.h> podemos usar
+	comprobar qué funciones de la librería <sys/stat.h> podemos usar:
+	- stat
+	- lstat
+	- fstat
 */
-static int	ft_check_permissions(t_msh *data, char *dir)
+static int	ft_check_permissions(t_msh *data, t_cmd *cmd_nd)
 {
 	struct stat	st;
 
-	if (stat(dir, &st) == 0) // está comprobando si existe el archivo
+//	cwd = getcwd(NULL, 0);
+	if (stat(ft_env_obtain_val(data, "PWD"), &st) == 0) // está comprobando si existe el archivo
 	{
-		if (st.st_mode & S_IXUSR) // está comprobando si tiene permisos de ejecución
+//		if (st.st_mode & S_IXUSR) // está comprobando si tiene permisos de ejecución
+		if (st.st_mode & S_IRWXU) // está comprobando si tiene todos los permisos
+		{
+			printf("DEBUG: ft_check_permissions) st_mode = %d\n", st.st_mode);
 			return (0);
+		}
 		else
 		{
-			ft_error(data, dir, "Permission denied");
+			printf("DEBUG: ft_check_permissions) st_mode = %d\n", st.st_mode);
+			ft_error_cmds(data, cmd_nd, ERROR_NO_PERMISSION);
 			return (1);
 		}
 	}
@@ -89,6 +125,7 @@ static void	ft_cmd_analyzer(t_msh *data, char *cmd, t_cmd *cmd_nd)
 
 /**
  * @brief ** Checks if the cmd is a builtin or an external command **
+ * 
  * 	>> env    -> bash admits both LOWERS & UPPERS
  *  >> export -> bash admits only LOWERS, not UPPERS
  *  >> unset  -> bash admits only LOWERS, not UPPERS
@@ -97,13 +134,6 @@ static void	ft_cmd_analyzer(t_msh *data, char *cmd, t_cmd *cmd_nd)
  *  >> echo   -> bash admits both LOWERS & UPPERS
  *  >> exit   -> bash admits only LOWERS, not UPPERS
  * 
- *  BEWARE OF THIS !!! >>> In case of absolute path, 
- * 		¿¿¿ what should be executed, the REAL builtin or ours ???
- * 	ANSWER >>> the builtins don't have absolute path, 
- *             they comunicate to the shell directly
- * 
- * @brief   ** VERSIÓN 2.0 -> PASANDO UN CMD_NODO (PRESENCIA DE PIPES)
- * 	
  * @param data 
  * @param cmd 
  * @param tmp 
@@ -118,6 +148,6 @@ void	ft_builtin_executor(t_msh *data, char *cmd, t_cmd *cmd_nd)
 	}
 	if (!cmd)
 		return ;
-	if (ft_check_permisions(data, cmd_nd->c_args[0]) == 0)
+//	if (ft_check_permissions(data, cmd_nd) == 0) // tiene que hacerlo después, no antes
 		ft_cmd_analyzer(data, cmd, cmd_nd);
 }

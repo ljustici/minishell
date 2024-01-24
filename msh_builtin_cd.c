@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_builtin_cd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 18:26:32 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/23 19:14:37 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:27:34 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
  *  With "st.st_mode & 0777" we can extract the permissions of the dir
  *  from "st.st_mode". The permissions can be printed in octal format.
  * 
+*/
 
 /**
  * @brief   * Searchs a environment var by its name & returns its value *

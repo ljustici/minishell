@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/23 19:01:24 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:06:59 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef enum e_error
 	ERROR_NO_PATHS,
 	ERROR_CMD_NOT_EXISTS,
 	ERROR_CMD_NOT_EXECUTABLE,
+	ERROR_NO_PERMISSION,
 	ERROR_CHDIR_FAILURE,
 	ERROR_CHDIR_OLDPWD_NOT_SET,
 	ERROR_CHDIR_HOME_NOT_SET,
@@ -350,6 +351,7 @@ void	ft_error_cd(t_msh *data, t_cmd *cmd_nd, int error);
 void	ft_error_pipes_forks(t_msh *data, int error);
 //void	ft_error_files(t_msh *data, t_cmd *cmd_nd, int error);
 void	ft_error_files(t_msh *data, t_cmd *cmd_nd, t_rd *rd_nd, int error);
+void	ft_error_cmds(t_msh *data, t_cmd *cmd_nd, int error);
 
 /* ***************************************************************** */
 /* ********************     UTILS  FUNCTIONS     ******************* */

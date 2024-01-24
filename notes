@@ -1,0 +1,18 @@
+
+chequear orden de los herredoc. el comportamiento cambia.
+
+al pulsar ctrl + c no debe intentar ejectuar.
+
+>>> msh_4.0$ <<?? wc
+Create list
+>>> msh_4.0$ <<?? wc   >    
+
+       0       0       0   
+
+Esto es más parecido al correcto:
+>>> msh_4.0$ wc  <<??
+Create list
+> hola
+>    
+
+>>> msh_4.0$ 

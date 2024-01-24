@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_errors.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:30:00 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/17 13:30:23 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:12:53 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,13 @@ void	ft_error_cmds(t_msh *data, t_cmd *cmd_nd, int error)
 		ft_putstr_fd(cmd_nd->c_args[0], 2);
 		ft_putstr_fd(": Permission denied\n", 2);
 		data->exit_code = 126;
+	}
+	else if (error == ERROR_NO_PERMISSION)
+	{
+		ft_putstr_fd(cmd_nd->c_args[0], 2);
+		ft_putstr_fd(": permission denied: ", 2);
+//		ft_putstr_fd(cmd_nd->c_args[0], 2); // SUSTITUIR ESTO POR EL DIRECTORIO
+		ft_putstr_fd("\n", 2);
+		data->exit_code = 1;
 	}
 }
