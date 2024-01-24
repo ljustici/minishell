@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 16:40:25 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:25:46 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,23 @@ int is_orphan_redir(char **args)
     return(0);
 }
 
+int is_redir_pipe(char **args)
+{
+    int i;
+    int n;
+
+    i = 0;
+    n = ft_array_len(args);
+    printf("n: %i\n",n);
+    while(i < n)
+    {
+        if (ft_strcmp(args[i],"<<") == 0 && ft_strcmp(args[i + 1],"|") == 0)
+            return(1);
+        i++;
+    }
+    return(0);
+}
+
 /**
  * |
  * <
@@ -76,6 +93,8 @@ int check_token_syntax(char **tokens, t_msh* data)
         error_syntax_token(data, wrong_tk, ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else if (is_orphan_redir(tokens))
         error_syntax_token(data, tokens[n - 1], ERROR_SYNTAX_UNEXPECTED_TOKEN);
+    else if (is_redir_pipe(tokens))
+        error_syntax_token(data, '|', ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else{
         //printf("No %s\n",tokens[n - 1]);
         is_wrong = 0;

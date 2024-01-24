@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/18 18:52:34 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:53:16 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ char *format_expansion_token(char *token, char *expanded, size_t end, int start)
 		//printf("result: %s end:%zu\n", result, end);
 		free(tail);
 	}
-	free(expanded);
-	expanded = NULL;
+	//free(expanded);
+	//expanded = NULL;
 	return(result);
 }
 
@@ -87,9 +87,9 @@ char **parse_token_array(char **tokens)
 	while(i < len)
 	{
 		printf("token que llega a clean_quotes %s\n", tokens[i]);
-       	if (has_qts(tokens[i], '\''))
+       	if (has_qts(tokens[i], '\'') > 1)
             parsed[j] = clean_quotes(tokens[i], '\'');
-		if (has_qts(tokens[i], '\"') > 1)
+		else if (has_qts(tokens[i], '\"') > 1)
             parsed[j] = clean_quotes(tokens[i], '\"');
 		else if (!has_qts(tokens[i], '\'') && has_qts(tokens[i], '\"') == 1)
             parsed[j] = clean_quotes(tokens[i], '\"');
@@ -208,7 +208,9 @@ void ft_parse(char **tokens, t_msh *data)
 		return ;
 	
 	create_list(&data->cmd_lst, parsed, len);
+	print_command_test(data->cmd_lst);
 	ft_free_array(parsed);
+	printf("Fin de parser.\n");
 	//data->cmd_lst = list;
 	//print_command_test(list);
 	//free_cmd_list(list);

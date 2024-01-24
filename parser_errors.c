@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:06:20 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 16:26:10 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:04:37 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	error_syntax_token(t_msh *data, char *token, int error)
 		ft_putstr_fd(": syntax error near unexpected token `", 2);
         ft_putstr_fd(token, 2);
         ft_putstr_fd("'\n", 2);
-		exit(258);
+		//exit(258);
+		data->exit_code=258;
 	}
 	if (error == ERROR_MALLOC_ERROR)
 		ft_putstr_fd("Malloc error\n", 2);
