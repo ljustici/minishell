@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:21:55 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/24 20:26:36 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:54:58 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,28 +77,32 @@ static void	ft_redir_checker(t_msh *data, t_cmd *cmd_nd)
 	- lstat
 	- fstat
 */
-static int	ft_check_permissions(t_msh *data, t_cmd *cmd_nd)
+/* static int	ft_check_here_permissions(t_msh *data, t_cmd *cmd_nd)
 {
 	struct stat	st;
 
-//	cwd = getcwd(NULL, 0);
-	if (stat(ft_env_obtain_val(data, "PWD"), &st) == 0) // está comprobando si existe el archivo
+	if (stat(data->shadow_pwd, &st) == 0) // está comprobando si existe el archivo
 	{
 //		if (st.st_mode & S_IXUSR) // está comprobando si tiene permisos de ejecución
 		if (st.st_mode & S_IRWXU) // está comprobando si tiene todos los permisos
 		{
-			printf("DEBUG: ft_check_permissions) st_mode = %d\n", st.st_mode);
+//			printf("DEBUG: ft_check_permissions) st_mode = %d\n", st.st_mode);
 			return (0);
 		}
 		else
 		{
-			printf("DEBUG: ft_check_permissions) st_mode = %d\n", st.st_mode);
+//			printf("DEBUG: ft_check_permissions) st_mode = %d\n", st.st_mode);
 			ft_error_cmds(data, cmd_nd, ERROR_NO_PERMISSION);
 			return (1);
 		}
 	}
+	else
+	{
+		ft_error_cmds(data, cmd_nd, ERROR_NO_PERMISSION);
+		return (1);
+	}
 	return (0);
-}
+} */
 
 static void	ft_cmd_analyzer(t_msh *data, char *cmd, t_cmd *cmd_nd)
 {
@@ -148,6 +152,6 @@ void	ft_builtin_executor(t_msh *data, char *cmd, t_cmd *cmd_nd)
 	}
 	if (!cmd)
 		return ;
-//	if (ft_check_permissions(data, cmd_nd) == 0) // tiene que hacerlo después, no antes
+//	if (ft_check_here_permissions(data, cmd_nd) == 0)
 		ft_cmd_analyzer(data, cmd, cmd_nd);
 }

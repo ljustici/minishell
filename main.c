@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:20:28 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/19 12:06:00 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:39:52 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_init_msh_struct(t_msh *data)
 	data->fd = 1;
 	data->org_stdin = dup(STDIN_FILENO);
 	data->org_stdout = dup(STDOUT_FILENO);
+	data->shadow_pwd = NULL;
 	data->sig.sa_sigaction = ft_handler;
 	sigemptyset(&data->sig.sa_mask);
 	data->sig.sa_flags = SA_NODEFER;

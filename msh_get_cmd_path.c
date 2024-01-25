@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 16:25:41 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/24 20:27:04 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:36:00 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,31 @@ void	ft_find_cmd_path(t_cmd *cmd_nd, char **paths)
 	char	*path;
 
 	i = -1;
-	if (!paths)
-		cmd_nd->c_env_path = ft_strdup(cmd_nd->c_args[0]); // PROBANDO
-	else if (ft_strchr(cmd_nd->c_args[0], '/'))	
+	if (ft_strchr(cmd_nd->c_args[0], '/'))	
 		cmd_nd->c_env_path = ft_strdup(cmd_nd->c_args[0]);
 	else
 	{
-		while (paths[++i])
+		if (!paths)
+			cmd_nd->c_env_path = ft_strdup(cmd_nd->c_args[0]);
+		else
 		{
-			path = ft_strjoin(paths[i], "/");
-			cmd_nd->c_env_path = ft_strjoin(path, cmd_nd->c_args[0]);
-			ft_free_null_void_return(&path);
-			if (access(cmd_nd->c_env_path, F_OK) == 0)
-				break;
-			else
-				ft_free_null_void_return(&cmd_nd->c_env_path);		
-		}		
+			while (paths[++i])
+			{
+				path = ft_strjoin(paths[i], "/");
+				cmd_nd->c_env_path = ft_strjoin(path, cmd_nd->c_args[0]);
+				ft_free_null_void_return(&path);
+				if (access(cmd_nd->c_env_path, F_OK) == 0)
+					break;
+				else
+					ft_free_null_void_return(&cmd_nd->c_env_path);		
+			}
+		}
 	}
 	ft_freedom(paths);
 }
 
 /**
- * @brief ***** VER LA IMPLEMENTACIÓN DEL PIPEX  *****
+ * @brief 
  * 
  * @param data 
  * @param cmd 

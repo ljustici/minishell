@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:15:50 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/19 19:30:47 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:45:42 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static char	**ft_conv_envlst_to_mtrx(t_msh	*data)
 		my_envp[i] = ft_strdup(tmp->nm);
 		if (tmp->equal)
 		{
-			my_envp[i] = ft_join_free(my_envp[i], "=");
-			my_envp[i] = ft_join_free(my_envp[i], tmp->val);
+			my_envp[i] = ft_strjoin_free(my_envp[i], "=");
+			my_envp[i] = ft_strjoin_free(my_envp[i], tmp->val);
 		}
 		tmp = tmp->nx;
 		i++;

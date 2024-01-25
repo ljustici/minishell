@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/24 14:06:59 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:39:37 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ typedef struct	s_msh
 	int					org_stdin;
 	int					org_stdout;
 	int					exit_code;
+	char				*shadow_pwd;
 //	struct stat			stat;		// used to get file permissions
 //	int					permisions;	// used to keep file permissions
 }						t_msh;

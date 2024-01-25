@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:17:09 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/17 17:32:00 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:54:13 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,11 @@ char	*ft_strjoin_free(char *s1, char *s2)
 		}
 		ft_free_null_void_return(&s1);
 	}
-	while (s2[++j])
-		s[i++] = s2[j];
+	if (s2)
+	{
+		while (s2[++j])
+			s[i++] = s2[j];
+	}
 	return (s);
 }
 
