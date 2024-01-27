@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/18 16:52:39 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/27 13:24:24 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int is_first_quote(const char *s, unsigned long pos, char c)
 	size_t i;
 	int count;
 
-	
 	//write(1, "Llega\n", 6);
 	if (!s)
 		return(0);

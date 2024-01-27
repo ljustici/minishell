@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/24 18:08:48 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/27 20:31:34 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*find_var_in_envp(char *var, t_env_lst *envp)
 		{
 			result = ft_strdup(envp->val);
 			printf("result: %s y name: %s\n", result, envp->nm);
-			free(var);
+			free(var);                                                                                                                    
 			break;
 		}
         envp = envp->nx;
@@ -83,14 +83,28 @@ void set_expanded_token(char **expanded, char *token, t_env_lst *envp)
 {
 	size_t i;
 	size_t len;
+	size_t dqt;
+	size_t sqt;
 
-	i = 0;
 	*expanded = ft_strdup(token);
 	len = ft_strlen(*expanded);
+	dqt = 0;
+	sqt = 0;
+	i = 0;
 	while(i < len)
 	{
-		printf("expanded %s: %zu\n", *expanded, i);
-		if (is_var(&(*expanded)[i]))
+		//si i es " todo me da igual hasta la siguiente "
+		if ((*expanded)[i] == '\"' && sqt == 0)
+			dqt++;
+		if (dqt == 2)
+			dqt = 0;
+		//si i es ' nada es var hasta la siguiente '
+		if ((*expanded)[i] == '\'' && dqt == 0)
+			sqt++;
+		if (sqt == 2)
+			sqt = 0;
+		printf("expanded %s, caracter %c i: %zu y qt:\n", *expanded, (*expanded)[i], i);
+		if (is_var(&(*expanded)[i]) && (dqt == 1 || sqt == 0))
 		{
 			printf("Es var\n");
 			*expanded = var_expansion(*expanded, envp, &i);

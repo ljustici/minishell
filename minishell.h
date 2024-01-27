@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 17:29:14 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/27 20:43:57 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,10 @@ size_t get_end_of_var(char *token);
 char *format_expansion_token(char *token, char *expanded, size_t end, int start);
 
 int set_redir_type(char *token);
+
+int quote_pos(char *token, int start, char q);
+int should_clean_quotes(char *token, char **parsed);
+
 
 
 /* ***************************************************************** */

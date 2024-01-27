@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/24 20:25:46 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/27 10:56:59 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int check_token_syntax(char **tokens, t_msh* data)
     else if (is_orphan_redir(tokens))
         error_syntax_token(data, tokens[n - 1], ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else if (is_redir_pipe(tokens))
-        error_syntax_token(data, '|', ERROR_SYNTAX_UNEXPECTED_TOKEN);
+        error_syntax_token(data, "|", ERROR_SYNTAX_UNEXPECTED_TOKEN);
     else{
         //printf("No %s\n",tokens[n - 1]);
         is_wrong = 0;
