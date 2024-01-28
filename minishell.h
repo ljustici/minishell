@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/27 20:43:57 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/28 10:56:06 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ int is_var(char *token);
 void	create_list(t_cmd **list, char **tokens, int n);
 void ft_parse(char **tokens, t_msh *data);
 int check_token_syntax(char **tokens, t_msh *data);
-char **expanding_loop(char **tokens, t_env_lst *envp);
+char **expanding_loop(char **tokens, t_msh *data);
 
 int contains_var(char *token);
 size_t get_end_of_var(char *token);

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/27 20:31:34 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/28 13:47:43 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*find_var_in_envp(char *var, t_env_lst *envp)
  * - dollars followed by a quote then by characters
  * They must be checked before cleaning quotes from tokens.
 */
-char *var_expansion(char *token, t_env_lst *envp, size_t *i)
+char *var_expansion(char *token, t_msh *data, size_t *i)
 {
 	char *expanded;
 	char *formatted;
@@ -64,7 +64,10 @@ char *var_expansion(char *token, t_env_lst *envp, size_t *i)
 	
 	expanded = ft_substr(token, start + 1, end - 1);
 	printf("Expanded: [%s]\n", expanded);
-	expanded = find_var_in_envp(expanded, envp);
+	if (ft_strcmp(expanded, "?") == 0)
+		expanded = ft_itoa(data->error);
+	else
+		expanded = find_var_in_envp(expanded, data->env_lst);
 	end = end + start; //TODO: end changes after expansion acording to the expanded word's length
 	printf("La variable es %s y start es: %i y end: %zu\n", expanded, start, end);
 	formatted = format_expansion_token(token, expanded, end, start);
@@ -79,7 +82,7 @@ char *var_expansion(char *token, t_env_lst *envp, size_t *i)
  * Expands the variable inside a token, if any. Otherwise the token stays
  * the same.
 */
-void set_expanded_token(char **expanded, char *token, t_env_lst *envp)
+void set_expanded_token(char **expanded, char *token, t_msh *data)
 {
 	size_t i;
 	size_t len;
@@ -107,7 +110,7 @@ void set_expanded_token(char **expanded, char *token, t_env_lst *envp)
 		if (is_var(&(*expanded)[i]) && (dqt == 1 || sqt == 0))
 		{
 			printf("Es var\n");
-			*expanded = var_expansion(*expanded, envp, &i);
+			*expanded = var_expansion(*expanded, data, &i);
 			printf("Se expande a %s\n",*expanded);
 		}
 		else{
@@ -122,7 +125,7 @@ void set_expanded_token(char **expanded, char *token, t_env_lst *envp)
 /**
  * Spans the token array and expand variables, if any.
 */
-char **expanding_loop(char **tokens, t_env_lst *envp)
+char **expanding_loop(char **tokens, t_msh *data)
 {
 	int i;
 	int j;
@@ -135,7 +138,7 @@ char **expanding_loop(char **tokens, t_env_lst *envp)
 	expanded = (char **)ft_calloc(len + 1, sizeof(char *));
 	while(i < len)
 	{
-		set_expanded_token(&expanded[j], tokens[i], envp);
+		set_expanded_token(&expanded[j], tokens[i], data);
 		i++;
 		if (expanded[j])
 			j++;

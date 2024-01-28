@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/27 20:52:25 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/28 10:45:05 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,8 +200,9 @@ int is_var(char *token)
 	len = ft_strlen(token);
     //printf("len: %zu y c: %c\n", len, token[i]);
     //printf("%zu %c\n",len, token[i]);
-	if (len > 1 && token[0] == '$' && (token[1] == '$' || token[1] == '_' || ft_isalnum(token[1])))
-    {
+	if (len > 1 && token[0] == '$' && (token[1] == '$' 
+        || token[1] == '_' || ft_isalnum(token[1]) || token[1] == '?'))
+    { 
 		span_var_in_dqt(token, &i, len);
         return(1);
     }

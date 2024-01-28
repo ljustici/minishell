@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/27 13:24:24 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/28 14:36:03 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,22 @@
 */
 void span_tail_str(const char *str, unsigned long *j)
 {
+	int end_qt;
+	char c;
 	
+	end_qt = 0;
+	c = str[*j]; //entra en la ultima comilla, si encuentra mas comillas deben abrirse y cerrarse
+	printf("entra en caracter: %c\n", str[*j]);
 	if (should_split(str[*j]) == 0)
 	{
 		//while(str[*j] && should_split(str[*j]) == 0)
-		while((*j) < ft_strlen(str) && should_split(str[*j]) == 0)
+		while((*j) < ft_strlen(str) && should_split(str[*j]) == 0 && (end_qt == 3 || end_qt == 0)) //TODO: Falla cuando los espacios están entre comillas porque no son should_split
+		{
+			if (str[*j] == c)
+				end_qt++;
+			printf("tail: %c\n", str[*j]);
 			(*j)++;
+		}
 	}
 	//printf("tail: %c\n", str[*j]);
 }

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/18 13:15:05 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/28 13:47:55 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,12 @@ void ft_lexer(t_msh *data)
     {
         error_syntax_token(data, "", ERROR_MALLOC_ERROR);
         return ;
+    }
+    int i = 0;
+    while(i < ft_array_len(result))
+    {
+        printf("token: %s\n", result[i]);
+        i++;
     }
     ft_parse(result, data);
 }
