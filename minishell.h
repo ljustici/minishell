@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/28 10:56:06 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/29 14:27:29 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,9 @@ typedef struct	s_msh
 /* ***************************************************************** */
 
 int	count_tokens(const char *str);
+int handle_count_quote(const char *str, unsigned long *j, int *i);
+
+
 char **split_line(char *line, t_msh *data);
 char **split_by_metachar (char const *s, t_msh *data);
 int should_split(char c);
@@ -209,15 +212,11 @@ int is_spnltab(char c);
 
 int assign_doubleqt_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
 int assign_quoted_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
-
 int is_var_in_dqt(const char *s, unsigned long pos);
-
-int handle_count_quote(const char *str, unsigned long *j, int *i);
 void span_tail_str(const char *str, unsigned long *j);
 int add_token(t_lexer lex, int f_letter_pos, size_t i, int *j);
 void span_var_in_dqt(const char *s, size_t *i, size_t end_qt);
 int get_char_pos(const char *s, size_t start, char c);
-
 int assign_var_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
 
 int is_equal_after_var(const char *s, unsigned long pos);
@@ -225,7 +224,7 @@ int is_equal_after_var(const char *s, unsigned long pos);
 int is_first_quote(const char *s, unsigned long pos, char c);
 
 char	*ft_join_free(char *s1, char *s2);
-
+int	is_all_spaces(char *input);
 void ft_lexer(t_msh *data);
 
 //Parser
@@ -237,9 +236,11 @@ int is_word(char *token);
 int is_flag(char *token);
 int is_redir(char *token);
 int is_pipe(char *token);
-int set_token_type(char *token);
+//int set_token_type(char *token);
 char *clean_quotes(char *s, char q);
-int is_special_cmd_chars(char *token);
+//char	*clean_quotes(char *s, char q, int start, size_t end);
+
+//int is_special_cmd_chars(char *token);
 char **parse_token_array(char **tokens);
 int has_qts(char *token, char q);
 void	error_syntax_token(t_msh *data, char *token, int error);
@@ -256,7 +257,7 @@ char *format_expansion_token(char *token, char *expanded, size_t end, int start)
 
 int set_redir_type(char *token);
 
-int quote_pos(char *token, int start, char q);
+//int quote_pos(char *token, int start, char q);
 int should_clean_quotes(char *token, char **parsed);
 
 

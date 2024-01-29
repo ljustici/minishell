@@ -6,44 +6,45 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/28 11:08:59 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/28 17:14:58 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int contains_var(char *token)
+int	contains_var(char *token)
 {
-	int i;
-	size_t len;
+	int		i;
+	size_t	len;
 
 	len = ft_strlen(token);
 	i = 0;
-	while(i < (int)len)
+	while (i < (int)len)
 	{
 		if (is_var(&token[i]))
-			return(i);
+			return (i);
 		i++;
 	}
-	return(-1);
+	return (-1);
 }
 
-size_t get_end_of_var(char *token)
+size_t	get_end_of_var(char *token)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	span_var_in_dqt(token, &i, ft_strlen(token));
-	return(i);
+	return (i);
 }
 
 /**
  * Adds the characters found before or after a variable, if any.
 */
-char *format_expansion_token(char *token, char *expanded, size_t end, int start)
+char	*format_expansion_token(char *token, char *expanded, size_t end,
+		int start)
 {
-	char *result;
-	char *tail;
+	char	*result;
+	char	*tail;
 
 	result = NULL;
 	if (start == 0 && expanded)
@@ -52,17 +53,13 @@ char *format_expansion_token(char *token, char *expanded, size_t end, int start)
 		result = ft_join_free(ft_substr(token, 0, start), expanded);
 	else
 		result = ft_substr(token, 0, start);
-	
-	if (end < ft_strlen(token)) //if (end < ft_strlen(token) + ft_strlen(expanded))
+	if (end < ft_strlen(token))
 	{
 		tail = ft_substr(token, end, ft_strlen(token));
 		result = ft_join_free(result, tail);
-		//printf("result: %s end:%zu\n", result, end);
 		free(tail);
 	}
-	//free(expanded);
-	//expanded = NULL;
-	return(result);
+	return (result);
 }
 
 /**
@@ -73,54 +70,27 @@ char *format_expansion_token(char *token, char *expanded, size_t end, int start)
  * The loop must then span to the next token so that literal quotes inside
  * the tokens don't get removed.
 */
-char **parse_token_array(char **tokens)
+char	**parse_token_array(char **tokens)
 {
-	/* COMILLAS:
-	'$USER'                                     --> borra comas de fuera y no expande
-	"$USER"                                     --> borra todas las comas y expande
-	"hey '$USER'" --> deberia ser: hey 'ljustici' --> borra comas de fuera y expande
-	'hey "$USER"' --> deberia ser: hey "$USER"    --> borra comas de fuera y no expande
-	*/
-	int i;
-	int j;
-	int len;
-	char **parsed;
+	int		i;
+	int		j;
+	int		len;
+	char	**parsed;
 
 	i = 0;
 	j = 0;
 	len = ft_array_len(tokens);
 	parsed = (char **)ft_calloc(len + 1, sizeof(char *));
-	while(i < len)
+	while (i < len)
 	{
-		printf("token que llega a clean_quotes %s\n", tokens[i]);
-	
 		should_clean_quotes(tokens[i], &parsed[j]);
-			//parsed[j] = ft_strdup(tokens[i]); 
-		/*if (clean_outer_quotes(tokens[i],&parsed[j]) == 0)
-		{
-			if (has_qts(tokens[i], '\'') > 1)
-			{
-				printf("ENTRA EN SIMPLE QTS %s\n", tokens[i]);
-				parsed[j] = clean_quotes(tokens[i], '\'');
-			}
-			else if (has_qts(tokens[i], '\"') > 1)
-				parsed[j] = clean_quotes(tokens[i], '\"');
-			else
-			{
-				parsed[j] = ft_strdup(tokens[i]); //el contenido es nulo pero el pointer no es nulo
-				printf("? %s\n", parsed[j]);
-			}
-		}*/
-		printf("parsed j %s\n", parsed[j]);
-		//if (!parsed[j])
-		//	parsed[j] = NULL;
 		i++;
 		if (parsed[j])
 			j++;
 	}
 	parsed[j] = 0;
 	ft_free_array(tokens);
-	return(parsed);
+	return (parsed);
 }
 
 int	ft_array_len(char **str)
@@ -148,9 +118,9 @@ void	free_rds_list(t_rd *list)
 	}
 }
 
-void free_cmd_list(t_cmd *test)
+void	free_cmd_list(t_cmd *test)
 {
-	while(test)
+	while (test)
 	{
 		ft_free_array(test->c_args);
 		free_rds_list(test->rds);
@@ -159,60 +129,48 @@ void free_cmd_list(t_cmd *test)
 	}
 }
 
-void print_command_test(t_cmd *list)
+void	print_command_test(t_cmd *list)
 {
-	t_cmd *test;
-	
+	t_cmd	*test;
+	int		i;
+	t_rd	*print;
+
 	test = list;
-	int i = 0;
+	i = 0;
 	if (!list)
 		printf("no hay lista\n");
-	while(list)
+	while (list)
 	{
 		i = 0;
-		while(list->c_args[i])
+		while (list->c_args[i])
 		{
 			printf("-- %i content: %s\n", i, list->c_args[i]);
 			i++;
 		}
-		t_rd *print = list->rds;
-		while(print)
+		print = list->rds;
+		while (print)
 		{
 			printf("----- Nodo redir\n");
-			printf("-- redir: file %s\n",print->file);
-			printf("-- redir: endkey %s\n",print->endkey);
+			printf("-- redir: file %s\n", print->file);
+			printf("-- redir: endkey %s\n", print->endkey);
 			print = print->nx;
 		}
 		list = list->nx;
 	}
 }
 
-void ft_parse(char **tokens, t_msh *data)
+void	ft_parse(char **tokens, t_msh *data)
 {
-	char **expanded;
-	char **parsed;
-	int len;
-	t_cmd *list;
-	
+	char	**expanded;
+	char	**parsed;
+	int		len;
+	t_cmd	*list;
+
 	list = NULL;
-	//printf("ft_parse\n");
-	//--------------------------------------------clean_outer_quotes
 	expanded = expanding_loop(tokens, data);
-	//int i=0;
-	//while(expanded[i])
-    //{
-        //printf("expanded: %s\n", expanded[i]);
-        //i++;
-    //}
 	if (check_token_syntax(expanded, data))
 		return ;
 	parsed = parse_token_array(expanded);
-	//i = 0;
-	//while(parsed[i])
-    //{
-        //printf("after parsed: %s\n", parsed[i]);
-        //i++;
-    //}
 	len = ft_array_len(parsed);
 	if (len == 0)
 	{
@@ -223,7 +181,4 @@ void ft_parse(char **tokens, t_msh *data)
 	print_command_test(data->cmd_lst);
 	ft_free_array(parsed);
 	printf("Fin de parser.\n");
-	//data->cmd_lst = list;
-	//print_command_test(list);
-	//free_cmd_list(list);
 }
