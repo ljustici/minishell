@@ -6,39 +6,63 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2023/12/20 18:20:21 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/29 14:06:33 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * Spans the characters found after and end quote, as they should be part of the same token.
+ * Spans the characters found after and end quote, as they should be part of
+ * the same token.
  * Stops when a separator character is found.
 */
-void span_tail_str(const char *str, unsigned long *j)
+void	span_tail_str(const char *str, unsigned long *j)
 {
-	
+	int		end_qt;
+	char	c;
+
+	end_qt = 0;
+	c = str[*j];
+	//printf("entra en caracter: %c\n", str[*j]);
 	if (should_split(str[*j]) == 0)
 	{
-		while(str[*j] && should_split(str[*j]) == 0)
+		//while(str[*j] && should_split(str[*j]) == 0)
+		while ((*j) < ft_strlen(str) && should_split(str[*j]) == 0
+			&& (end_qt == 3 || end_qt == 0))
+		{
+			if (str[*j] == c)
+				end_qt++;
+			//printf("tail: %c\n", str[*j]);
 			(*j)++;
+		}
 	}
 	//printf("tail: %c\n", str[*j]);
 }
 
 /**
- * Spans a token delimited by quotes, including the characters right after the
- * last quotes, except if it's a separating character.
+ * Spans a token delimited by quotes, including the characters right after
+ * the last quotes, except if it's a separating character.
 */
-int handle_count_quote(const char *str, unsigned long *j, int *i)
-{	
+int	handle_count_quote(const char *str, unsigned long *j, int *i)
+{
 	(void)*i;
 	if (str[*j] == '\"' || str[*j] == '\'')
 	{
 		span_until_quote(str, j, str[*j]);
 		span_tail_str(str, j);
 		//printf("' Llega hasta %lu\n", *j);
+	}
+	return (0);
+}
+
+static int find_char(char c, const char *s, size_t i)
+{
+	while (i < ft_strlen(s))
+	{
+		if (s[i] == c)
+			return (1);
+		i++;
 	}
 	return(0);
 }
@@ -47,22 +71,20 @@ int handle_count_quote(const char *str, unsigned long *j, int *i)
  * Checks if the character is a starting quote by counting the number of
  * quotes before and after.
 */
-int is_first_quote(const char *s, unsigned long pos, char c)
+int	is_first_quote(const char *s, unsigned long pos, char c)
 {
-	size_t i;
-	int count;
+	size_t	i;
+	int		count;
 
-	
-	//write(1, "Llega\n", 6);
 	if (!s)
-		return(0);
+		return (0);
 	count = 0;
 	if (c != '\'' && c != '\"')
-		return(0); 
+		return (0);
 	if (pos == 0)
-		return(1);
+		return (1);
 	i = pos;
-	while(s[i] && i < ft_strlen(s))
+	while (i < ft_strlen(s) && s[i])
 	{
 		if (s[i] == c)
 			count++;
@@ -71,14 +93,30 @@ int is_first_quote(const char *s, unsigned long pos, char c)
 	if (count == 0 || count % 2 != 0)
 	{
 		i = pos + 1;
-		while(i < ft_strlen(s))
-		{
-			if (s[i] == c)
-				return(1);
-			i++;
-		}
+		if (find_char(c, s, i) == 1)
+			return (1);
 	}
-	return(0);
+	return (0);
+}
+
+static void span_to_next_first_letter(const char* str, size_t *j, int *i, int *is_first_letter)
+{
+	if (should_split(str[*j]) != 1 && *is_first_letter == 0)
+	{
+		*is_first_letter = 1;
+		(*i)++;
+	}
+	if (is_first_quote(str, *j, str[*j]))
+		handle_count_quote(str, j, i);
+	if (is_metacharacter(str[*j]) == 1)
+	{
+		i++;
+		*is_first_letter = 0;
+		if (is_metacharacter(str[(*j) + 1]) == 1)
+			(*j)++;
+	}
+	if (should_split(str[*j]) == 1 && *is_first_letter == 1)
+		*is_first_letter = 0;
 }
 
 /**
@@ -90,40 +128,26 @@ int is_first_quote(const char *s, unsigned long pos, char c)
 */
 int	count_tokens(const char *str)
 {
-	int	i;
-	int	is_first_letter;
+	int				i;
+	int				is_first_letter;
 	unsigned long	j;
 
 	j = 0;
 	i = 0;
 	is_first_letter = 0;
-	while (str[j])
+	while (j < ft_strlen(str))
 	{
-		if (should_split(str[j]) != 1 && is_first_letter == 0)
-		{
-			is_first_letter = 1;
-			i++;
-		}
-		if (is_first_quote(str, j, str[j]))
-			handle_count_quote(str, &j, &i);
-		if (is_metacharacter(str[j]) == 1)
-		{	
-			i++;
-			is_first_letter = 0;
-			if (is_metacharacter(str[j + 1]) == 1)
-				j++;
-		}
-		if (should_split(str[j]) == 1 && is_first_letter == 1)
-			is_first_letter = 0;
+		span_to_next_first_letter(str, &j, &i, &is_first_letter);
 		j++;
 	}
+	printf("Número de tokens: %i\n",i);
 	return (i);
 }
 
 /**
  * Checks if a character between double quotes belongs to a variable.
-*/
-int is_var_in_dqt(const char *s, unsigned long pos)
+**/
+int	is_var_in_dqt(const char *s, unsigned long pos)
 {
 	if (s[pos] == '$' && s[pos + 1])
 	{
@@ -132,17 +156,17 @@ int is_var_in_dqt(const char *s, unsigned long pos)
 		else if (s[pos + 1] == '$' || s[pos + 1] == '?' || s[pos + 1] == '#')
 			return (1);
 	}
-	return(0);	
+	return (0);
 }
 
-int is_equal_after_var(const char *s, unsigned long pos)
+/*int	is_equal_after_var(const char *s, unsigned long pos)
 {
-	size_t prev;
-	
+	size_t	prev;
+
 	prev = pos - 1;
 	if (s[pos] == '=')
 	{
-		while(!should_split(s[prev]) && s[prev] != '$')
+		while (!should_split(s[prev]) && s[prev] != '$')
 			prev--;
 		if (s[prev] == '$')
 			return (1);
@@ -150,24 +174,15 @@ int is_equal_after_var(const char *s, unsigned long pos)
 	return (0);
 }
 
-/**
- * Counts the number of tokens inside double quotes. It counts variables and
- * not variables. The double quotes themselves are not variables and will be a
- * single token or part of a not-variable token. Variables are spanned so that
- * their characters won't be accounted for as part of not-variable tokens.
- * Not-variable tokens are also spanned, and only counted as a new token with
- * their first character. The first character of the first token will always be
- * a double quote. The first character of other not-variable tokens will always
- * be the first character found after a variable token.
-*/
-void count_dqt_tokens(const char *str, unsigned long *j, int *i)
+
+void	count_dqt_tokens(const char *str, unsigned long *j, int *i)
 {
-	int is_plain;
-	size_t end_qt;
-	
+	int		is_plain;
+	size_t	end_qt;
+
 	is_plain = 0;
 	end_qt = get_char_pos(str, *j + 1, str[*j]);
-	while(str[*j] && *j <= end_qt)
+	while (str[*j] && *j <= end_qt)
 	{
 		if (is_var_in_dqt(str, *j))
 		{
@@ -183,4 +198,4 @@ void count_dqt_tokens(const char *str, unsigned long *j, int *i)
 			(*j)++;
 		}
 	}
-}
+}*/

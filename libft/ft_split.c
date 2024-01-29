@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 08:42:18 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 19:08:15 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/18 15:37:48 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void	ft_free_array(char **str)
 		str[i] = NULL;
 		i++;
 	}
-	free(str);
+	if (str)
+		free(str);
 	str = NULL;
 }
 
@@ -84,6 +85,7 @@ char	**ft_split(char const *s, char c)
 	char	**result;
 
 	n_of_w = ft_count_words(s, c);
+	printf("n words:%i\n", n_of_w);
 	result = (char **)ft_calloc(n_of_w + 1, sizeof(char *));
 	if (!result)
 		return (0);
