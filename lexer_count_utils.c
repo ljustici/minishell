@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/29 14:06:33 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/29 14:57:18 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static void span_to_next_first_letter(const char* str, size_t *j, int *i, int *i
 		handle_count_quote(str, j, i);
 	if (is_metacharacter(str[*j]) == 1)
 	{
-		i++;
+		(*i)++;
 		*is_first_letter = 0;
 		if (is_metacharacter(str[(*j) + 1]) == 1)
 			(*j)++;
@@ -138,6 +138,10 @@ int	count_tokens(const char *str)
 	while (j < ft_strlen(str))
 	{
 		span_to_next_first_letter(str, &j, &i, &is_first_letter);
+		
+
+
+		
 		j++;
 	}
 	printf("Número de tokens: %i\n",i);
