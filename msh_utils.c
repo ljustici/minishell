@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:17:09 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/25 18:54:13 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/30 12:25:54 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	ft_strcmp(char *s1, char *s2)
 	int		i;
 
 	i = 0;
+	if (!s1 || !s2)
+		return(-1);
 	while (s1 && s2 && s1[i] && s2[i])
 	{
 		if (s1[i] > s2[i])

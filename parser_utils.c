@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/29 14:28:21 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:31:18 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	 should_clean_quotes(char *token, char **parsed)
 	*parsed = ft_strdup(token);
 	while (i < len)
 	{
-		printf("Inicio de loop:\n - dqt: %zu, sqt: %zu en char %c\n", dqt, sqt, token[i]);
+		//printf("Inicio de loop:\n - dqt: %zu, sqt: %zu en char %c\n", dqt, sqt, token[i]);
 		if (dqt == 2)
 			dqt = 0;
 		else if (token[i] == '\"' && sqt == 0)
@@ -135,7 +135,7 @@ int	 should_clean_quotes(char *token, char **parsed)
 			sqt = 0;
 		else if (token[i] == '\'' && dqt == 0)
 			sqt++;
-		printf("Antes de limpieza:\n - dqt: %zu, sqt: %zu en char %c\n", dqt, sqt, token[i]);
+		//printf("Antes de limpieza:\n - dqt: %zu, sqt: %zu en char %c\n", dqt, sqt, token[i]);
 		if (dqt == 1 || sqt == 0)
 		{
 			*parsed = clean_quotes(&(*parsed)[i], '\"');//, i, next_qt_pos(token, i, len, '\"'));

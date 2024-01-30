@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/29 14:43:29 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:14:08 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ int is_first_quote(const char *s, unsigned long pos, char c);
 
 char	*ft_join_free(char *s1, char *s2);
 int	is_all_spaces(char *input);
-void ft_lexer(t_msh *data);
+int ft_lexer(t_msh *data);
 
 //Parser
 /* ***************************************************************** */
@@ -250,7 +250,7 @@ int has_qts(char *token, char q);
 void	error_syntax_token(t_msh *data, char *token, int error);
 int	ft_array_len(char **str);
 int is_var(char *token);
-void	create_list(t_cmd **list, char **tokens, int n);
+void	create_list(t_cmd **list, char **tokens);
 void ft_parse(char **tokens, t_msh *data);
 int check_token_syntax(char **tokens, t_msh *data);
 char **expanding_loop(char **tokens, t_msh *data);
@@ -263,6 +263,10 @@ int set_redir_type(char *token);
 
 //int quote_pos(char *token, int start, char q);
 int should_clean_quotes(char *token, char **parsed);
+
+void	add_redir_to_node(t_cmd **cmd, char *info, char *token);
+void	node_add_back_rd(t_cmd **head, t_rd *node);
+void	node_add_back(t_cmd **head, t_cmd *node);
 
 
 

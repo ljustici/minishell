@@ -6,31 +6,100 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:29:49 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/28 16:20:37 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:05:49 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * Fills an array with its corresponding command and its parameters
+*/
+char** fill_command_array (char **tokens, int *j, int end)
+{
+	int	i;
+	char **args;
+	
+	args = (char **)ft_calloc((end + 1), sizeof(char *));
+	if (!args)
+		return(0);
+	i = 0;
+	while (i < end)
+	{
+		if (!is_redir(tokens[i]))
+		{
+			args[*j] = ft_strdup(tokens[i]);
+			(*j)++;
+			i++;
+		}
+		else
+			i = i + 2;
+	}
+	return(args);
+}
+
+/**
+ * Adds null to the values of the node
+*/
+void finalize_node(t_cmd **node, int j)
+{
+	(*node)->c_args[j] = 0;
+	(*node)->c_env_path = 0;
+	(*node)->nx = 0;
+	(*node)->rds = 0;
+}
+
+/**
+ * Creates a node for each command, including all its redirections
+*/
 t_cmd	*create_node(char **tokens, int end)
 {
 	t_cmd	*node;
 	int		i;
+	int		j;
 
-	i = 0;
 	node = (t_cmd *)malloc(sizeof(t_cmd));
-	node->c_args = (char **)ft_calloc(end + 1, sizeof(char *));
 	if (!node)
 		return (0);
-	while (i < end && !is_redir(tokens[i]))
+	node->c_args = (char **)ft_calloc((end + 1), sizeof(char *));
+	
+	j = 0;
+	node->c_args = fill_command_array(tokens, &j, end);
+
+	/*i = 0;
+	j = 0;
+	while (i < end)
 	{
-		node->c_args[i] = ft_strdup(tokens[i]);
-		i++;
+		if (!is_redir(tokens[i]))
+		{
+			node->c_args[j] = ft_strdup(tokens[i]);
+			j++;
+			i++;
+		}
+		else
+			i = i + 2;
 	}
-	node->c_args[i] = 0;
+	*/
+
+	finalize_node(&node, j);
+	/*
+	node->c_args[j] = 0;
 	node->c_env_path = 0;
-	node->rds = 0;
 	node->nx = 0;
+	node->rds = 0;
+	*/
+	
+	i = 0;
+	while (i < end) 
+	{
+		if (is_redir(tokens[i]))
+		{
+			add_redir_to_node(&node, tokens[i + 1], tokens[i]);
+			i = i + 2;
+		}
+		else
+			i++;
+	}
 	return (node);
 }
 
@@ -49,111 +118,64 @@ void	node_add_back(t_cmd **head, t_cmd *node)
 	}
 }
 
-void	node_add_back_rd(t_rd **head, t_rd *node)
+void	node_add_back_rd(t_cmd **head, t_rd *node)
 {
 	t_rd	*go_to_last;
 
-	if (!*head)
-		*head = node;
+	go_to_last = (*head)->rds;
+	if (!node)
+		return ;
+	if (!(*head)->rds)
+		(*head)->rds = node;
 	else
 	{
-		go_to_last = *head;
+		go_to_last = (*head)->rds;
 		while (go_to_last->nx)
 			go_to_last = go_to_last->nx;
 		go_to_last->nx = node;
 	}
 }
 
-void	add_redir_to_node(t_rd **list, char *info, char *token)
+void	add_redir_to_node(t_cmd **cmd, char *info, char *token)
 {
-	t_rd	*node;
-	t_rd	**span;
+	t_rd	*list;
 
-	span = list;
-	node = (t_rd *)malloc(sizeof(t_rd));
-	node->type = set_redir_type(token);
-	if (node->type == 1 || node->type == 3 || node->type == 4)
+	list = (t_rd *)malloc(sizeof(t_rd));
+	list->type = set_redir_type(token);
+	if (list->type == 1 || list->type == 3 || list->type == 4)
 	{
-		node->file = ft_strdup(info);
-		node->endkey = NULL;
+		list->file = ft_strdup(info);
+		list->endkey = NULL;
 	}
-	else if (node->type == 2)
+	else if (list->type == 2)
 	{
-		node->endkey = ft_strdup(info);
-		node->file = NULL;
+		list->endkey = ft_strdup(info);
+		list->file = NULL;
 	}
-	node->heredoc = NULL;
-	node->nx = 0;
-	node_add_back_rd(span, node);
+	list->heredoc = NULL;
+	list->nx = 0;
+	node_add_back_rd(cmd, list);
 }
 
-/**
- * A token segment is composed by the first word and its flags and/or arguments
- * Token segments are separated by pipes. 
- * Redirections must not be included in the arguments of a token, unless they are
- * the last argument or the only argument.
-*/
-int	get_end_of_segment(char **tokens)
-{
-	int	i;
-	int	n;
-
-	n = ft_array_len(tokens) - 1;
-	i = 0;
-	while (tokens[i] && tokens[i + 1])
-	{
-		if ((is_pipe(tokens[i + 1]) || is_redir(tokens[i + 1])))
-		{
-			i++;
-			return (i);
-		}
-		i++;
-	}
-	i++;
-	return (i);
-}
-
-/**
- * Creates a list of nodes by separating the token array into segments
- * and creating a new node with each of these segments, then adding 
- * one after another.
- * Segments are delimited by pipes or null.
- * Pipes must not be either the start of a node or included in its
- * arguments.
- * If there is a redirection, it will be added to the previous node along
- * with the next token, which must be the filename. The loop will
- * restart after this filename.
-*/
-void	create_list(t_cmd **list, char **tokens, int n)
+void	create_list(t_cmd **list, char **tokens)
 {
 	int		i;
-	int		end;
 	t_cmd	*node;
-
-	i = 0;
-	end = 1;
+	int n;
+	int j;
+	
 	node = NULL;
-	printf("Create list\n");
+	i = 0;
+	j = 0;
+	n = ft_array_len(tokens);
 	while (i < n)
 	{
-		if (is_pipe(tokens[i]) && n > 1 && i != 0 && i < n - 1)
-			i++;
-		if (is_redir(tokens[i]) && i < n - 1)
-		{
-			if (!node)
-			{
-				node = create_node(&tokens[i], end);
-				node_add_back(list, node);
-			}
-			add_redir_to_node(&(node->rds), tokens[i + 1], tokens[i]);
-			i = i + 2;
-		}
-		else
-		{
-			end = get_end_of_segment(&tokens[i]);
-			node = create_node(&tokens[i], end);
-			node_add_back(list, node);
-			i = i + end;
-		}
+		while (j < n && !is_pipe(tokens[j]))
+			j++;
+		node = create_node(&tokens[i], j - i);
+		node_add_back(list, node);
+		i = j;
+		i++;
+		j++;
 	}
 }

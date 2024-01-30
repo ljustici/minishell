@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:20:28 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/25 18:39:52 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:14:41 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ void	ft_main_boucle(t_msh *data)
 			ft_free_null_void_return(&data->var_);
 			add_history(data->pipeline);
 			data->var_ = ft_strdup(data->pipeline);
-			ft_lexer(data);
-			if (data->error == NO_ERROR)
-				ft_executor(data);
+			if (ft_lexer(data) == 0 )
+				if (data->error == NO_ERROR)
+					ft_executor(data);
 		}
 	}
 	g_listen = 0;

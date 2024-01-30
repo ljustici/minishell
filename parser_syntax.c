@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/28 15:50:55 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/29 20:03:10 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	is_double_redir(char **args, char **wrong_tk)
 	return (0);
 }
 
-int	is_double_pipe(char **args, char **wrong_tk)
+int	is_double_pipe(char **args, char **wrong_tk) //TODO: | |
 {
 	int	i;
 	int	n;
@@ -83,6 +83,11 @@ int	is_redir_pipe(char **args)
 		if (ft_strcmp(args[i], "<<") == 0 && ft_strcmp(args[i + 1], "|") == 0)
 			return (1);
 		else if (ft_strcmp(args[i], ">>") == 0
+			&& ft_strcmp(args[i + 1], "|") == 0)
+			return (1);
+		else if (ft_strcmp(args[i], "<") == 0 && ft_strcmp(args[i + 1], "|") == 0)
+			return (1);
+		else if (ft_strcmp(args[i], ">") == 0
 			&& ft_strcmp(args[i + 1], "|") == 0)
 			return (1);
 		i++;

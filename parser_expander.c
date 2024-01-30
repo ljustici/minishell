@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/29 13:59:55 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:30:32 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ char	*find_var_in_envp(char *var, t_env_lst *envp)
 	result = NULL;
 	while (envp)
 	{
-		printf("- envp name: %s y var: %s\n", envp->nm, var);
+		//printf("- envp name: %s y var: %s\n", envp->nm, var);
 		if (ft_strcmp(var, envp->nm) == 0)
 		{
 			result = ft_strdup(envp->val);
-			printf("result: %s y name: %s\n", result, envp->nm);
+			//printf("result: %s y name: %s\n", result, envp->nm);
 			free(var);
 			break ;
 		}
@@ -61,7 +61,7 @@ char	*var_expansion(char *token, t_msh *data, size_t *i)
 	start = *i;
 	end = get_end_of_var(&token[start]);
 	expanded = ft_substr(token, start + 1, end - 1);
-	printf("Expanded: [%s]\n", expanded);
+	//printf("Expanded: [%s]\n", expanded);
 	if (ft_strcmp(expanded, "?") == 0)
 		expanded = ft_itoa(data->exit_code);
 	else
@@ -72,7 +72,7 @@ char	*var_expansion(char *token, t_msh *data, size_t *i)
 	*i += ft_strlen(expanded);
 	free(expanded);
 	expanded = NULL;
-	printf("i: %zu\n", *i);
+	//printf("i: %zu\n", *i);
 	return (formatted);
 }
 

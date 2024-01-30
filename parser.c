@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/28 17:14:58 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:31:44 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,57 @@ char	**parse_token_array(char **tokens)
 	return (parsed);
 }
 
+/*void swap_tokens(char **a, char **b)
+{
+	char *temp;
+
+	temp = ft_strdup(*a);
+	free(*a);
+	*a = ft_strdup(*b);
+	free(*b);
+	b = ft_strdup(temp);
+}*/
+/*
+int should_rotate(char **tokens, int len)
+{
+	int i;
+
+	i = 0;
+	if (is_redir(tokens[0]) && tokens[2])
+		return (1);
+	return (0);
+	
+	
+}
+
+char **do_redir_rotate(char **tokens, int len)
+{
+	char **new_arr;
+	int i;
+
+	i = 0;
+	new_arr = (char **)malloc(sizeof(char *) * (len + 1));
+	while(i < len)
+	{
+		if (i == len - 2)
+			new_arr[i] = ft_strdup(tokens[0]);
+		else if (i == len - 1)
+			new_arr[i] = ft_strdup(tokens[1]);
+		else
+			new_arr[i] = ft_strdup(tokens[i + 2]);
+		i++;
+	}
+	new_arr[len] = 0;
+	i = 0;
+	while(i < len)
+	{
+		printf("Reordered tokens: %s\n", new_arr[i]);
+		i++;
+	}
+	ft_free_array(tokens);
+	return(new_arr);
+}*/
+
 int	ft_array_len(char **str)
 {
 	int	i;
@@ -142,15 +193,18 @@ void	print_command_test(t_cmd *list)
 	while (list)
 	{
 		i = 0;
+		printf("----- Empieza un nodo ------\n");
 		while (list->c_args[i])
 		{
 			printf("-- %i content: %s\n", i, list->c_args[i]);
 			i++;
 		}
 		print = list->rds;
+		if (!print)
+			printf("----- no hay lista de redireccionamientos\n");
 		while (print)
 		{
-			printf("----- Nodo redir\n");
+			printf("----- redir del nodo\n");
 			printf("-- redir: file %s\n", print->file);
 			printf("-- redir: endkey %s\n", print->endkey);
 			print = print->nx;
@@ -164,21 +218,26 @@ void	ft_parse(char **tokens, t_msh *data)
 	char	**expanded;
 	char	**parsed;
 	int		len;
-	t_cmd	*list;
 
-	list = NULL;
+	data->cmd_lst = NULL;
 	expanded = expanding_loop(tokens, data);
 	if (check_token_syntax(expanded, data))
 		return ;
 	parsed = parse_token_array(expanded);
+	
 	len = ft_array_len(parsed);
+
+	//if (should_rotate(parsed, len))
+	//	parsed = do_redir_rotate(parsed, len);
 	if (len == 0)
 	{
 		ft_free_array(parsed);
 		return ;
 	}
-	create_list(&data->cmd_lst, parsed, len);
-	print_command_test(data->cmd_lst);
+	data->cmd_lst = NULL;
+	//data->cmd_lst->rds = NULL;
+	create_list(&data->cmd_lst, parsed);
+	//print_command_test(data->cmd_lst);
 	ft_free_array(parsed);
-	printf("Fin de parser.\n");
+	//printf("Fin de parser.\n");
 }
