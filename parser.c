@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/30 18:31:44 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/31 18:11:43 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,7 @@ char	**parse_token_array(char **tokens)
 	{
 		should_clean_quotes(tokens[i], &parsed[j]);
 		i++;
-		if (parsed[j])
-			j++;
+		j++;
 	}
 	parsed[j] = 0;
 	ft_free_array(tokens);
@@ -224,7 +223,6 @@ void	ft_parse(char **tokens, t_msh *data)
 	if (check_token_syntax(expanded, data))
 		return ;
 	parsed = parse_token_array(expanded);
-	
 	len = ft_array_len(parsed);
 
 	//if (should_rotate(parsed, len))

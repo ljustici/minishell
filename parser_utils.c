@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/30 18:31:18 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/31 19:06:02 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*ft_join_free(char *s1, char *s2)
 	return (s);
 }
 
-/*char	*clean_quotes(char *s, char q, int start, size_t end)
+char	*clean_quotes(char *s, char q, size_t start, size_t end)
 {
 	char	**clean;
 	char	*noqts;
@@ -47,8 +47,8 @@ char	*ft_join_free(char *s1, char *s2)
 	int		i;
 
 	i = 0;
-	clean = ft_split(ft_substr(s, start, end), q);
-	printf("Clean %s\n", clean[0]);
+	clean = ft_split(ft_substr(s, start, (end - start)), q);
+	printf("Clean %s en start %zu y end %zu\n", clean[0], start, end);
 	noqts = ft_calloc(1, sizeof(char *));
 	array_len = ft_array_len(clean);
 	while (i < array_len)
@@ -56,16 +56,17 @@ char	*ft_join_free(char *s1, char *s2)
 		noqts = ft_join_free(noqts, clean[i]);
 		i++;
 	}
+	printf("noqts %s\n", noqts);
 	ft_free_array(clean);
 	return (noqts);
-}*/
+}
 
 /**
  * Function that spans a token, splits it when it finds quotes and then
  * joins the resulting pieces together in a new token, without said quotes.
  * The quotes that must be trimmed are opening and closing quotes.
  * A quote is opening or closing if it belongs to a pair of quotes.
-*/
+*
 char	*clean_quotes(char *s, char q)
 {
 	char	**clean;
@@ -84,7 +85,7 @@ char	*clean_quotes(char *s, char q)
 	}
 	ft_free_array(clean);
 	return (noqts);
-}
+}*/
 
 /**
  * Checks if a token has an opening quote and a closing quote
@@ -118,35 +119,61 @@ int	 should_clean_quotes(char *token, char **parsed)
 	size_t	len;
 	size_t	dqt;
 	size_t	sqt;
+	size_t	nqt;
 
 	len = ft_strlen(token);
 	dqt = 0;
 	sqt = 0;
+	nqt = 0;
 	i = 0;
-	*parsed = ft_strdup(token);
+	*parsed = NULL;
+	if (!has_qts(token, '\'') && !has_qts(token, '\"'))
+		*parsed = ft_strdup(token);
+	else
 	while (i < len)
 	{
-		//printf("Inicio de loop:\n - dqt: %zu, sqt: %zu en char %c\n", dqt, sqt, token[i]);
-		if (dqt == 2)
-			dqt = 0;
-		else if (token[i] == '\"' && sqt == 0)
+		if (token[i] == '\"' && sqt == 0)
+		{
 			dqt++;
-		if (sqt == 2)
-			sqt = 0;
-		else if (token[i] == '\'' && dqt == 0)
+			nqt = 0;
+		}
+		else if (dqt == 0 && sqt == 0 && nqt == 0)
+			nqt = 1;
+		if (token[i] == '\'' && dqt == 0)
+		{
 			sqt++;
-		//printf("Antes de limpieza:\n - dqt: %zu, sqt: %zu en char %c\n", dqt, sqt, token[i]);
-		if (dqt == 1 || sqt == 0)
-		{
-			*parsed = clean_quotes(&(*parsed)[i], '\"');//, i, next_qt_pos(token, i, len, '\"'));
-			return (1);
+			nqt = 0;
 		}
-		else if (dqt == 0 || sqt == 1)
+		if (dqt == 1 && sqt == 0)
 		{
-			*parsed = clean_quotes(&(*parsed)[i], '\''); //, i, next_qt_pos(token, i, len, '\''));
-			return (1);
+			int end = next_qt_pos(token, i + 1, len, '\"');
+			*parsed = ft_strjoin_free(*parsed, clean_quotes(token, '\"', i, end));
+			printf("parsed: %s  y i %zu  y end %d\n",*parsed, i, end);
+			i = end;
+			dqt = 0;
 		}
-	}
+		else if (dqt == 0 && sqt == 1)
+		{
+			int end = next_qt_pos(token, i + 1, len, '\'');
+			*parsed = ft_strjoin_free(*parsed, clean_quotes(token, '\'', i, end));
+			printf("parsed: %s  y i %zu  y end %d\n",*parsed, i, end);
+			i = end;
+			sqt = 0;
+		}
+		else if (dqt == 0 && sqt == 0 && nqt == 1 && i < len)
+		{
+			int end = next_qt_pos(token, i, len, '\'');
+			int other = next_qt_pos(token, i, len, '\"');
+			if (other < end)
+				end = other;
+			printf("end : %d  e i: %zu\n", end, i);
+			*parsed = ft_strjoin_free(*parsed, ft_substr(token, i, (end - i)));
+			printf("new parsed %s\n", *parsed);
+			i = end - 1;
+			nqt = 0;
+		}
+		i++;
+	}	
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/30 18:14:08 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/01/31 19:10:29 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,8 +241,8 @@ int is_flag(char *token);
 int is_redir(char *token);
 int is_pipe(char *token);
 //int set_token_type(char *token);
-char *clean_quotes(char *s, char q);
-//char	*clean_quotes(char *s, char q, int start, size_t end);
+//char *clean_quotes(char *s, char q);
+char	*clean_quotes(char *s, char q, size_t start, size_t end);
 
 //int is_special_cmd_chars(char *token);
 char **parse_token_array(char **tokens);
@@ -302,13 +302,6 @@ void		ft_index_lstadd_mid(t_env_lst *prev, t_env_lst *nd);
 char		**ft_find_env_paths(t_msh *data);
 int			ft_env_lst_count_nds(t_env_lst *env_lst);
 
-/* ***************************************************************** */
-/* *********     false LEXER & PARSER  FUNCTIONS      ************** */
-/* ***************************************************************** */
-
-//void	ft_init_msh_struct(t_msh *data);
-//void	ft_simple_lexer(t_msh *data);
-//void	ft_simple_parser(t_msh *data);
 int		ft_detect_forbidden_chars(char *name);
 
 /* ***************************************************************** */

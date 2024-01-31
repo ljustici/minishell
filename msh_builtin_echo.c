@@ -3,27 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   msh_builtin_echo.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 19:57:12 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/13 20:59:07 by roruiz-v         ###   ########.fr       */
+/*   Created: 2024/01/31 16:58:13 by ljustici          #+#    #+#             */
+/*   Updated: 2024/01/31 19:03:32 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief   ** THIS IS ONLY A SIMPLE VERSION TO CHECK EXIT_STATUS **
- * 	(The definitive versión is being builting by @ljustici - ADA)
- * 
- * @param data 
- */
 void	ft_builtin_echo(t_msh *data)
-{ // ADMITS OPTION -n & ARGMTS
-	if (ft_strcmp(data->cmd_lst->c_args[1], "$?") == 0)
+{
+    t_cmd* list;
+    int first;
+    int nl;
+    int i;
+
+    list = data->cmd_lst;
+    first = 0;
+    nl = 0;
+    while (list)
 	{
-		ft_putstr_fd(ft_itoa(data->exit_code), data->fd);
-		ft_putchar_fd('\n', data->fd);
-		data->exit_code = 0;
+		i = 0;
+		while (list->c_args[i])
+		{
+            if (ft_strcmp("echo", list->c_args[i]) == 0 && first == 0)
+            {
+                first = i + 1;
+                i++;
+            }
+            if (first)
+            {
+                if (!nl && ft_strcmp("-n", list->c_args[first]) == 0)
+                {
+                    i++;
+                    nl = 1;
+                }
+                ft_putstr_fd(list->c_args[i], 1);
+                if (list->c_args[i + 1])
+                    ft_putstr_fd(" ", 1);
+            }
+            i++;
+		}
+		list = list->nx;
 	}
+    if (!nl)
+        ft_putstr_fd("\n", 1);
 }
