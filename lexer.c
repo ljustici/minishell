@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 13:50:48 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:52:44 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,12 @@ char	**split_line(char *line, t_msh *data)
 int	ft_lexer(t_msh *data)
 {
 	char	**result;
-	int		i;
 
-	if (is_all_spaces(data->pipeline)) //debe ser guardado en el historial
+	if (is_all_spaces(data->pipeline))
 		return (1);
 	result = split_line(data->pipeline, data);
 	if (!result)
 		return (1);
-	i = 0;
-	while (i < ft_array_len(result))
-	{
-		//printf("token: %s\n", result[i]);
-		i++;
-	}
 	ft_parse(result, data);
 	ft_free_array(result);
 	return (0);

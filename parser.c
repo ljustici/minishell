@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 16:07:33 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:46:20 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,10 @@ void	ft_parse(char **tokens, t_msh *data)
 	data->cmd_lst = NULL;
 	expanded = expanding_loop(tokens, data);
 	if (check_token_syntax(expanded, data))
+	{
+		ft_free_array(expanded);
 		return ;
+	}
 	parsed = parse_token_array(expanded);
 	ft_free_array(expanded);
 	len = ft_array_len(parsed);
@@ -232,5 +235,6 @@ void	ft_parse(char **tokens, t_msh *data)
 	}
 	data->cmd_lst = NULL;
 	create_list(&data->cmd_lst, parsed);
+	print_command_test(data->cmd_lst);
 	ft_free_array(parsed);
 }

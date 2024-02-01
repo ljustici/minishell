@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:06:20 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/28 16:38:56 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:07:22 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	error_syntax_token(t_msh *data, char *token, int error)
 		data->exit_code = 258;
 	}
 	if (error == ERROR_MALLOC_ERROR)
+	{
 		ft_putstr_fd("Malloc error\n", 2);
+	}
 	if (error == ERROR_QUOTE)
 	{
 		ft_putstr_fd(": syntax error near unexpected quote\n", 2);

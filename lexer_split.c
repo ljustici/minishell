@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 16:06:16 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:05:19 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,24 @@ int	assign_token(t_lexer lex, size_t *i, int *j, int f_letter_pos)
 	return (1);
 }
 
-static int is_first_char_in_token(t_lexer lex, size_t i, int f_letter_pos)
+static	int	is_first_char_in_token(t_lexer lex, size_t i, int f_letter_pos)
 {
 	if ((should_split(lex.s[i]) != 1 && f_letter_pos
 			== -1) || is_metacharacter(lex.s[i]) == 1)
-			return (1);
+		return (1);
 	return (0);
 }
 
 /**
- * Checks if a character is a separator:
- *
-	- Opening double quotes or simple quotes. Any characters enclosed or
-	following quotes are part of the same token, therefore they're spanned.
- * - Spaces, tabs, new lines, pipes, redirections.
- * - A first character that is not any of the above.
-
-	It then saves the position of the character and spans until the next
-	character of any of those types.
- * A token is saved from the saved position to the next position found.
+* Checks if a character is a separator:
+*
+* - Opening double quotes or simple quotes. Any characters enclosed or
+* following quotes are part of the same token, therefore they're spanned.
+* - Spaces, tabs, new lines, pipes, redirections.
+* - A first character that is not any of the above.
+* It then saves the position of the character and spans until the next
+* character of any of those types.
+* A token is saved from the saved position to the next position found.
 */
 int	check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
 {
@@ -59,7 +58,7 @@ int	check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
 					+ 1])) && *f_letter_pos >= 0)
 	{
 		if (assign_token(lex, i, j, *f_letter_pos) == 0)
-			return (0); //malloc error
+			return (0);
 		*f_letter_pos = -1;
 	}
 	else if (*i == ft_strlen(lex.s) && *f_letter_pos >= 0
@@ -67,7 +66,7 @@ int	check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
 		- 1)
 	{
 		if (assign_token(lex, i, j, *f_letter_pos) == 0)
-			return (0); //malloc error
+			return (0);
 		*f_letter_pos = -1;
 	}
 	return (1);
@@ -88,7 +87,10 @@ int	fill_tokens(char **result, const char *s, t_msh *data)
 	while (i <= ft_strlen(s))
 	{
 		if (check_and_fill(lex, &i, &j, &f_letter_pos) == 0)
+		{
 			error_syntax_token(data, "", ERROR_MALLOC_ERROR);
+			return(0);
+		}
 		i++;
 	}
 	lex.tokens[j] = 0;
@@ -111,7 +113,6 @@ char	**split_by_metachar(char const *s, t_msh *data)
 	correct = fill_tokens(result, s, data);
 	if (!correct)
 	{
-		//printf("nop\n");
 		ft_free_array(result);
 		return (0);
 	}

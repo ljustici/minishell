@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 16:07:17 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 21:03:44 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int should_clean_quotes(char *token, char **parsed)
 {
 	if (!has_qts(token, '\'') && !has_qts(token, '\"'))
 	{
-		*parsed = NULL;
 		*parsed = ft_strdup(token);
 		return (0);
 	}
