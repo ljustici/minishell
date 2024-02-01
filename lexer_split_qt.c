@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 14:39:05 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/28 17:24:10 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:06:08 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int	add_token(t_lexer lex, int f_letter_pos, size_t i, int *j)
 			return (0);
 		(*j)++;
 	}
-	else
-		printf("NO tamaño\n");
+	//else
+		//printf("NO tamaño\n");
 	return (1);
 }
 

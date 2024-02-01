@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:54:12 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 13:27:33 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:07:04 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	double_qts_section(char *token, char **parsed, size_t *dqt,
 	section = clean_quotes(token, '\"', *i, end);
 	*parsed = ft_strjoin_free(*parsed, section);
 	free(section);
-	printf("parsed: %s  y i %zu  y end %d\n", *parsed, *i, end);
+	//printf("parsed: %s  y i %zu  y end %d\n", *parsed, *i, end);
 	*i = end;
 	*dqt = 0;
 }
@@ -58,7 +58,7 @@ static void	simple_qts_section(char *token, char **parsed, size_t *sqt,
 	section = clean_quotes(token, '\'', *i, end);
 	*parsed = ft_strjoin_free(*parsed, section);
 	free(section);
-	printf("parsed: %s  y i %zu  y end %d\n", *parsed, *i, end);
+	//printf("parsed: %s  y i %zu  y end %d\n", *parsed, *i, end);
 	*i = end;
 	*sqt = 0;
 }
@@ -75,12 +75,12 @@ static void	no_qts_section(char *token, char **parsed, size_t *nqt, size_t *i)
 	other = next_qt_pos(token, *i, len, '\"');
 	if (other < end)
 		end = other;
-	printf("end : %d  e i: %zu\n", end, *i);
+	//printf("end : %d  e i: %zu\n", end, *i);
 	section = ft_substr(token, *i, (end - *i));
 	*parsed = ft_strjoin_free(*parsed, section);
 	free(section);
 	section = NULL;
-	printf("new parsed %s\n", *parsed);
+	//printf("new parsed %s\n", *parsed);
 	*i = end - 1;
 	nqt = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/29 13:48:36 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:06:16 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char	**split_by_metachar(char const *s, t_msh *data)
 	correct = fill_tokens(result, s, data);
 	if (!correct)
 	{
-		printf("nop\n");
+		//printf("nop\n");
 		ft_free_array(result);
 		return (0);
 	}

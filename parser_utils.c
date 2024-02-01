@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 13:07:54 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:07:17 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*clean_quotes(char *s, char q, size_t start, size_t end)
 
 	i = 0;
 	clean = ft_split_free(ft_substr(s, start, (end - start)), q);
-	printf("Clean %s en start %zu y end %zu\n", clean[0], start, end);
+	//printf("Clean %s en start %zu y end %zu\n", clean[0], start, end);
 	noqts = ft_calloc(1, sizeof(char *));
 	array_len = ft_array_len(clean);
 	while (i < array_len)
@@ -56,7 +56,7 @@ char	*clean_quotes(char *s, char q, size_t start, size_t end)
 		noqts = ft_join_free(noqts, clean[i]);
 		i++;
 	}
-	printf("noqts %s\n", noqts);
+	//printf("noqts %s\n", noqts);
 	ft_free_array(clean);
 	return (noqts);
 }

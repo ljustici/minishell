@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_redir_in_out_file.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:40:27 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/17 12:55:47 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:06:38 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	ft_redir_outfile(t_msh *data, t_cmd *cmd_nd, t_rd *rd_nd)
 
 	if (rd_nd->type == SOR)
 	{
-		printf("DEBUG: ft_redir_outfile) SOR - file = %s\n", rd_nd->file);	
+		//printf("DEBUG: ft_redir_outfile) SOR - file = %s\n", rd_nd->file);	
 //		cmd_nd->fd_out = open(rd_nd->file, O_CREAT | O_TRUNC | O_RDWR, 0644);
 		close(cmd_nd->fd[WR]); // si hay pipe, cierro el que se asignó al pipe
 		cmd_nd->fd[WR] = open(rd_nd->file, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	}
 	else if (rd_nd->type == DOR)
 	{
-		printf("DEBUG: ft_redir_outfile) DOR - file = %s\n", rd_nd->file);	
+		//printf("DEBUG: ft_redir_outfile) DOR - file = %s\n", rd_nd->file);	
 //		cmd_nd->fd_out = open(rd_nd->file, O_CREAT | O_APPEND | O_RDWR, 0644);
 		close(cmd_nd->fd[WR]); // si hay pipe, cierro el que se asignó al pipe
 		cmd_nd->fd[WR] = open(rd_nd->file, O_CREAT | O_APPEND | O_RDWR, 0644);
