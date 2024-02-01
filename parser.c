@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/31 18:11:43 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:49:13 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ char	**parse_token_array(char **tokens)
 	parsed = (char **)ft_calloc(len + 1, sizeof(char *));
 	while (i < len)
 	{
-		should_clean_quotes(tokens[i], &parsed[j]);
+		if (should_clean_quotes(tokens[i], &parsed[j]) == 1)
+			quote_section_cleaner(tokens[i], &parsed[j], ft_strlen(tokens[i]));
 		i++;
 		j++;
 	}
 	parsed[j] = 0;
-	ft_free_array(tokens);
 	return (parsed);
 }
 
@@ -223,19 +223,14 @@ void	ft_parse(char **tokens, t_msh *data)
 	if (check_token_syntax(expanded, data))
 		return ;
 	parsed = parse_token_array(expanded);
+	ft_free_array(expanded);
 	len = ft_array_len(parsed);
-
-	//if (should_rotate(parsed, len))
-	//	parsed = do_redir_rotate(parsed, len);
 	if (len == 0)
 	{
 		ft_free_array(parsed);
 		return ;
 	}
 	data->cmd_lst = NULL;
-	//data->cmd_lst->rds = NULL;
 	create_list(&data->cmd_lst, parsed);
-	//print_command_test(data->cmd_lst);
 	ft_free_array(parsed);
-	//printf("Fin de parser.\n");
 }

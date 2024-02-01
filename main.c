@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:20:28 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/30 18:14:41 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:29:26 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	g_listen = 0;
  
-/* static void	ft_leaks(void)
+/*static void	ft_leaks(void)
 {
 	system("leaks -q minishell");
-} */
+}*/
 
 static void	ft_print_minishell(void)
 {
@@ -79,7 +79,7 @@ void	ft_init_msh_struct(t_msh *data)
  */
 void	ft_main_boucle(t_msh *data)
 {
-	data->pipeline = readline(BACK_RED GREEN BOLD ">>> msh_4.0$ " RESET);
+	data->pipeline = readline(">>> msh_4.0$ ");
 	ft_ctrl_d(data);
 	if (data->pipeline[0] != '\0')
 	{
@@ -118,7 +118,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_msh	data;
 	
-//	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	(void)argv;
 	if (argc > 1)
 		ft_error_start(argv[1], ERROR_START_NO_SUCH_FILE_OR_DIRECTORY);

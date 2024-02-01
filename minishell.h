@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/31 19:10:29 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:09:10 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,11 +259,12 @@ int contains_var(char *token);
 size_t get_end_of_var(char *token);
 char *format_expansion_token(char *token, char *expanded, size_t end, int start);
 
-int set_redir_type(char *token);
-
-//int quote_pos(char *token, int start, char q);
+void	 quote_section_cleaner(char *token, char **parsed, size_t len);
 int should_clean_quotes(char *token, char **parsed);
+size_t next_qt_pos(char *token, size_t start, size_t len, char qt);
+char	**ft_split_free(char *s, char c);
 
+int set_redir_type(char *token);
 void	add_redir_to_node(t_cmd **cmd, char *info, char *token);
 void	node_add_back_rd(t_cmd **head, t_rd *node);
 void	node_add_back(t_cmd **head, t_cmd *node);

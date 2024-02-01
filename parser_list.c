@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:29:49 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/30 18:05:49 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:27:03 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,34 +61,11 @@ t_cmd	*create_node(char **tokens, int end)
 	node = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!node)
 		return (0);
-	node->c_args = (char **)ft_calloc((end + 1), sizeof(char *));
-	
+	node->c_args = NULL;
+	//node->c_args = (char **)ft_calloc((end + 1), sizeof(char *));
 	j = 0;
 	node->c_args = fill_command_array(tokens, &j, end);
-
-	/*i = 0;
-	j = 0;
-	while (i < end)
-	{
-		if (!is_redir(tokens[i]))
-		{
-			node->c_args[j] = ft_strdup(tokens[i]);
-			j++;
-			i++;
-		}
-		else
-			i = i + 2;
-	}
-	*/
-
 	finalize_node(&node, j);
-	/*
-	node->c_args[j] = 0;
-	node->c_env_path = 0;
-	node->nx = 0;
-	node->rds = 0;
-	*/
-	
 	i = 0;
 	while (i < end) 
 	{

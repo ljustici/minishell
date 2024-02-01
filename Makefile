@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+         #
+#    By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/18 13:12:22 by roruiz-v          #+#    #+#              #
-#    Updated: 2024/01/18 17:26:39 by roruiz-v         ###   ########.fr        #
+#    Updated: 2024/02/01 14:28:20 by ljustici         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRC		=	main.c \
 			lexer.c lexer_split.c lexer_utils.c lexer_split_qt.c \
 			lexer_count_utils.c parser.c parser_errors.c parser_naming.c \
 			parser_utils.c parser_list.c parser_syntax.c parser_expander.c \
+			parser_cleaner.c parser_utils2.c \
 			msh_signals.c \
 			msh_executor.c \
 			msh_builtin_executor.c \
@@ -58,7 +59,7 @@ OFILES = $(addprefix obj/, $(OBJS))
 
 CC		= gcc
 
-FLAGS	= -Wall -Werror -Wextra -g -fsanitize=address
+FLAGS	= -Wall -Werror -Wextra -g #-fsanitize=address
 
 # juan-aga memory-leaks tool:
 #LEAKS = memory-leaks/memory_leaks.a

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/30 18:30:32 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:01:42 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,15 @@ char	*var_expansion(char *token, t_msh *data, size_t *i)
 	expanded = ft_substr(token, start + 1, end - 1);
 	//printf("Expanded: [%s]\n", expanded);
 	if (ft_strcmp(expanded, "?") == 0)
+	{
+		free(expanded);
 		expanded = ft_itoa(data->exit_code);
+	}
 	else
+	{
+		free(expanded);
 		expanded = find_var_in_envp(expanded, data->env_lst);
+	}
 	end = end + start;
 	formatted = format_expansion_token(token, expanded,
 			end, start);
@@ -103,13 +109,16 @@ void	set_expanded_token(char **expanded, char *token, t_msh *data)
 		if ((*expanded)[i] == '\'' && dqt == 0)
 			sqt++;
 		if (is_var(&(*expanded)[i]) && (dqt == 1 || sqt == 0))
+		{
+			free(*expanded);
 			*expanded = var_expansion(*expanded, data, &i);
+		}
 		else
 			i++;
 		len = ft_strlen(*expanded);
 	}
-	if (!(*expanded))
-		*expanded = ft_strdup(token);
+	//if (!(*expanded))
+	//	*expanded = ft_strdup(token);
 }
 
 /**
@@ -134,6 +143,6 @@ char	**expanding_loop(char **tokens, t_msh *data)
 			j++;
 	}
 	expanded[j] = 0;
-	ft_free_array(tokens);
+	//ft_free_array(tokens);
 	return (expanded);
 }

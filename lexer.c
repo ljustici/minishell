@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:11:36 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/30 18:30:58 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:50:48 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,6 @@ int	ft_lexer(t_msh *data)
 		i++;
 	}
 	ft_parse(result, data);
+	ft_free_array(result);
 	return (0);
 }
