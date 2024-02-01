@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 15:01:42 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:59:31 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*var_expansion(char *token, t_msh *data, size_t *i)
 	}
 	else
 	{
-		free(expanded);
+		//free(expanded);
 		expanded = find_var_in_envp(expanded, data->env_lst);
 	}
 	end = end + start;
@@ -77,7 +77,9 @@ char	*var_expansion(char *token, t_msh *data, size_t *i)
 			end, start);
 	*i += ft_strlen(expanded);
 	free(expanded);
+	free(token);
 	expanded = NULL;
+	token = NULL;
 	//printf("i: %zu\n", *i);
 	return (formatted);
 }
@@ -110,7 +112,7 @@ void	set_expanded_token(char **expanded, char *token, t_msh *data)
 			sqt++;
 		if (is_var(&(*expanded)[i]) && (dqt == 1 || sqt == 0))
 		{
-			free(*expanded);
+			//free(*expanded);
 			*expanded = var_expansion(*expanded, data, &i);
 		}
 		else
