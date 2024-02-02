@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 18:26:32 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/24 13:27:34 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:31:16 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
  *  With x in 1 state, we can cd into de dir (not if it's 0)
  *  With x in 0 state, we can't cd into de dir (not if it's 1)
  * 
- *   0: ningún permiso (ni lectura, ni escritura ni ejecución)
- *   1: (001) permiso de ejecución
- *   2: (010) permiso de escritura
- *   4: (100) permiso de lectura
- *   3: (011) permiso de escritura y ejecución
- *   6: (110) permiso de lectura y escritura (no de ejecución)
- *   5: (101) permiso de lectura y de ejecución
- *   7: (111) todos los permisos
+ *   0: none permissions
+ *   1: (001) x
+ *   2: (010) w
+ *   4: (100) r
+ *   3: (011) w + r
+ *   6: (110) r + w
+ *   5: (101) r + w
+ *   7: (111) all permissions
  * 
  *  Function "stat", from <sys/stat.h> library, obtains info about an
  *  especified file or directory and puts the info into de "st" struct.
@@ -40,7 +40,6 @@
 /**
  * @brief   * Searchs a environment var by its name & returns its value *
  *  
- * 
  * @param data 
  * @param env_nm 
  * @return char*   A allocated string or NULL if the var doesn't exist.
@@ -49,7 +48,7 @@ char	*ft_env_obtain_val(t_msh *data, char *env_nm)
 {
 	char		*src_val;
 	t_env_lst	*tmp;
-	
+
 	src_val = NULL;
 	tmp = data->env_lst;
 	if (!env_nm)
@@ -106,7 +105,7 @@ void	ft_env_change_val(t_msh *data, char *nm_dst, char *new_val)
  * @param data 
  */
 void	ft_builtin_cd(t_msh *data, t_cmd *cmd_nd)
-{	
+{
 	if (cmd_nd->c_args[1])
 	{
 		if (!ft_isalnum(cmd_nd->c_args[1][0]))
@@ -117,7 +116,8 @@ void	ft_builtin_cd(t_msh *data, t_cmd *cmd_nd)
 				ft_builtin_cd_without_args(data, cmd_nd, 0);
 			else if (chdir(cmd_nd->c_args[1]) == 0)
 			{
-				ft_env_change_val(data, "OLDPWD", ft_env_obtain_val(data, "PWD"));
+				ft_env_change_val(data, "OLDPWD", \
+					ft_env_obtain_val(data, "PWD"));
 				ft_env_change_val(data, "PWD", getcwd(NULL, 0));
 			}
 			else

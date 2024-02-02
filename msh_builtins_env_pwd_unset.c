@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_builtins_env_pwd_unset.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 20:02:24 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/17 12:55:47 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:55:11 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_builtin_env(t_msh *data, t_cmd *cmd_nd)
  * @param data 
  */
 void	ft_builtin_unset(t_msh *data, t_cmd *cmd_nd)
-{ // VERIFICAR EL CÓDIGO DE SALIDA
+{
 	int	i;
 
 	i = 0;
@@ -40,12 +40,12 @@ void	ft_builtin_unset(t_msh *data, t_cmd *cmd_nd)
 }
 
 void	ft_builtin_pwd(t_msh *data)
-{ // VERIFICAR EL CÓDIGO DE SALIDA
+{
 	char	*cwd;
-	
+
 	cwd = getcwd(NULL, 0);
-	ft_putstr_fd(cwd, data->fd);
-	ft_putchar_fd('\n', data->fd);
+	ft_putstr_fd(cwd, 1);
+	ft_putchar_fd('\n', 1);
 	ft_free_null_void_return(&cwd);
 	data->exit_code = 0;
 }

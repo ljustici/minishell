@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 14:16:37 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/17 17:29:14 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:10:48 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_duplic_envp(t_msh *data, char **envp)
 	int		i;
 	char	**tmp_env;
 	char	*shlvl;
-	
+
 	i = -1;
 	while (envp[++i])
 	{
@@ -50,7 +50,6 @@ void	ft_duplic_envp(t_msh *data, char **envp)
 	}
 }
 
-
 /**
  * @brief       **** BUILTS A NODE WITH THE PARAMTRS INFO ****
  * 		Detects if the name cointains forbidden chars:
@@ -71,12 +70,11 @@ t_env_lst	*ft_env_lst_new(char **tmp_env, int equal)
 	node->nx = NULL;
 	if (ft_detect_forbidden_chars(node->nm))
 	{
-		//ft_printf("export: `%s': not a valid identifier\n", node->nm);
-		ft_putstr("export: ",2);
+		ft_putstr("export: ", 2);
 		ft_putstr(node->nm, 2);
 		ft_putstr(": not a valid identifier\n", 2);
 		ft_free_envlst_node(node);
 		return (NULL);
 	}
-	return (node);	
+	return (node);
 }

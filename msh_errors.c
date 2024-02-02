@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:30:00 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/24 14:12:53 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:49:03 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,15 @@ void	ft_error_status(t_msh *data, t_cmd *cmd_nd, int error)
 		data->error = END;
 	else if (error == ERROR_NO_PATHS)
 	{
-		ft_putstr_fd("Error, no existe la variable PATH\n", 2);
+		ft_putstr_fd("Error: PATH doesn't exist\n", 2);
 		data->error = NO_ERROR;
 	}
 	else if (error == ERROR_CMD_NOT_EXISTS)
-	{ // viene de ejecutar un comando externo (con fork)
+	{
 		ft_putstr_fd("msh: ", 2);
 		ft_putstr_fd(cmd_nd->c_args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		data->error = NO_ERROR;
-//		exit (127);
 	}
 	else if (error == ERROR_TOO_MANY_ARGUMENTS)
 	{
@@ -41,17 +40,17 @@ void	ft_error_pipes_forks(t_msh *data, int error)
 {
 	if (error == ERROR_PID)
 	{
-		ft_putstr_fd("Error PID\n", 2);
+		ft_putstr_fd("Error: PID\n", 2);
 		data->error = END;
 	}
 	else if (error == ERROR_PIPE_CREATION)
 	{
-		ft_putstr_fd("DEBUG: pipe \n", 2);
+		ft_putstr_fd("Error: pipe \n", 2);
 		data->error = END;
 	}
 	else if (error == ERROR_PIPE_EXECUTION)
 	{
-		ft_putstr_fd("DEBUG: pipe execution command error\n", 2);
+		ft_putstr_fd("Error: pipe execution command error\n", 2);
 		data->error = END;
 	}
 }
@@ -62,7 +61,7 @@ void	ft_error_pipes_forks(t_msh *data, int error)
  * @param data 
  * @param error 
  */
-void	ft_error_cd(t_msh *data, t_cmd *cmd_nd , int error)
+void	ft_error_cd(t_msh *data, t_cmd *cmd_nd, int error)
 {
 	if (error == ERROR_CHDIR_FAILURE)
 	{
@@ -85,42 +84,16 @@ void	ft_error_cd(t_msh *data, t_cmd *cmd_nd , int error)
 	}
 }
 
-/**
- * @brief   ** IN CASE OF EXECUTE 'MINISHELL' WITH ARGMTS **
- * 
- * @param argv_1 
- * @param error 
- */
-void	ft_error_start(char *argv_1, int error)
-{
-	if (error == ERROR_START_NO_SUCH_FILE_OR_DIRECTORY)
-	{
-		ft_putstr_fd("msh: ", 2);
-		ft_putstr_fd(argv_1, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		exit(127);
-	}
-}
-
-void	ft_error_signal(int error)
-{
-	if (error == ERROR_SIGACTION_FAILURE)
-	{
-		ft_putstr_fd("Sigaction failure\n", 2);
-		exit(EXIT_FAILURE);
-	}
-}
-
 void	ft_error_files(t_msh *data, t_cmd *cmd_nd, t_rd *rd_nd, int error)
 {
-	if (error == ERROR_OPEN_INFILE) // esto lo estaba usando builtin_pwd y lo he cambiado
+	if (error == ERROR_OPEN_INFILE)
 	{
 		ft_putstr_fd("msh: ", 2);
 		ft_putstr_fd(rd_nd->file, 2);
 		ft_putstr_fd(" : No such file or directory\n", 2);
 	}
 	else if (error == ERROR_NO_SUCH_FILE_OR_DIRECTORY)
-	{ // cuando al env le pongo argumentos, por ejemplo, no lo piden
+	{
 		if (ft_strcmp(cmd_nd->c_args[0], "env") != 0)
 			ft_putstr_fd("msh: ", 2);
 		ft_putstr_fd(cmd_nd->c_args[0], 2);
@@ -143,7 +116,7 @@ void	ft_error_cmds(t_msh *data, t_cmd *cmd_nd, int error)
 		data->exit_code = 127;
 	}
 	else if (error == ERROR_CMD_NOT_EXECUTABLE)
-	{ // pendiente de comprobar los accesos a directorios sin permisos
+	{
 		ft_putstr_fd("msh: ", 2);
 		ft_putstr_fd(cmd_nd->c_args[0], 2);
 		ft_putstr_fd(": Permission denied\n", 2);
@@ -153,7 +126,6 @@ void	ft_error_cmds(t_msh *data, t_cmd *cmd_nd, int error)
 	{
 		ft_putstr_fd(cmd_nd->c_args[0], 2);
 		ft_putstr_fd(": permission denied: ", 2);
-//		ft_putstr_fd(cmd_nd->c_args[0], 2); // SUSTITUIR ESTO POR EL DIRECTORIO
 		ft_putstr_fd("\n", 2);
 		data->exit_code = 1;
 	}

@@ -6,48 +6,18 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:21:55 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/25 18:54:58 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:38:24 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*  BEWARE OF THIS !!! DO YOU HAVE THE CONVENIENT PERMISSIONS
- * 			TO EXECUTE THE COMMAND ???
- *
- *  **** chmod -> rwx
- * 
- * 	With r in 1 state, we can list the files in the dir
- *  With r in 0 state, we can't list the files in the dir
- *  With w in 1 state, we can create, delete or rename files in the dir
- *  With w in 0 state, we can't create, delete or rename files in the dir
- *  With x in 1 state, we can cd into de dir (not if it's 0)
- *  With x in 0 state, we can't cd into de dir (not if it's 1)
- * 
- *   0: ningún permiso (ni lectura, ni escritura ni ejecución)
- *   1: (001) permiso de ejecución
- *   2: (010) permiso de escritura
- *   4: (100) permiso de lectura
- *   3: (011) permiso de escritura y ejecución
- *   6: (110) permiso de lectura y escritura (no de ejecución)
- *   5: (101) permiso de lectura y de ejecución
- *   7: (111) todos los permisos
- * 
- *  Function "stat", from <sys/stat.h> library, obtains info about an
- *  especified file or directory and puts the info into de "st" struct.
- *  With "st.st_mode & 0777" we can extract the permissions of the dir
- *  from "st.st_mode". The permissions can be printed in octal format.
- * 
-*/
-
 /**
  * @brief 
- * 
- * Cada comando tiene una lista de redirs:
- * 	- cada nodo de redir va cambiando el STDIN/STDOUT del comando
- *  - el efecto conseguido es que sólo el último redir de cada natu
- * 		(entrada/salida) define en última instancia cuál será la
- * 		entrada/salida definitiva DE DICHO COMANDO.
+ * Each command has one redirs linked list:
+ * 	- every redir node will change the command STDIN/STDOUT
+ *  - so, only the last redir of each STDIN/STDOUT natu, finally defines
+ *    the definitely in/out of its command 
  * 
  * @param data 
  * @param cmd_nd 
@@ -70,39 +40,6 @@ static void	ft_redir_checker(t_msh *data, t_cmd *cmd_nd)
 		rd_nd = rd_nd->nx;
 	}
 }
-
-/* BEWARE OF THIS !!!
-	comprobar qué funciones de la librería <sys/stat.h> podemos usar:
-	- stat
-	- lstat
-	- fstat
-*/
-/* static int	ft_check_here_permissions(t_msh *data, t_cmd *cmd_nd)
-{
-	struct stat	st;
-
-	if (stat(data->shadow_pwd, &st) == 0) // está comprobando si existe el archivo
-	{
-//		if (st.st_mode & S_IXUSR) // está comprobando si tiene permisos de ejecución
-		if (st.st_mode & S_IRWXU) // está comprobando si tiene todos los permisos
-		{
-//			printf("DEBUG: ft_check_permissions) st_mode = %d\n", st.st_mode);
-			return (0);
-		}
-		else
-		{
-//			printf("DEBUG: ft_check_permissions) st_mode = %d\n", st.st_mode);
-			ft_error_cmds(data, cmd_nd, ERROR_NO_PERMISSION);
-			return (1);
-		}
-	}
-	else
-	{
-		ft_error_cmds(data, cmd_nd, ERROR_NO_PERMISSION);
-		return (1);
-	}
-	return (0);
-} */
 
 static void	ft_cmd_analyzer(t_msh *data, char *cmd, t_cmd *cmd_nd)
 {
@@ -128,7 +65,7 @@ static void	ft_cmd_analyzer(t_msh *data, char *cmd, t_cmd *cmd_nd)
 }
 
 /**
- * @brief ** Checks if the cmd is a builtin or an external command **
+ * @brief 
  * 
  * 	>> env    -> bash admits both LOWERS & UPPERS
  *  >> export -> bash admits only LOWERS, not UPPERS
@@ -152,6 +89,5 @@ void	ft_builtin_executor(t_msh *data, char *cmd, t_cmd *cmd_nd)
 	}
 	if (!cmd)
 		return ;
-//	if (ft_check_here_permissions(data, cmd_nd) == 0)
-		ft_cmd_analyzer(data, cmd, cmd_nd);
+	ft_cmd_analyzer(data, cmd, cmd_nd);
 }

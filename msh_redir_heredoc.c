@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_redir_heredoc.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 19:40:41 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/23 15:22:55 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:02:37 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param cmd_nd 
  * @param hd_inputs 
  */
-static void	ft_redic_heredoc_to_pipe(t_msh *data, t_cmd *cmd_nd, char *hd_inputs)
+static void	ft_redic_heredoc_to_pipe(t_msh *data, t_cmd *cmd_nd, char *inputs)
 {
 	int	exit_code;
 
@@ -35,7 +35,7 @@ static void	ft_redic_heredoc_to_pipe(t_msh *data, t_cmd *cmd_nd, char *hd_inputs
 		close(cmd_nd->fd[RD]);
 		dup2(cmd_nd->fd[WR], STDOUT_FILENO);
 		close(cmd_nd->fd[WR]);
-		ft_putstr_fd(hd_inputs, STDOUT_FILENO);
+		ft_putstr_fd(inputs, STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
 	else

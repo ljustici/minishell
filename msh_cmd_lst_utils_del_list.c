@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 20:06:59 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/17 17:25:48 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:57:09 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void	ft_free_cmdlst_node(t_cmd *del_node)
 {
 	ft_rds_lstclear(del_node);
 	ft_freedom(del_node->c_args);
-//	ft_free_null_void_return(&del_node->c_abs_path);
 	ft_free_null_void_return(&del_node->c_env_path);
 	free(del_node);
 	del_node = NULL;
@@ -48,7 +47,7 @@ static void	ft_free_cmdlst_node(t_cmd *del_node)
 void	ft_cmdclear(t_msh *data)
 {
 	t_cmd	*del_node;
-	
+
 	if (data->cmd_lst == NULL)
 		return ;
 	while (data->cmd_lst)
@@ -56,5 +55,5 @@ void	ft_cmdclear(t_msh *data)
 		del_node = data->cmd_lst;
 		data->cmd_lst = del_node->nx;
 		ft_free_cmdlst_node(del_node);
-	}	
+	}
 }

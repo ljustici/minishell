@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:15:50 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/25 17:45:42 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:51:07 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_env_lst_count_nds(t_env_lst *env_lst)
 {
-	int	elmts;
-	t_env_lst *tmp;
+	int			elmts;
+	t_env_lst	*tmp;
 
 	elmts = 0;
 	tmp = env_lst;
@@ -54,7 +54,7 @@ static char	**ft_conv_envlst_to_mtrx(t_msh	*data)
 }
 
 /**
- * @brief   ***   VERSIÓN VARIOS COMANDOS   ***
+ * @brief
  * 
  * @param data 
  * @return int 
@@ -69,7 +69,7 @@ int	ft_exec_external_cmd(t_msh *data, t_cmd *cmd_nd)
 		&& access(cmd_nd->c_env_path, F_OK) == -1)
 	{
 		ft_error_status(data, cmd_nd, ERROR_NO_SUCH_FILE_OR_DIRECTORY);
-		return(WEXITSTATUS(data->exit_code));
+		return (WEXITSTATUS(data->exit_code));
 	}
 	my_envp = ft_conv_envlst_to_mtrx(data);
 	cmd_nd->pid = fork();

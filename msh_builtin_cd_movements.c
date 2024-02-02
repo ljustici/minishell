@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 00:24:20 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/17 17:09:33 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:33:52 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_builtin_cd_down(t_msh *data, t_cmd *cmd_nd)
 void	ft_builtin_cd_without_args(t_msh *data, t_cmd *cmd_nd, int exit_code)
 {
 	char	*path;
-	
+
 	path = ft_env_obtain_val(data, "HOME");
 	if (path == NULL)
 	{
@@ -78,11 +78,11 @@ void	ft_builtin_cd_oldpwd(t_msh *data, t_cmd *cmd_nd)
 		ft_error_cd(data, cmd_nd, ERROR_CHDIR_OLDPWD_NOT_SET);
 		return ;
 	}
-//	ft_printf("%s\n", path);
 	ft_putstr_fd(path, 1);
 	if (chdir(path) == 0)
 	{
-		ft_env_change_val(data, "OLDPWD", ft_env_obtain_val(data, "PWD"));	
+		ft_env_change_val(data, "OLDPWD", \
+			ft_env_obtain_val(data, "PWD"));
 		ft_env_change_val(data, "PWD", getcwd(NULL, 0));
 		data->exit_code = 0;
 	}

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+         #
+#    By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/18 13:12:22 by roruiz-v          #+#    #+#              #
-#    Updated: 2024/02/01 14:28:20 by ljustici         ###   ########.fr        #
+#    Updated: 2024/02/02 13:59:46 by roruiz-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,8 @@ SRC		=	main.c \
 			msh_exec_external_cmd.c \
 			msh_cmd_lst_utils_del_list.c \
 			msh_utils.c	\
-			msh_errors.c	
+			msh_errors.c \
+			msh_errors_start_and_signals.c
 
 OBJS	= $(SRC:.c=.o)
 OFILES = $(addprefix obj/, $(OBJS))

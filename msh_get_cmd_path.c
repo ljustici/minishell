@@ -6,15 +6,14 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 16:25:41 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/25 17:36:00 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:01:22 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 /**
- * @brief     *** BEWARE OF THIS !!!! ***
+ * @brief
  * 		First check if the command has an absolute direction.
  * 		If it has it, then only do ft_strdup, that's all.
  * 
@@ -27,7 +26,7 @@ void	ft_find_cmd_path(t_cmd *cmd_nd, char **paths)
 	char	*path;
 
 	i = -1;
-	if (ft_strchr(cmd_nd->c_args[0], '/'))	
+	if (ft_strchr(cmd_nd->c_args[0], '/'))
 		cmd_nd->c_env_path = ft_strdup(cmd_nd->c_args[0]);
 	else
 	{
@@ -41,9 +40,9 @@ void	ft_find_cmd_path(t_cmd *cmd_nd, char **paths)
 				cmd_nd->c_env_path = ft_strjoin(path, cmd_nd->c_args[0]);
 				ft_free_null_void_return(&path);
 				if (access(cmd_nd->c_env_path, F_OK) == 0)
-					break;
+					break ;
 				else
-					ft_free_null_void_return(&cmd_nd->c_env_path);		
+					ft_free_null_void_return(&cmd_nd->c_env_path);
 			}
 		}
 	}
@@ -70,7 +69,7 @@ char	**ft_find_env_paths(t_msh *data)
 		if (ft_strcmp(tmp->nm, "PATH") == 0)
 		{
 			paths = ft_split(tmp->val, ':');
-			break ;		
+			break ;
 		}
 		tmp = tmp->nx;
 	}

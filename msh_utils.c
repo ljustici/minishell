@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:17:09 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/01 13:17:35 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/01 21:51:56 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ char	**ft_freedom(char **matrix)
 	size_t	i;
 
 	i = 0;
-	if (matrix/*  != NULL */)
+	if (matrix)
 	{
 		while (matrix[i])
 		{

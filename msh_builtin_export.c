@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   msh_builtin_export.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 19:55:03 by roruiz-v          #+#    #+#             */
-/*   Updated: 2023/12/17 12:55:47 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:47:33 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief   ** BEWARE OF THIS !!! **
+ * @brief 
  * -> parser must bring expanded vars to append at the end of a existing var
  *            ('ft_env_modify_or_add_node' makes the join job)
  * @param data 
  */
 void	ft_builtin_export(t_msh *data, t_cmd *cmd_nd)
-{ // OJO, LE FALTA APPEND COSAS AL VALOR DE UNA VBLE (PATH=$PATH algo)
+{
 	int		i;
 	char	**tmp;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_executor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 20:26:43 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/01/23 19:23:20 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:52:45 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	ft_exec_change_fd_parent(t_cmd *cmd_nd)
 {
 	close(cmd_nd->fd[WR]);
 	dup2(cmd_nd->fd[RD], STDIN_FILENO);
-	close(cmd_nd->fd[RD]); // esto queda cerrado por los restos (fd se reutiliza)
+	close(cmd_nd->fd[RD]);
 }
 
 /**
@@ -78,7 +78,7 @@ static void	ft_chld_prn_routine(t_msh *d, t_cmd *cmd_nd, t_cmd *cmd_nd_prev)
 		ft_exec_change_fd_parent(cmd_nd);
 		waitpid(d->m_pid, &exit_code, 0);
 		d->exit_code = WEXITSTATUS(exit_code);
-	}	
+	}
 }
 
 /**
@@ -92,7 +92,7 @@ static void	ft_chld_prn_routine(t_msh *d, t_cmd *cmd_nd, t_cmd *cmd_nd_prev)
  * 	       (it can be the 1st cmd or an intermediate one)
  * @param data 
  */
-static void	ft_exec_many_cmds(t_msh *data, t_cmd *cmd_nd, t_cmd *cmd_nd_prev)
+static void	ft_exec_cmds(t_msh *data, t_cmd *cmd_nd, t_cmd *cmd_nd_prev)
 {
 	while (cmd_nd->nx != NULL)
 	{
@@ -132,5 +132,5 @@ void	ft_executor(t_msh *data)
 
 	cmd_nd = data->cmd_lst;
 	cmd_nd_prev = NULL;
-	ft_exec_many_cmds(data, cmd_nd, cmd_nd_prev);
+	ft_exec_cmds(data, cmd_nd, cmd_nd_prev);
 }
