@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 19:55:03 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/01 16:47:33 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:09:15 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	ft_builtin_export(t_msh *data, t_cmd *cmd_nd)
 		{
 			tmp = ft_2rows_split(cmd_nd->c_args[i], '=');
 			if (ft_strchr(cmd_nd->c_args[i], '='))
-				ft_env_modify_or_add_node(data, ft_env_lst_new(tmp, 1));
+				ft_env_modify_or_add_node(data, ft_env_lst_new(data, tmp, 1));
 			else
-				ft_env_modify_or_add_node(data, ft_env_lst_new(tmp, 0));
+				ft_env_modify_or_add_node(data, ft_env_lst_new(data, tmp, 0));
 			ft_freedom(tmp);
 		}
 	}
