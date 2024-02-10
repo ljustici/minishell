@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:17:09 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/01 21:51:56 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:28:46 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	ft_is_str_digits(char *str)
 	i = -1;
 	if (!str)
 		return (0);
+	if (str[++i] == '+')
+		;
 	while (str[++i])
 	{
 		if (!ft_isdigit(str[i]))

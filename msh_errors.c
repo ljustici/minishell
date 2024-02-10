@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:30:00 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/10 18:13:44 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:28:30 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void	ft_error_cd(t_msh *data, t_cmd *cmd_nd, int error)
 		ft_putstr_fd(cmd_nd->c_args[1], 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		error = NO_ERROR;
-		data->exit_code = 127;
+		data->exit_code = 1;
+//		data->exit_code = 127;
 	}
 	else if (error == ERROR_CHDIR_OLDPWD_NOT_SET)
 	{
@@ -91,6 +92,7 @@ void	ft_error_export(t_msh *data, char *nm, int error)
 		ft_putstr("msh: export: `", 2);
 		ft_putstr(nm, 2);
 		ft_putstr("': not a valid identifier\n", 2);
+		error = NO_ERROR;
 		data->exit_code = 1;
 	}
 }
