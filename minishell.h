@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 18:03:04 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:22:22 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef enum e_error
 	ERROR_NO_SUCH_FILE_OR_DIRECTORY,
 	ERROR_START_NO_SUCH_FILE_OR_DIRECTORY,
 	ERROR_SPLIT_EXTRACTING_CMD,
-	ERROR_INVALID_EXPORT_INDENTIFIER,
+	ERROR_INVALID_EXPORT_IDENTIFIER,
 	ERROR_SYNTAX_UNEXPECTED_TOKEN,
 	ERROR_QUOTE,
 	ERROR_MALLOC_ERROR,

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:54:12 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 15:38:35 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:34:34 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,10 @@ void	quote_section_cleaner(char *token, char **parsed, size_t len)
 	nqt = 0;
 	i = 0;
 	*parsed = NULL;
+	//printf("len %zu\n",  len);
 	while (i < len)
 	{
-		//printf("Dentro de quote section cleaner\n");
+		//printf("Dentro de quote section cleaner %s y len %zu\n", token, len);
 		set_active_section(token[i], &dqt, &sqt, &nqt);
 		if (dqt == 1 && sqt == 0)
 			double_qts_section(token, parsed, &dqt, &i);
@@ -108,8 +109,6 @@ void	quote_section_cleaner(char *token, char **parsed, size_t len)
 			simple_qts_section(token, parsed, &sqt, &i);
 		else if (dqt == 0 && sqt == 0 && nqt == 1)
 			no_qts_section(token, parsed, &nqt, &i);
-		if (*parsed)
-			len = ft_strlen(*parsed);
 		i++;
 	}
 }

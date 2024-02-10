@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 17:05:19 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:34:17 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
 			*f_letter_pos = *i;
 		span_until_quote(lex.s, i, lex.s[*i]);
 		span_tail_str(lex.s, i);
+		*i = *i - 1;
+		//printf("is_first_quote en check_and_fill acaba en letra %c pos %zu\n", lex.s[*i], *i);
 	}
 	if (is_first_char_in_token(lex, *i, *f_letter_pos) == 1)
 		*f_letter_pos = *i;

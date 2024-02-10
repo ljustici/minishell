@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 20:35:15 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:34:43 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	set_expanded_token(char **expanded, char *token, t_msh *data)
 
 	*expanded = ft_strdup(token);
 	len = ft_strlen(*expanded);
+	//printf("len en expanded %zu\n",  len);
 	dqt = 0;
 	sqt = 0;
 	i = 0;
