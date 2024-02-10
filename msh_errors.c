@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:30:00 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/01 17:49:03 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:13:44 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,17 @@ void	ft_error_cd(t_msh *data, t_cmd *cmd_nd, int error)
 	{
 		ft_putstr_fd("msh: cd: HOME not set\n", 2);
 		error = NO_ERROR;
+	}
+}
+
+void	ft_error_export(t_msh *data, char *nm, int error)
+{
+	if (error == ERROR_INVALID_EXPORT_IDENTIFIER)
+	{
+		ft_putstr("msh: export: `", 2);
+		ft_putstr(nm, 2);
+		ft_putstr("': not a valid identifier\n", 2);
+		data->exit_code = 1;
 	}
 }
 

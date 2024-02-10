@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 14:16:37 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/01 17:10:48 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:56:04 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	ft_duplic_envp(t_msh *data, char **envp)
 			ft_free_null_void_return(&shlvl);
 		}
 		if (ft_strchr(envp[i], '=') && ft_strcmp(tmp_env[0], "OLDPWD") != 0)
-			ft_env_lstadd_back(data, ft_env_lst_new(tmp_env, 1));
+			ft_env_lstadd_back(data, ft_env_lst_new(data, tmp_env, 1));
 		else
-			ft_env_lstadd_back(data, ft_env_lst_new(tmp_env, 0));
+			ft_env_lstadd_back(data, ft_env_lst_new(data, tmp_env, 0));
 		ft_freedom(tmp_env);
 	}
 }
@@ -59,7 +59,7 @@ void	ft_duplic_envp(t_msh *data, char **envp)
  * @param equal 
  * @return t_env_lst* 
  */
-t_env_lst	*ft_env_lst_new(char **tmp_env, int equal)
+t_env_lst	*ft_env_lst_new(t_msh *data, char **tmp_env, int equal)
 {
 	t_env_lst	*node;
 
@@ -70,9 +70,10 @@ t_env_lst	*ft_env_lst_new(char **tmp_env, int equal)
 	node->nx = NULL;
 	if (ft_detect_forbidden_chars(node->nm))
 	{
-		ft_putstr("export: ", 2);
+/* 		ft_putstr("export: ", 2);
 		ft_putstr(node->nm, 2);
-		ft_putstr(": not a valid identifier\n", 2);
+		ft_putstr(": not a valid identifier\n", 2); */
+		ft_error_export(data, node->nm, ERROR_INVALID_EXPORT_IDENTIFIER);
 		ft_free_envlst_node(node);
 		return (NULL);
 	}
