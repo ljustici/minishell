@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 14:37:58 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:39:06 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ char	**parse_token_array(char **tokens)
 	parsed = (char **)ft_calloc(len + 1, sizeof(char *));
 	while (i < len)
 	{
+		//printf("Dentro de parse token array\n");
 		if (should_clean_quotes(tokens[i], &parsed[j]) == 1)
 			quote_section_cleaner(tokens[i], &parsed[j], ft_strlen(tokens[i]));
+		//printf("parse token array: [%s]\n",parsed[j]);
 		i++;
 		j++;
 	}
@@ -204,7 +206,7 @@ void	print_command_test(t_cmd *list)
 		while (print)
 		{
 			printf("----- redir del nodo\n");
-			printf("-- redir: file %s\n", print->file);
+			printf("-- redir: file %s]\n", print->file);
 			printf("-- redir: endkey %s\n", print->endkey);
 			print = print->nx;
 		}

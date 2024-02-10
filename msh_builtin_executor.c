@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_builtin_executor.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 17:21:55 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/01 16:38:24 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:38:10 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	ft_cmd_analyzer(t_msh *data, char *cmd, t_cmd *cmd_nd)
 	else if (ft_strcmp(cmd, "cd") == 0)
 		ft_builtin_cd(data, cmd_nd);
 	else if (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "ECHO") == 0)
-		ft_builtin_echo(data);
+		ft_builtin_echo(data, cmd_nd);
 	else if (ft_strcmp(cmd, "exit") == 0)
 		ft_builtin_exit(data, cmd_nd);
 	else

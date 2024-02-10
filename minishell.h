@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 13:09:10 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:03:04 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ typedef enum e_error
 	ERROR_NO_SUCH_FILE_OR_DIRECTORY,
 	ERROR_START_NO_SUCH_FILE_OR_DIRECTORY,
 	ERROR_SPLIT_EXTRACTING_CMD,
-	
-
+	ERROR_INVALID_EXPORT_INDENTIFIER,
 	ERROR_SYNTAX_UNEXPECTED_TOKEN,
 	ERROR_QUOTE,
 	ERROR_MALLOC_ERROR,
@@ -193,6 +192,7 @@ typedef struct	s_msh
 	int					org_stdout;
 	int					exit_code;
 	char				*shadow_pwd;
+	char				*echo;
 //	struct stat			stat;		// used to get file permissions
 //	int					permisions;	// used to keep file permissions
 }						t_msh;
@@ -285,7 +285,7 @@ void	ft_ctrl_d(t_msh *data);
 
 void		ft_duplic_envp(t_msh *data, char **envp);
 void		ft_env_exchange_val(t_env_lst *t_nd, t_env_lst *new);
-t_env_lst	*ft_env_lst_new(char **tmp_env, int equal);
+t_env_lst	*ft_env_lst_new(t_msh *data, char **tmp_env, int equal);
 void		ft_env_join_val(t_env_lst *t_nd, t_env_lst *new);
 void		ft_env_modify_or_add_node(t_msh *data, t_env_lst *new);
 void		ft_env_lstadd_back(t_msh *data, t_env_lst *new);
@@ -325,7 +325,7 @@ void	ft_builtin_executor(t_msh *data, char *cmd, t_cmd *cmd_nd);
 /* ******************     BUILTINS  FUNCTIONS      ***************** */
 /* ***************************************************************** */
 
-void	ft_builtin_echo(t_msh *data);
+void	ft_builtin_echo(t_msh *data, t_cmd *list);
 void	ft_builtin_exit(t_msh *data, t_cmd *cmd_nd);
 void	ft_builtin_env(t_msh *data, t_cmd *cmd_nd);
 void	ft_builtin_export(t_msh *data, t_cmd *cmd_nd);
@@ -353,6 +353,7 @@ void	ft_error_start(char *argv_1, int error);
 void	ft_error_status(t_msh *data, t_cmd *cmd_nd, int error);
 void	ft_error_signal(int error);
 void	ft_error_cd(t_msh *data, t_cmd *cmd_nd, int error);
+void	ft_error_export(t_msh *data, char *nm, int error);
 void	ft_error_pipes_forks(t_msh *data, int error);
 //void	ft_error_files(t_msh *data, t_cmd *cmd_nd, int error);
 void	ft_error_files(t_msh *data, t_cmd *cmd_nd, t_rd *rd_nd, int error);

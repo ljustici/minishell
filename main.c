@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:20:28 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/10 14:36:43 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:57:19 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	ft_init_msh_struct(t_msh *data)
 	data->org_stdin = dup(STDIN_FILENO);
 	data->org_stdout = dup(STDOUT_FILENO);
 	data->shadow_pwd = NULL;
+	data->echo = NULL;
 	data->sig.sa_sigaction = ft_handler;
 	sigemptyset(&data->sig.sa_mask);
 	data->sig.sa_flags = SA_NODEFER;

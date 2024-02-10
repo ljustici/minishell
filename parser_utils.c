@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 21:03:44 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:38:44 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*clean_quotes(char *s, char q, size_t start, size_t end)
 		noqts = ft_join_free(noqts, clean[i]);
 		i++;
 	}
-	//printf("noqts %s\n", noqts);
+	//printf("noqts [%s]\n", noqts);
 	ft_free_array(clean);
 	return (noqts);
 }
