@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 16:58:13 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 18:12:28 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 20:14:30 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,5 @@ void	ft_builtin_echo(t_msh *data, t_cmd *list)
     ft_putstr_fd(data->echo, 1);
     free(data->echo);
     data->echo = NULL;
+    data->exit_code = 0;
 }
