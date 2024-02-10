@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:20:28 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/01 14:29:26 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 14:36:43 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	g_listen = 0;
 	system("leaks -q minishell");
 }*/
 
-static void	ft_print_minishell(void)
+/*static void	ft_print_minishell(void)
 {
 	ft_putstr_fd(" \n", 1);
 	ft_putstr_fd(BACK_BLUE BOLD "._ _ o._ o _|_  _|| \n", 1);
@@ -50,7 +50,7 @@ static void	ft_print_wellcome(void)
 	ft_putstr_fd(YELLOW BOLD "	*****      ENJOY IT !!!     *****\n", 1);
 	ft_putstr_fd(YELLOW BOLD "	*****   (& be empathic) :)  *****\n", 1);
 	ft_putstr_fd(" \n" RESET, 1);
-}
+}*/
 
 void	ft_init_msh_struct(t_msh *data)
 {
@@ -124,7 +124,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_error_start(argv[1], ERROR_START_NO_SUCH_FILE_OR_DIRECTORY);
 	ft_init_msh_struct(&data);
 	ft_duplic_envp(&data, envp);
-	ft_print_wellcome();
+	//ft_print_wellcome();
 	while (1)
 		ft_main_boucle(&data);
 	return (0);

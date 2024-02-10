@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 16:58:13 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 20:43:20 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 14:41:50 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static int is_all_n(char *s)
     }
     return (1);
 }
+
 
 /*void    echo_args(char **c_args, int i, int *nl,)
 {
@@ -62,26 +63,27 @@ void	ft_builtin_echo(t_msh *data)
 		i = 0;
 		while (list->c_args[i])
 		{
-            if ((ft_strcmp("echo", list->c_args[i]) == 0 || ft_strcmp("ECHO", list->c_args[i]) == 0) && first == 0)
+            if ((ft_strcmp("echo", list->c_args[0]) == 0 || ft_strcmp("ECHO", list->c_args[0]) == 0) && first == 0)
             {
                 first = i + 1;
                 i++;
-                if (first)
+            }
+            if (first)
+            {
+                if (!nl && list->c_args[first] && is_all_n(list->c_args[first]))
                 {
-                    if (!nl && list->c_args[first] && is_all_n(list->c_args[first]))
-                    {
+                    while (is_all_n(list->c_args[i]))
                         i++;
-                        nl = 1;
-                    }
-                    else
-                        printf("c: %s\n", list->c_args[first]);
-                    if (list->c_args[i])
-                        ft_putstr_fd(list->c_args[i], 1);
-                    else
-                        break;
-                    if (list->c_args[i + 1])
-                        ft_putstr_fd(" ", 1);
+                    nl = 1;
                 }
+                //else
+                    //printf("c: %s\n", list->c_args[first]);
+                if (list->c_args[i])
+                    ft_putstr_fd(list->c_args[i], 1);
+                else
+                    break;
+                if (list->c_args[i + 1])
+                    ft_putstr_fd(" ", 1);
             }
             i++;
 		}

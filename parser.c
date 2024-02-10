@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:52:19 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 20:46:20 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/10 14:37:58 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,6 @@ void	ft_parse(char **tokens, t_msh *data)
 	}
 	data->cmd_lst = NULL;
 	create_list(&data->cmd_lst, parsed);
-	print_command_test(data->cmd_lst);
+	//print_command_test(data->cmd_lst);
 	ft_free_array(parsed);
 }
