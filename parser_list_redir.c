@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 12:50:20 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 13:55:12 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 14:56:00 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	add_redir_to_node(t_cmd **cmd, char *info, char *token)
 	node_add_back_rd(cmd, list);
 }
 
-void	free_rds_list(t_rd *list)
+/*void	free_rds_list(t_rd *list)
 {
 	t_rd	*next;
 
@@ -75,4 +75,4 @@ void	free_cmd_list(t_cmd *test)
 		free(test);
 		test = test->nx;
 	}
-}
+}*/
