@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+         #
+#    By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/18 13:12:22 by roruiz-v          #+#    #+#              #
-#    Updated: 2024/02/11 15:10:36 by ljustici         ###   ########.fr        #
+#    Updated: 2024/02/11 15:21:21 by roruiz-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,6 @@ LIB = -L $(HOME)/.brew/opt/readline/lib -lreadline
 #LIB = -L/usr/local/opt/readline/lib -lreadline
 
 INCLUDE = -I $(HOME)/.brew/opt/readline/include
-
-# INCLUDE para 42_rosana:
-#INCLUDE = -I /System/Volumes/Data/sgoinfre/goinfre/Perso/roruiz-v/homebrew/opt/readline/include
 
 # INCLUDE para casa_rosana:
 #INCLUDE = -I/usr/local/opt/readline/include
@@ -54,8 +51,12 @@ SRC		=	main.c \
 			msh_exec_external_cmd.c \
 			msh_cmd_lst_utils_del_list.c \
 			msh_utils.c	\
+			msh_utils_free_null.c \
+			msh_utils_str_cmp_equal.c \
 			msh_errors.c \
-			msh_errors_start_and_signals.c
+			msh_errors_start_and_signals.c \
+			msh_errors_cd.c \
+			msh_errors_files.c
 
 OBJS	= $(SRC:.c=.o)
 OFILES = $(addprefix obj/, $(OBJS))

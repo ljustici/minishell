@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 14:16:37 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/10 17:56:04 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/11 15:06:34 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@ t_env_lst	*ft_env_lst_new(t_msh *data, char **tmp_env, int equal)
 	node->nx = NULL;
 	if (ft_detect_forbidden_chars(node->nm))
 	{
-/* 		ft_putstr("export: ", 2);
-		ft_putstr(node->nm, 2);
-		ft_putstr(": not a valid identifier\n", 2); */
 		ft_error_export(data, node->nm, ERROR_INVALID_EXPORT_IDENTIFIER);
 		ft_free_envlst_node(node);
 		return (NULL);

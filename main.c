@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:20:28 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/10 16:57:19 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 15:10:53 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_listen = 0;
- 
+
 /*static void	ft_leaks(void)
 {
 	system("leaks -q minishell");
 }*/
 
-/*static void	ft_print_minishell(void)
+static void	ft_print_minishell(void)
 {
 	ft_putstr_fd(" \n", 1);
 	ft_putstr_fd(BACK_BLUE BOLD "._ _ o._ o _|_  _|| \n", 1);
@@ -50,7 +50,7 @@ static void	ft_print_wellcome(void)
 	ft_putstr_fd(YELLOW BOLD "	*****      ENJOY IT !!!     *****\n", 1);
 	ft_putstr_fd(YELLOW BOLD "	*****   (& be empathic) :)  *****\n", 1);
 	ft_putstr_fd(" \n" RESET, 1);
-}*/
+}
 
 void	ft_init_msh_struct(t_msh *data)
 {
@@ -73,9 +73,8 @@ void	ft_init_msh_struct(t_msh *data)
 }
 
 /**
- * @brief  * BEWARE OF THIS!!! 
- * 	- Si no restauro el STDIN y el STDOUT, hace un exit del programa
- *  - No reiniciar data->exit_code a 0, porque si hago echo $? me mostraría siempre 0
+ * @brief  * 
+
  * @param data 
  */
 void	ft_main_boucle(t_msh *data)
@@ -94,7 +93,7 @@ void	ft_main_boucle(t_msh *data)
 			ft_free_null_void_return(&data->var_);
 			add_history(data->pipeline);
 			data->var_ = ft_strdup(data->pipeline);
-			if (ft_lexer(data) == 0 )
+			if (ft_lexer(data) == 0)
 				if (data->error == NO_ERROR)
 					ft_executor(data);
 		}
@@ -109,7 +108,7 @@ void	ft_main_boucle(t_msh *data)
 
 /**
  * @brief 		****	MINISHELL    ****
- * 
+ * 	//atexit(ft_leaks);
  * @param argc 
  * @param argv 
  * @param envp 
@@ -118,17 +117,14 @@ void	ft_main_boucle(t_msh *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_msh	data;
-	
-	//atexit(ft_leaks);
+
 	(void)argv;
 	if (argc > 1)
 		ft_error_start(argv[1], ERROR_START_NO_SUCH_FILE_OR_DIRECTORY);
 	ft_init_msh_struct(&data);
 	ft_duplic_envp(&data, envp);
-	//ft_print_wellcome();
+	ft_print_wellcome();
 	while (1)
 		ft_main_boucle(&data);
 	return (0);
 }
-
-	
