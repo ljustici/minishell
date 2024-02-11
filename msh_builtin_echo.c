@@ -6,30 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 16:58:13 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 12:27:52 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 15:09:38 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	is_all_n(char *s)
-{
-	size_t	i;
-	size_t	len;
-
-	len = ft_strlen(s);
-	i = 0;
-	if (s[0] != '-')
-		return (0);
-	i++;
-	while (i < len)
-	{
-		if (s[i] != 'n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 static void	set_if_echo(t_cmd *list, int *i, int *first)
 {

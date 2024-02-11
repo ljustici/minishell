@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 13:52:52 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 15:12:32 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ int			set_redir_type(char *token);
 void		add_redir_to_node(t_cmd **cmd, char *info, char *token);
 void		node_add_back_rd(t_cmd **head, t_rd *node);
 void		node_add_back(t_cmd **head, t_cmd *node);
+int			is_all_n(char *s);
 
 /* ***************************************************************** */
 /* ******************      SIGNAL  FUNCTIONS       ***************** */

@@ -6,7 +6,7 @@
 #    By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/18 13:12:22 by roruiz-v          #+#    #+#              #
-#    Updated: 2024/02/11 12:51:07 by ljustici         ###   ########.fr        #
+#    Updated: 2024/02/11 15:10:36 by ljustici         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRC		=	main.c \
 			msh_executor.c \
 			msh_builtin_executor.c \
 			msh_builtin_echo.c \
+			msh_builtin_echo_utils.c \
 			msh_builtin_exit.c \
 			msh_builtin_export.c \
 			msh_builtin_cd.c \
