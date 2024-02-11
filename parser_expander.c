@@ -6,15 +6,12 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 13:02:28 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:27:18 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * TODO: reconocer variables especiales
-*/
 char	*find_var_in_envp(char *var, t_env_lst *envp)
 {
 	char	*result;

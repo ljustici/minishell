@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 13:10:00 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:26:58 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	is_redir_pipe(char **args)
  * <<<<<
  * |a
  * a|
- * TODO: cmd | | cmd
+ * cmd | | cmd
 */
 int	check_token_syntax(char **tokens, t_msh *data)
 {
