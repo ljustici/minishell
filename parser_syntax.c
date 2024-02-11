@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:17:57 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 16:54:58 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:10:00 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	is_double_redir(char **args, char **wrong_tk)
 	return (0);
 }
 
-int	is_double_pipe(char **args, char **wrong_tk) //TODO: | |
+int	is_double_pipe(char **args, char **wrong_tk)
 {
 	int	i;
 	int	n;
@@ -47,6 +47,16 @@ int	is_double_pipe(char **args, char **wrong_tk) //TODO: | |
 	while (i < n)
 	{
 		if (ft_strcmp(args[i], "||") == 0)
+		{
+			*wrong_tk = args[i];
+			return (1);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < n)
+	{
+		if (ft_strcmp(args[i], "|") == 0 && ft_strcmp(args[i + 1], "|") == 0)
 		{
 			*wrong_tk = args[i];
 			return (1);
@@ -85,7 +95,8 @@ int	is_redir_pipe(char **args)
 		else if (ft_strcmp(args[i], ">>") == 0
 			&& ft_strcmp(args[i + 1], "|") == 0)
 			return (1);
-		else if (ft_strcmp(args[i], "<") == 0 && ft_strcmp(args[i + 1], "|") == 0)
+		else if (ft_strcmp(args[i], "<") == 0 && ft_strcmp
+			(args[i + 1], "|") == 0)
 			return (1);
 		else if (ft_strcmp(args[i], ">") == 0
 			&& ft_strcmp(args[i + 1], "|") == 0)

@@ -6,18 +6,11 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 16:53:24 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 19:34:43 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:02:28 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	expand_pid(char *token)
-{
-	if (ft_strcmp(token, "$$") == 0)
-		return (getpid());
-	return (0);
-}
 
 /**
  * TODO: reconocer variables especiales
@@ -29,11 +22,9 @@ char	*find_var_in_envp(char *var, t_env_lst *envp)
 	result = NULL;
 	while (envp)
 	{
-		//printf("- envp name: %s y var: %s\n", envp->nm, var);
 		if (ft_strcmp(var, envp->nm) == 0)
 		{
 			result = ft_strdup(envp->val);
-			//printf("result: %s y name: %s\n", result, envp->nm);
 			free(var);
 			break ;
 		}
@@ -101,7 +92,6 @@ void	set_expanded_token(char **expanded, char *token, t_msh *data)
 
 	*expanded = ft_strdup(token);
 	len = ft_strlen(*expanded);
-	//printf("len en expanded %zu\n",  len);
 	dqt = 0;
 	sqt = 0;
 	i = 0;
@@ -140,3 +130,11 @@ char	**expanding_loop(char **tokens, t_msh *data)
 	expanded[j] = 0;
 	return (expanded);
 }
+
+/*
+int	expand_pid(char *token)
+{
+	if (ft_strcmp(token, "$$") == 0)
+		return (getpid());
+	return (0);
+}*/

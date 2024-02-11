@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:06:28 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/01 13:10:19 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:01:26 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,22 +62,6 @@ static int	ft_fill_array(char **result, const char *s, char c)
 	return (1);
 }
 
-/*void	ft_free_array(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		str[i] = NULL;
-		i++;
-	}
-	if (str)
-		free(str);
-	str = NULL;
-}*/
-
 char	**ft_split_free(char *s, char c)
 {
 	int		n_of_w;
@@ -94,6 +78,25 @@ char	**ft_split_free(char *s, char c)
 		ft_free_array(result);
 		return (0);
 	}
-    free(s);
+	free(s);
 	return (result);
+}
+
+size_t	next_qt_pos(char *token, size_t start, size_t len, char qt)
+{
+	while (start < len && token[start] != qt)
+		start++;
+	return (start);
+}
+
+int	ft_array_len(char **str)
+{
+	int	i;
+
+	if (!str)
+		return (-1);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }

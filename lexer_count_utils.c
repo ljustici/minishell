@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:25:30 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/30 18:32:53 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 12:39:53 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,16 @@ void	span_tail_str(const char *str, unsigned long *j)
 
 	end_qt = 0;
 	c = str[*j];
-	//printf("entra en caracter: %c\n", str[*j]);
 	if (should_split(str[*j]) == 0)
 	{
-		//while(str[*j] && should_split(str[*j]) == 0)
 		while ((*j) < ft_strlen(str) && should_split(str[*j]) == 0
 			&& (end_qt == 3 || end_qt == 0))
 		{
 			if (str[*j] == c)
 				end_qt++;
-			//printf("tail: %c\n", str[*j]);
 			(*j)++;
 		}
 	}
-	//printf("tail: %c\n", str[*j]);
 }
 
 /**
@@ -51,12 +47,11 @@ int	handle_count_quote(const char *str, unsigned long *j, int *i)
 	{
 		span_until_quote(str, j, str[*j]);
 		span_tail_str(str, j);
-		//printf("' Llega hasta %lu\n", *j);
 	}
 	return (0);
 }
 
-static int find_char(char c, const char *s, size_t i)
+static int	find_char(char c, const char *s, size_t i)
 {
 	while (i < ft_strlen(s))
 	{
@@ -64,7 +59,7 @@ static int find_char(char c, const char *s, size_t i)
 			return (1);
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 /**
@@ -97,55 +92,6 @@ int	is_first_quote(const char *s, unsigned long pos, char c)
 			return (1);
 	}
 	return (0);
-}
-
-static void span_to_next_first_letter(const char* str, size_t *j, int *i, int *is_first_letter)
-{
-	if (should_split(str[*j]) != 1 && *is_first_letter == 0)
-	{
-		*is_first_letter = 1;
-		(*i)++;
-	}
-	if (is_first_quote(str, *j, str[*j]))
-		handle_count_quote(str, j, i);
-	if (is_metacharacter(str[*j]) == 1)
-	{
-		(*i)++;
-		*is_first_letter = 0;
-		if (is_metacharacter(str[(*j) + 1]) == 1)
-			(*j)++;
-	}
-	if (should_split(str[*j]) == 1 && *is_first_letter == 1)
-		*is_first_letter = 0;
-}
-
-/**
- * Counts the number of token in a string by delimiting character:
- * - First letter
- * - Quotes
- * - Separating character
- * It doesn't count variables inside double quotes.
-*/
-int	count_tokens(const char *str)
-{
-	int				i;
-	int				is_first_letter;
-	unsigned long	j;
-
-	j = 0;
-	i = 0;
-	is_first_letter = 0;
-	while (j < ft_strlen(str))
-	{
-		span_to_next_first_letter(str, &j, &i, &is_first_letter);
-		
-
-
-		
-		j++;
-	}
-	//printf("Número de tokens: %i\n",i);
-	return (i);
 }
 
 /**

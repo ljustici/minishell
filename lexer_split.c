@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:52:44 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 19:34:17 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 12:31:53 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
 		span_until_quote(lex.s, i, lex.s[*i]);
 		span_tail_str(lex.s, i);
 		*i = *i - 1;
-		//printf("is_first_quote en check_and_fill acaba en letra %c pos %zu\n", lex.s[*i], *i);
 	}
 	if (is_first_char_in_token(lex, *i, *f_letter_pos) == 1)
 		*f_letter_pos = *i;
@@ -64,8 +63,7 @@ int	check_and_fill(t_lexer lex, size_t *i, int *j, int *f_letter_pos)
 		*f_letter_pos = -1;
 	}
 	else if (*i == ft_strlen(lex.s) && *f_letter_pos >= 0
-		&& *f_letter_pos < (int)*i
-		- 1)
+		&& *f_letter_pos < (int)*i - 1)
 	{
 		if (assign_token(lex, i, j, *f_letter_pos) == 0)
 			return (0);
@@ -91,7 +89,7 @@ int	fill_tokens(char **result, const char *s, t_msh *data)
 		if (check_and_fill(lex, &i, &j, &f_letter_pos) == 0)
 		{
 			error_syntax_token(data, "", ERROR_MALLOC_ERROR);
-			return(0);
+			return (0);
 		}
 		i++;
 	}

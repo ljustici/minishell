@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:30:06 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/30 12:25:54 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 12:44:22 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,7 @@ int	is_redir(char *token)
 */
 int	is_pipe(char *token)
 {
-	//if (token[0] == '|' && !token[1])
-	//	return (1);
-	if (ft_strcmp(token, "|") == 0 )
+	if (ft_strcmp(token, "|") == 0)
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:32:34 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 15:38:44 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 12:57:56 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char	*clean_quotes(char *s, char q, size_t start, size_t end)
 
 	i = 0;
 	clean = ft_split_free(ft_substr(s, start, (end - start)), q);
-	//printf("Clean %s en start %zu y end %zu\n", clean[0], start, end);
 	noqts = ft_calloc(1, sizeof(char *));
 	array_len = ft_array_len(clean);
 	while (i < array_len)
@@ -56,7 +55,6 @@ char	*clean_quotes(char *s, char q, size_t start, size_t end)
 		noqts = ft_join_free(noqts, clean[i]);
 		i++;
 	}
-	//printf("noqts [%s]\n", noqts);
 	ft_free_array(clean);
 	return (noqts);
 }
@@ -105,7 +103,7 @@ int	is_var(char *token)
 	return (0);
 }
 
-int should_clean_quotes(char *token, char **parsed)
+int	should_clean_quotes(char *token, char **parsed)
 {
 	if (!has_qts(token, '\'') && !has_qts(token, '\"'))
 	{
@@ -113,11 +111,4 @@ int should_clean_quotes(char *token, char **parsed)
 		return (0);
 	}
 	return (1);
-}
-
-size_t next_qt_pos(char *token, size_t start, size_t len, char qt)
-{
-	while(start < len && token[start] != qt)
-		start++;
-	return(start);
 }

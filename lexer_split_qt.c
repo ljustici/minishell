@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 14:39:05 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 19:34:26 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 12:29:39 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	assign_quoted_token(t_lexer lex, size_t *i, int *j, int f_letter_pos)
 {
 	if ((lex.s[*i] == '\'' || lex.s[*i] == '\"') && (is_spnltab(lex.s[*i
-			- 1]) || is_first_quote(lex.s, *j, lex.s[*i])))
+					- 1]) || is_first_quote(lex.s, *j, lex.s[*i])))
 	{
 		f_letter_pos = *i;
 		span_until_quote(lex.s, i, lex.s[*i]);
@@ -23,7 +23,7 @@ int	assign_quoted_token(t_lexer lex, size_t *i, int *j, int f_letter_pos)
 		lex.tokens[*j] = ft_substr(lex.s, f_letter_pos, (*i - f_letter_pos)
 				+ 1);
 		if (!lex.tokens[*j])
-			return (0); //malloc error
+			return (0);
 		*j = *j + 1;
 	}
 	return (1);
@@ -63,7 +63,6 @@ int	add_token(t_lexer lex, int f_letter_pos, size_t i, int *j)
 {
 	if (i - f_letter_pos > 0)
 	{
-		//printf("len en add_token: %zu\n",  i - f_letter_pos);
 		lex.tokens[*j] = ft_substr(lex.s, f_letter_pos, i - f_letter_pos);
 		if (!lex.tokens[*j])
 			return (0);

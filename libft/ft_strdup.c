@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 01:32:58 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/17 17:33:08 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:10:52 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,3 @@ char	*ft_strdup(const char *s1)
 	dst[len] = '\0';
 	return (dst);
 }
-

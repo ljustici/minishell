@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:35:48 by ljustici          #+#    #+#             */
-/*   Updated: 2024/01/28 17:36:48 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 12:28:47 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ int	is_all_spaces(char *input)
 {
 	int	i;
 	int	n;
-	
+
 	i = 0;
 	n = ft_strlen(input);
-	while(i < n)
+	while (i < n)
 	{
 		if (input[i] != ' ')
-			break;
+			break ;
 		i++;
 	}
 	if (i == n)

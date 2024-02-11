@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 18:22:22 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:17:54 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ typedef struct s_rd
  *	> fd[2]       -> used for all processes and redirs
  *  > orgn        -> pointer to main data struct
  */
-typedef struct	s_cmd_lst
+typedef struct s_cmd_lst
 {
 	t_rd				*rds;
 	char				**c_args;
@@ -169,7 +169,7 @@ typedef struct	s_cmd_lst
 	struct s_cmd_lst	*nx;
 }						t_cmd;
 
-typedef	struct s_env_lst
+typedef struct s_env_lst
 {
 	char				*nm;
 	char				*val;
@@ -177,7 +177,7 @@ typedef	struct s_env_lst
 	struct s_env_lst	*nx;
 }						t_env_lst;
 
-typedef struct	s_msh
+typedef struct s_msh
 {
 	struct sigaction	sig;
 	char				*var_; // para el '$_' que falta IMPLEMENTAR !!! (o no)
@@ -187,7 +187,7 @@ typedef struct	s_msh
 	char				*pipeline;
 	int					m_pid;		// used by ft_execute_many_cmds
 	int					m_pipe_val;	// used by ft_execute_many_cmds
-	int					fd;			// now it's used by many parts of msh, REVISAR !!!!!
+	int					fd;
 	int					org_stdin;
 	int					org_stdout;
 	int					exit_code;
@@ -202,74 +202,56 @@ typedef struct	s_msh
 /* ******************      LEXER  FUNCTIONS        ***************** */
 /* ***************************************************************** */
 
-int	count_tokens(const char *str);
-int handle_count_quote(const char *str, unsigned long *j, int *i);
-
-
-char **split_line(char *line, t_msh *data);
-char **split_by_metachar (char const *s, t_msh *data);
-int should_split(char c);
-
-void span_until_quote(const char *s, unsigned long *i, char quote);
-int is_metacharacter(char c);
-int is_spnltab(char c);
-
-int assign_doubleqt_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
-int assign_quoted_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
-int is_var_in_dqt(const char *s, unsigned long pos);
-void span_tail_str(const char *str, unsigned long *j);
-int add_token(t_lexer lex, int f_letter_pos, size_t i, int *j);
-void span_var_in_dqt(const char *s, size_t *i, size_t end_qt);
-int get_char_pos(const char *s, size_t start, char c);
-int assign_var_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
-
-int is_equal_after_var(const char *s, unsigned long pos);
-
-int is_first_quote(const char *s, unsigned long pos, char c);
-
+int		count_tokens(const char *str);
+int		handle_count_quote(const char *str, unsigned long *j, int *i);
+char	**split_line(char *line, t_msh *data);
+char	**split_by_metachar(char const *s, t_msh *data);
+int		should_split(char c);
+void	span_until_quote(const char *s, unsigned long *i, char quote);
+int		is_metacharacter(char c);
+int		is_spnltab(char c);
+int		assign_quoted_token(t_lexer lex, size_t *i, int *j, int f_letter_pos);
+int		is_var_in_dqt(const char *s, unsigned long pos);
+void	span_tail_str(const char *str, unsigned long *j);
+int		add_token(t_lexer lex, int f_letter_pos, size_t i, int *j);
+void	span_var_in_dqt(const char *s, size_t *i, size_t end_qt);
+int		get_char_pos(const char *s, size_t start, char c);
+int		is_first_quote(const char *s, unsigned long pos, char c);
 char	*ft_join_free(char *s1, char *s2);
-int	is_all_spaces(char *input);
-int ft_lexer(t_msh *data);
+int		is_all_spaces(char *input);
+int		ft_lexer(t_msh *data);
 
 //Parser
 /* ***************************************************************** */
 /* ******************      PARSER  FUNCTIONS       ***************** */
 /* ***************************************************************** */
 
-int is_word(char *token);
-int is_flag(char *token);
-int is_redir(char *token);
-int is_pipe(char *token);
-//int set_token_type(char *token);
-//char *clean_quotes(char *s, char q);
+int		is_word(char *token);
+int		is_flag(char *token);
+int		is_redir(char *token);
+int		is_pipe(char *token);
 char	*clean_quotes(char *s, char q, size_t start, size_t end);
-
-//int is_special_cmd_chars(char *token);
-char **parse_token_array(char **tokens);
-int has_qts(char *token, char q);
+char	**parse_token_array(char **tokens);
+int		has_qts(char *token, char q);
 void	error_syntax_token(t_msh *data, char *token, int error);
-int	ft_array_len(char **str);
-int is_var(char *token);
+int		ft_array_len(char **str);
+int		is_var(char *token);
 void	create_list(t_cmd **list, char **tokens);
-void ft_parse(char **tokens, t_msh *data);
-int check_token_syntax(char **tokens, t_msh *data);
-char **expanding_loop(char **tokens, t_msh *data);
-
-int contains_var(char *token);
-size_t get_end_of_var(char *token);
-char *format_expansion_token(char *token, char *expanded, size_t end, int start);
-
-void	 quote_section_cleaner(char *token, char **parsed, size_t len);
-int should_clean_quotes(char *token, char **parsed);
-size_t next_qt_pos(char *token, size_t start, size_t len, char qt);
+void	ft_parse(char **tokens, t_msh *data);
+int		check_token_syntax(char **tokens, t_msh *data);
+char	**expanding_loop(char **tokens, t_msh *data);
+int		contains_var(char *token);
+size_t	get_end_of_var(char *token);
+char	*format_expansion_token(char *token, char *expanded,
+			size_t end, int start);
+void	quote_section_cleaner(char *token, char **parsed, size_t len);
+int		should_clean_quotes(char *token, char **parsed);
+size_t	next_qt_pos(char *token, size_t start, size_t len, char qt);
 char	**ft_split_free(char *s, char c);
-
-int set_redir_type(char *token);
+int		set_redir_type(char *token);
 void	add_redir_to_node(t_cmd **cmd, char *info, char *token);
 void	node_add_back_rd(t_cmd **head, t_rd *node);
 void	node_add_back(t_cmd **head, t_cmd *node);
-
-
 
 /* ***************************************************************** */
 /* ******************      SIGNAL  FUNCTIONS       ***************** */

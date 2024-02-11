@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:54:12 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/10 19:34:34 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 12:48:13 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,15 @@ static void	set_active_section(char token_char, size_t *dqt, size_t *sqt,
 static void	double_qts_section(char *token, char **parsed, size_t *dqt,
 		size_t *i)
 {
-	int	end;
-	int	len;
-	char *section;
+	int		end;
+	int		len;
+	char	*section;
 
 	len = ft_strlen(token);
 	end = next_qt_pos(token, (*i) + 1, len, '\"');
 	section = clean_quotes(token, '\"', *i, end);
 	*parsed = ft_strjoin_free(*parsed, section);
 	free(section);
-	//printf("parsed: [%s]  y i %zu  y end %d\n", *parsed, *i, end);
 	*i = end;
 	*dqt = 0;
 }
@@ -49,39 +48,35 @@ static void	double_qts_section(char *token, char **parsed, size_t *dqt,
 static void	simple_qts_section(char *token, char **parsed, size_t *sqt,
 		size_t *i)
 {
-	int	end;
-	int	len;
-	char *section;
+	int		end;
+	int		len;
+	char	*section;
 
 	len = ft_strlen(token);
 	end = next_qt_pos(token, (*i) + 1, len, '\'');
 	section = clean_quotes(token, '\'', *i, end);
 	*parsed = ft_strjoin_free(*parsed, section);
 	free(section);
-	//printf("parsed: %s  y i %zu  y end %d\n", *parsed, *i, end);
 	*i = end;
 	*sqt = 0;
 }
 
 static void	no_qts_section(char *token, char **parsed, size_t *nqt, size_t *i)
 {
-	int	end;
-	int	other;
-	int	len;
-	char *section;
+	int		end;
+	int		other;
+	int		len;
+	char	*section;
 
-	//printf("Entra en no qts section\n");
 	len = ft_strlen(token);
 	end = next_qt_pos(token, *i, len, '\'');
 	other = next_qt_pos(token, *i, len, '\"');
 	if (other < end)
 		end = other;
-	//printf("end : %d  e i: %zu\n", end, *i);
 	section = ft_substr(token, *i, (end - *i));
 	*parsed = ft_strjoin_free(*parsed, section);
 	free(section);
 	section = NULL;
-	//printf("new parsed %s\n", *parsed);
 	*i = end - 1;
 	nqt = 0;
 }
@@ -98,10 +93,8 @@ void	quote_section_cleaner(char *token, char **parsed, size_t len)
 	nqt = 0;
 	i = 0;
 	*parsed = NULL;
-	//printf("len %zu\n",  len);
 	while (i < len)
 	{
-		//printf("Dentro de quote section cleaner %s y len %zu\n", token, len);
 		set_active_section(token[i], &dqt, &sqt, &nqt);
 		if (dqt == 1 && sqt == 0)
 			double_qts_section(token, parsed, &dqt, &i);
