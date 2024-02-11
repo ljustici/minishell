@@ -6,7 +6,7 @@
 /*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:30:00 by roruiz-v          #+#    #+#             */
-/*   Updated: 2024/02/10 18:28:30 by roruiz-v         ###   ########.fr       */
+/*   Updated: 2024/02/11 14:32:06 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_error_status(t_msh *data, t_cmd *cmd_nd, int error)
 		ft_putstr_fd(cmd_nd->c_args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		data->error = NO_ERROR;
+		data->exit_code = 127;
 	}
 	else if (error == ERROR_TOO_MANY_ARGUMENTS)
 	{
@@ -70,7 +71,6 @@ void	ft_error_cd(t_msh *data, t_cmd *cmd_nd, int error)
 		ft_putstr_fd(": No such file or directory\n", 2);
 		error = NO_ERROR;
 		data->exit_code = 1;
-//		data->exit_code = 127;
 	}
 	else if (error == ERROR_CHDIR_OLDPWD_NOT_SET)
 	{
@@ -104,6 +104,13 @@ void	ft_error_files(t_msh *data, t_cmd *cmd_nd, t_rd *rd_nd, int error)
 		ft_putstr_fd("msh: ", 2);
 		ft_putstr_fd(rd_nd->file, 2);
 		ft_putstr_fd(" : No such file or directory\n", 2);
+		data->exit_code = 1;
+	}
+	else if (error == ERROR_OPEN_OUTFILE)
+	{
+		ft_putstr_fd("msh: ", 2);
+		ft_putstr_fd(" : Permission denied\n", 2);
+		data->exit_code = 1;
 	}
 	else if (error == ERROR_NO_SUCH_FILE_OR_DIRECTORY)
 	{

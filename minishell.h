@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roruiz-v <roruiz-v@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 15:02:03 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 13:52:52 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 14:44:37 by roruiz-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,21 +174,19 @@ typedef struct s_env_lst
 typedef struct s_msh
 {
 	struct sigaction	sig;
-	char				*var_; // para el '$_' que falta IMPLEMENTAR !!! (o no)
+	char				*var_;
 	t_error				error;
 	t_env_lst			*env_lst;
 	t_cmd				*cmd_lst;
 	char				*pipeline;
-	int					m_pid;		// used by ft_execute_many_cmds
-	int					m_pipe_val;	// used by ft_execute_many_cmds
+	int					m_pid;
+	int					m_pipe_val;
 	int					fd;
 	int					org_stdin;
 	int					org_stdout;
 	int					exit_code;
 	char				*shadow_pwd;
 	char				*echo;
-//	struct stat			stat;		// used to get file permissions
-//	int					permisions;	// used to keep file permissions
 }						t_msh;
 
 //Lexer
