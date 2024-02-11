@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:29:49 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 12:50:49 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:53:38 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	node_add_back(t_cmd **head, t_cmd *node)
 	}
 }
 
-void	create_list(t_cmd **list, char **tokens)
+void	create_list(t_msh *data, t_cmd **list, char **tokens)
 {
 	int		i;
 	t_cmd	*node;
@@ -110,6 +110,8 @@ void	create_list(t_cmd **list, char **tokens)
 		while (j < n && !is_pipe(tokens[j]))
 			j++;
 		node = create_node(&tokens[i], j - i);
+		if (!node)
+			data->error = ERROR_MALLOC_ERROR;
 		node_add_back(list, node);
 		i = j;
 		i++;

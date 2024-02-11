@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 12:50:20 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 12:55:56 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/11 13:55:12 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	add_redir_to_node(t_cmd **cmd, char *info, char *token)
 	t_rd	*list;
 
 	list = (t_rd *)malloc(sizeof(t_rd));
+	if (!list)
+		(*cmd)->orgn->error = ERROR_MALLOC_ERROR;
 	list->type = set_redir_type(token);
 	if (list->type == 1 || list->type == 3 || list->type == 4)
 	{
