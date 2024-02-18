@@ -6,7 +6,7 @@
 /*   By: ljustici <ljustici@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 16:58:13 by ljustici          #+#    #+#             */
-/*   Updated: 2024/02/11 15:09:38 by ljustici         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:00:49 by ljustici         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	set_if_echo(t_cmd *list, int *i, int *first)
 	}
 }
 
-static void	fill_echo(t_msh *data, t_cmd *list, int *i)
+static int	fill_echo(t_msh *data, t_cmd *list, int *i)
 {
 	if (list->c_args[*i])
 	{
@@ -31,8 +31,11 @@ static void	fill_echo(t_msh *data, t_cmd *list, int *i)
 		else
 			data->echo = ft_strjoin_free(data->echo, list->c_args[*i]);
 	}
+	else
+		return (1);
 	if (list->c_args[*i + 1])
 		data->echo = ft_strjoin_free(data->echo, " ");
+	return (0);
 }
 
 static void	print_echo(t_msh *data, int nl)
@@ -69,7 +72,8 @@ void	ft_builtin_echo(t_msh *data, t_cmd *list)
 					i++;
 				nl = 1;
 			}
-			fill_echo(data, list, &i);
+			if (fill_echo(data, list, &i) == 1)
+				break;
 		}
 		i++;
 	}
